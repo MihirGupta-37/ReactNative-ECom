@@ -70,7 +70,7 @@ const Fpassword = () => {
           <Text style={styles.headerMain}>Forgot Password</Text>
           <Text style={styles.subHeading}>
             Join our Community to get different feedbacks and reviews about
-            Products!
+            Products and stuff!
           </Text>
         </View>
 
@@ -99,7 +99,7 @@ const Fpassword = () => {
             // disabled={toggleCheckBox}
             // styles={[{backgroundColor: toggleCheckBox ? '#22689f' : 'grey'}]}
             disabled={true}
-            title="Send OTP"
+            title="Send OTP here"
           />
         </View>
       </View>
