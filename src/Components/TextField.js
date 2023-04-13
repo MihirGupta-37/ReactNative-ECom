@@ -3,7 +3,7 @@ import {View, TextInput, StyleSheet, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 
 export const TextField = props => {
-  console.log(props, 'val');
+  // console.log(props, 'val');
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.label}>{props.title}</Text>

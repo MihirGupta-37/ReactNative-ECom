@@ -7,6 +7,7 @@ import {
   Pressable,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {
@@ -20,6 +21,7 @@ import {Button} from '../Components/Button';
 import {TextField} from '../Components/TextField';
 
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import axios from 'axios';
 
 const Signup = props => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -51,7 +53,7 @@ const Signup = props => {
   // const {userName, email, password, confPassword} = userInfo
 
   const handleChangeText = (key, mValue) => {
-    console.log('key---->', key, mValue);
+    // console.log('key---->', key, mValue);
     // setValues({ ...values, [e.target.name]: e.target.value });
     // console.log(values, "///");
     // if (errors[e.target.name]) {
@@ -119,14 +121,18 @@ const Signup = props => {
   // console.log(userInfo);
 
   const submitForm = e => {
-    // e.preventDefault();
+    e.preventDefault();
     if (!validate()) {
       return false;
     }
-    console.log('Submitted', values);
-    setValues(values);
+    // console.log('Submitted', values);
+    console.log('Submitted');
+    handleRegister();
+    // setValues(values);
     return true;
   };
+
+  // const handleSubmit = async (e) =>
 
   const onConditionPress = () => {
     return console.warn('Presssed Condition');
@@ -142,6 +148,46 @@ const Signup = props => {
 
   const iconPress1 = () => {
     setPassVisible1(!passVisible1);
+  };
+
+  const onPressTxt = () => {
+    setValues(value => {
+      let newValue = {...value};
+
+      newValue.userName = '';
+
+      newValue.email = '';
+
+      newValue.password = '';
+
+      newValue.confPassword = '';
+
+      return newValue;
+    });
+    props.navigation.navigate('Login');
+  };
+
+  const handleRegister = () => {
+    axios
+      .post('http://192.168.1.252:4000/api/register', {
+        name: values.userName,
+        email: values.email,
+        password: values.password,
+      })
+      .then(function (response) {
+        console.log('Response::::::::::', response);
+        props.navigation.navigate('Login');
+      })
+      .catch(function (error) {
+        console.log('Error::::::::::', error);
+        ToastAndroid.showWithGravityAndOffset(
+          'User already Exists!',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
+      });
   };
 
   return (
@@ -295,9 +341,7 @@ const Signup = props => {
           <View style={styles.loginInput}>
             <Text>Already Have an Account?</Text>
             <TouchableOpacity>
-              <Text
-                style={styles.loginTxt}
-                onPress={() => props.navigation.navigate('Login')}>
+              <Text style={styles.loginTxt} onPress={onPressTxt}>
                 {' '}
                 Login
               </Text>

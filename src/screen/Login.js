@@ -8,10 +8,15 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+
 import {validateEmail, validatePassword} from '../utils/Validations';
 
 import {TextField} from '../Components/TextField';
 import {Button} from '../Components/Button';
+
+import axios from 'axios';
+
+import LocalStorage from '../utils/LocalStorage';
 
 const Login = props => {
   const [errors, setErrors] = useState({
@@ -20,18 +25,13 @@ const Login = props => {
   });
 
   const fieldValues = {
-    email: '',
-    password: '',
+    email: 'mihir3@gmail.com',
+    password: 'Mihir@12345678',
   };
 
   const [values, setValues] = useState(fieldValues);
 
   const handleChangeText = (key, mValue) => {
-    // setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(values, "///");
-    // if (errors[e.target.name]) {
-    // setErrors({ ...errors, [e.target.name]: "" });
-    // console.log(errors, "<><");
     setValues(value => {
       let newValue = {...value};
       if (key === 'email') {
@@ -55,9 +55,6 @@ const Login = props => {
   const [passVisible, setPassVisible] = useState(true);
   const [passVisible1, setPassVisible1] = useState(true);
 
-  // console.log('values:::', errors);
-  // const [toggleCheckBox, setToggleCheckBox] = useState(false);
-
   const validate = () => {
     let valErrors = {...errors};
     let valid = true;
@@ -80,8 +77,8 @@ const Login = props => {
     if (!validate()) {
       return false;
     }
-    console.log('Submitted', values);
-    setValues(values);
+    // setValues(values);
+    handleRegister();
     return true;
   };
 
@@ -91,6 +88,56 @@ const Login = props => {
 
   const iconPress1 = () => {
     setPassVisible1(!passVisible1);
+  };
+
+  const onPressTxt = () => {
+    setValues(value => {
+      let newValue = {...value};
+
+      newValue.email = '';
+
+      newValue.password = '';
+
+      return newValue;
+    });
+    props.navigation.navigate('Signup');
+  };
+
+  const onPressTxt1 = () => {
+    setValues(value => {
+      let newValue = {...value};
+
+      newValue.email = '';
+
+      newValue.password = '';
+
+      return newValue;
+    });
+    props.navigation.navigate('Fpassword');
+  };
+
+  const handleRegister = () => {
+    axios
+      .post('http://192.168.1.252:4000/api/login', {
+        email: values.email,
+        password: values.password,
+      })
+      .then(function (response) {
+        console.log('Response::::::::::', response);
+
+        LocalStorage.saveData('UserData', response?.data);
+        props.navigation.navigate('Home');
+      })
+      .catch(function (error) {
+        console.log('Error::::::::::', error.response);
+        ToastAndroid.showWithGravityAndOffset(
+          'User already Exists!',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
+      });
   };
 
   return (
@@ -172,9 +219,7 @@ const Login = props => {
         <View style={styles.loginInput}>
           <Text>Don't Have an Account?</Text>
           <TouchableOpacity>
-            <Text
-              style={styles.loginTxt}
-              onPress={() => props.navigation.navigate('Signup')}>
+            <Text style={styles.loginTxt} onPress={onPressTxt}>
               {' '}
               Sign Up
             </Text>
@@ -182,9 +227,7 @@ const Login = props => {
         </View>
         <View style={styles.loginInput}>
           <TouchableOpacity>
-            <Text
-              style={styles.loginTxt}
-              onPress={() => props.navigation.navigate('Fpassword')}>
+            <Text style={styles.loginTxt} onPress={onPressTxt1}>
               Forgot Password?
             </Text>
           </TouchableOpacity>
