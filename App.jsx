@@ -1,11 +1,19 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 
 import Navigation from './src/Navigation/NavigationScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import LocalStorage from './src/utils/LocalStorage';
 
 function App() {
-  return <Navigation />;
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    LocalStorage.getData('UserData').then(res => {
+      setToken(res?.token);
+    });
+  }, [token]);
+
+  return <Navigation token={token} />;
 }
 
 const styles = StyleSheet.create({

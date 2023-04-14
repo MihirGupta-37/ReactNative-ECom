@@ -6,4 +6,4 @@ const ApiManager = axios.create({
   withCredentials: true,
 });
 
-export default ApiManager
+export default ApiManager;

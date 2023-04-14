@@ -1,55 +1,38 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import MainStack from './MainStack';
+import UnAuthStack from './UnAuthStack';
+import LocalStorage from '../utils/LocalStorage';
 
-import Login from '../screen/Login';
-import Signup from '../screen/Signup';
-import Fpassword from '../screen/Fpassword';
-import Home from '../screen/HomeScreen/Home';
-
-const Navigation = () => {
+const Navigation = props => {
   const Stack = createNativeStackNavigator();
+  // const [token, setToken] = useState('');
+
+  // useEffect(() => {
+  //   LocalStorage.getData('UserData').then(res => {
+  //     setToken(res?.token);
+  //   });
+  // }, [token]);
+
+  console.log('token--->navigation', props?.token);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Signup">
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            title: '',
-            headerStyle: {
-              backgroundColor: '#f2f2f2',
-            },
-            headerShadowVisible: false,
-          }}
-        />
-        <Stack.Screen
-          name="Fpassword"
-          component={Fpassword}
-          options={{
-            title: '',
-            headerStyle: {
-              backgroundColor: '#f2f2f2',
-            },
-            headerShadowVisible: false,
-          }}
-        />
-
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            title: '',
-            headerStyle: {
-              backgroundColor: '#f2f2f2',
-            },
-          }}
-        />
+      <Stack.Navigator>
+        {!!props?.token && props?.token ? (
+          <Stack.Screen
+            name="Home"
+            options={{headerShown: false}}
+            component={MainStack}
+          />
+        ) : (
+          <Stack.Screen
+            name="Login"
+            options={{headerShown: false}}
+            component={UnAuthStack}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

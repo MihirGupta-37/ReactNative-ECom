@@ -23,6 +23,8 @@ import {TextField} from '../Components/TextField';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import axios from 'axios';
 
+import LocalStorage from '../utils/LocalStorage';
+
 const Signup = props => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
@@ -32,14 +34,7 @@ const Signup = props => {
     password: '',
     confPassword: '',
   };
-  // const [userName, setUserName] = useState("");
-  // // console.log(userName);
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confPassword1, setconfPassword1] = useState('');
 
-  // const [fieldPwd, setFieldPwd] = useState(false);
-  // const [fieldPwd1, setfieldPwd1] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
   const [passVisible1, setPassVisible1] = useState(true);
   const [values, setValues] = useState(fieldValues);
@@ -50,15 +45,7 @@ const Signup = props => {
     confPassword: '',
   });
 
-  // const {userName, email, password, confPassword} = userInfo
-
   const handleChangeText = (key, mValue) => {
-    // console.log('key---->', key, mValue);
-    // setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(values, "///");
-    // if (errors[e.target.name]) {
-    // setErrors({ ...errors, [e.target.name]: "" });
-    // console.log(errors, "<><");
     setValues(value => {
       let newValue = {...value};
 
@@ -75,20 +62,13 @@ const Signup = props => {
     });
     setErrors(value => {
       let newValue = {...value};
-
       newValue.userName = '';
-
       newValue.email = '';
-
       newValue.password = '';
-
       newValue.confPassword = '';
-
       return newValue;
     });
   };
-  // console.log("values:::", values);
-  console.log('values:::', errors);
 
   const validate = () => {
     let valErrors = {...errors};
@@ -98,7 +78,6 @@ const Signup = props => {
     const emailError = validateEmail(values.email);
     const pwdError = validatePassword(values.password);
     const confPwdError = validconfPassword(values);
-    // console.log(values.confPassword, 'values.confPassword');
     if (userNameError) {
       valErrors = {...valErrors, userName: userNameError};
       valid = false;
@@ -118,17 +97,14 @@ const Signup = props => {
     setErrors(valErrors);
     return valid;
   };
-  // console.log(userInfo);
 
   const submitForm = e => {
     e.preventDefault();
     if (!validate()) {
       return false;
     }
-    // console.log('Submitted', values);
-    console.log('Submitted');
+
     handleRegister();
-    // setValues(values);
     return true;
   };
 
@@ -176,10 +152,12 @@ const Signup = props => {
       })
       .then(function (response) {
         console.log('Response::::::::::', response);
-        props.navigation.navigate('Login');
+
+        LocalStorage.saveData('UserData', response?.data);
+        props.navigation.navigate('Home');
       })
       .catch(function (error) {
-        console.log('Error::::::::::', error);
+        console.log('Error::::::::::', error.response);
         ToastAndroid.showWithGravityAndOffset(
           'User already Exists!',
           ToastAndroid.LONG,
