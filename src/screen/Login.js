@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -15,20 +15,21 @@ import {TextField} from '../Components/TextField';
 import {Button} from '../Components/Button';
 
 import axios from 'axios';
+import {AuthContext} from '../Navigation/AuthContext';
 
 import LocalStorage from '../utils/LocalStorage';
+import {BASE_URL, LOGIN_API} from '../utils/Constants';
 
 const Login = props => {
+  const fieldValues = {
+    email: 'mihirgupta63@gmail.com',
+    password: 'Mihir@12345678',
+  };
   const [errors, setErrors] = useState({
     email: '',
     password: '',
   });
-
-  const fieldValues = {
-    email: 'mihir3@gmail.com',
-    password: 'Mihir@12345678',
-  };
-
+  const {userDetails} = useContext(AuthContext);
   const [values, setValues] = useState(fieldValues);
 
   const handleChangeText = (key, mValue) => {
@@ -93,11 +94,8 @@ const Login = props => {
   const onPressTxt = () => {
     setValues(value => {
       let newValue = {...value};
-
       newValue.email = '';
-
       newValue.password = '';
-
       return newValue;
     });
     props.navigation.navigate('Signup');
@@ -106,27 +104,35 @@ const Login = props => {
   const onPressTxt1 = () => {
     setValues(value => {
       let newValue = {...value};
-
       newValue.email = '';
-
       newValue.password = '';
-
       return newValue;
     });
     props.navigation.navigate('Fpassword');
   };
 
+  const onPressTxt2 = () => {
+    setValues(value => {
+      let newValue = {...value};
+      newValue.email = '';
+      newValue.password = '';
+      return newValue;
+    });
+    props.navigation.navigate('Home');
+  };
+
   const handleRegister = () => {
     axios
-      .post('http://192.168.1.252:4000/api/login', {
+      .post(BASE_URL + LOGIN_API, {
         email: values.email,
         password: values.password,
       })
       .then(function (response) {
-        console.log('Response::::::::::', response);
+        console.log('Response::::::::::', response?.data);
 
-        LocalStorage.saveData('UserData', response?.data);
-        props.navigation.navigate('Home');
+        // LocalStorage.saveData('UserData', response?.data);
+        userDetails(response?.data);
+        //   props.navigation.navigate('Home');
       })
       .catch(function (error) {
         console.log('Error::::::::::', error.response);
@@ -162,24 +168,7 @@ const Login = props => {
             handleChangeText('email', val);
           }}
           isIcon={false}
-          // iconName1={'visibility'}
-          // iconName2={'visibility-off'}
-          // isIconVisible={passVisible}
-          // iconPress={iconPress}
         />
-
-        {/* <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.inputStyle}
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="email-address"
-            value={values.email}
-            error={errors.email}
-            onChangeText={value => handleChangeText('email', value)}
-          />
-        </View> */}
         <View style={styles.invalidField}>
           {errors.email ? (
             <Text style={styles.invalidTxt}>{errors.email}</Text>
@@ -208,16 +197,10 @@ const Login = props => {
           ) : null}
         </View>
         <View style={styles.buttonContainer}>
-          <Button
-            submitForm={submitForm}
-            // disabled={toggleCheckBox}
-            // styles={[{backgroundColor: toggleCheckBox ? '#22689f' : 'grey'}]}
-            disabled={true}
-            title="Login"
-          />
+          <Button submitForm={submitForm} disabled={true} title="Login" />
         </View>
         <View style={styles.loginInput}>
-          <Text>Don't Have an Account?</Text>
+          <Text style={{color: '#625D5D'}}>Don't Have an Account?</Text>
           <TouchableOpacity>
             <Text style={styles.loginTxt} onPress={onPressTxt}>
               {' '}
@@ -231,6 +214,11 @@ const Login = props => {
               Forgot Password?
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.loginTxt} onPress={onPressTxt2}>
+              Home?
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -241,10 +229,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    // alignItems: 'center',
-    // display: 'flex',
-    // justifyContent: 'center',
-    // flexDirection: 'column',
   },
   header: {
     display: 'flex',
@@ -260,6 +244,7 @@ const styles = StyleSheet.create({
   },
   subHeading: {
     textAlign: 'center',
+    color: '#625D5D',
   },
   label: {
     color: '#625D5D',
@@ -272,12 +257,11 @@ const styles = StyleSheet.create({
   inputStyle: {
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 2,
-    marginBottom: 15,
     paddingBottom: 15,
     fontSize: 20,
   },
   buttonContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   pressableBtn: {
     backgroundColor: '#22689f',
@@ -300,6 +284,7 @@ const styles = StyleSheet.create({
   },
   invalidTxt: {
     color: 'red',
+    paddingBottom: 15,
   },
   loginTxt: {
     color: '#22689f',

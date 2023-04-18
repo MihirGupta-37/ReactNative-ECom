@@ -39,17 +39,18 @@ export default function () {
           headerShadowVisible: false,
         }}
       />
-      <UnAuthStack.Screen
+      {/* <UnAuthStack.Screen
         name="Home"
         component={Home}
         options={{
-          title: '',
+          title: 'VShop',
           headerStyle: {
-            backgroundColor: '#f2f2f2',
+            backgroundColor: '#fff',
           },
           headerShadowVisible: false,
+          headerShown: false,
         }}
-      />
+      /> */}
     </UnAuthStack.Navigator>
   );
 }

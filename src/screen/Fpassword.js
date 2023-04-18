@@ -17,11 +17,6 @@ const Fpassword = () => {
   const [values, setValues] = useState(fieldValues);
 
   const handleChangeText = (key, mValue) => {
-    // setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(values, "///");
-    // if (errors[e.target.name]) {
-    // setErrors({ ...errors, [e.target.name]: "" });
-    // console.log(errors, "<><");
     setValues(value => {
       let newValue = {...value};
       if (key === 'email') {
@@ -38,8 +33,6 @@ const Fpassword = () => {
       return newValue;
     });
   };
-
-  // console.log('values:::', errors);
 
   const validate = () => {
     let valErrors = {...errors};
@@ -70,7 +63,7 @@ const Fpassword = () => {
           <Text style={styles.headerMain}>Forgot Password</Text>
           <Text style={styles.subHeading}>
             Join our Community to get different feedbacks and reviews about
-            Products and stuff!
+            Products!
           </Text>
         </View>
 
@@ -96,10 +89,8 @@ const Fpassword = () => {
         <View style={styles.buttonContainer}>
           <Button
             submitForm={submitForm}
-            // disabled={toggleCheckBox}
-            // styles={[{backgroundColor: toggleCheckBox ? '#22689f' : 'grey'}]}
             disabled={true}
-            title="Send OTP here"
+            title="Send OTP"
           />
         </View>
       </View>
@@ -111,10 +102,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    // alignItems: 'center',
-    // display: 'flex',
-    // justifyContent: 'center',
-    // flexDirection: 'column',
   },
   header: {
     display: 'flex',
@@ -130,9 +117,10 @@ const styles = StyleSheet.create({
   },
   subHeading: {
     textAlign: 'center',
+    color: '#625D5D',
   },
   buttonContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   invalidField: {
     display: 'flex',
@@ -140,6 +128,7 @@ const styles = StyleSheet.create({
   },
   invalidTxt: {
     color: 'red',
+    paddingBottom: 15,
   },
 });
 export default Fpassword;

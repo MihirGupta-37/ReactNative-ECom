@@ -4,16 +4,17 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainStack from './MainStack';
 import UnAuthStack from './UnAuthStack';
 import LocalStorage from '../utils/LocalStorage';
+import BottomNavigator from './BottomNavigator';
 
 const Navigation = props => {
   const Stack = createNativeStackNavigator();
-  // const [token, setToken] = useState('');
+  const [token, setToken] = useState('');
 
-  // useEffect(() => {
-  //   LocalStorage.getData('UserData').then(res => {
-  //     setToken(res?.token);
-  //   });
-  // }, [token]);
+  useEffect(() => {
+    LocalStorage.getData('UserData').then(res => {
+      setToken(res?.token);
+    });
+  }, [token]);
 
   console.log('token--->navigation', props?.token);
 
@@ -24,7 +25,7 @@ const Navigation = props => {
           <Stack.Screen
             name="Home"
             options={{headerShown: false}}
-            component={MainStack}
+            component={BottomNavigator}
           />
         ) : (
           <Stack.Screen

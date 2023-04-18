@@ -39,7 +39,7 @@ export const validatePassword = value => {
     return 'Password must contain at least one Digit.';
   }
 
-  const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/; // eslint-disable-line
+  const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
   if (!isContainsSymbol.test(value)) {
     return 'Password must contain at least one Special Symbol.';
   }
@@ -64,17 +64,14 @@ export const validateName = value => {
   return false;
 };
 
-export const validconfPassword = value => {
-  console.log(value, 'valllllle');
-  if (IsEmpty(value)) {
+export const validconfPassword = (value, cValue) => {
+  console.log('Conf Password::::::', value, 'ddd', cValue);
+  if (cValue === '') {
     return 'Please enter Confirm password';
   }
-  console.log(value.password, 'value.password');
 
-  if (value.password !== value.confPassword) {
-    console.log(value.password, 'value.password');
-
+  if (value !== cValue) {
     return 'Password and Confirm Password does not match.';
   }
-  return false;
+  return '';
 };

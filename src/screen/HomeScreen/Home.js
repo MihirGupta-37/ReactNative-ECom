@@ -3,6 +3,9 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {Button} from '../../Components/Button';
 import LocalStorage from '../../utils/LocalStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BottomNavigator from '../../Navigation/BottomNavigator';
+import Header from '../../Components/Header';
+import Images from '../../Components/Images';
 
 const Home = props => {
   useEffect(() => {
@@ -15,8 +18,37 @@ const Home = props => {
     setTimeout(() => props.navigation.navigate('Login'), 2000);
   };
 
+  // const handleRegister = () => {
+  //   axios
+  //     .post(BASE_URL + REGISTER_API, {
+  //       name: values.userName,
+  //       email: values.email,
+  //       password: values.password,
+  //     })
+  //     .then(function (response) {
+  //       console.log('Response::::::::::', response);
+
+  //       LocalStorage.saveData('UserData', response?.data);
+  //       props.navigation.navigate('Home');
+  //     })
+  //     .catch(function (error) {
+  //       console.log('Error::::::::::', error.response);
+  //       ToastAndroid.showWithGravityAndOffset(
+  //         'User already Exists!',
+  //         ToastAndroid.LONG,
+  //         ToastAndroid.BOTTOM,
+  //         25,
+  //         50,
+  //       );
+  //     });
+  // };
+
+  // const [dataList, setDataList] = useState([]);
+
   return (
     <ScrollView>
+      <Header />
+      <Images />
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerMain}>Home</Text>
@@ -26,13 +58,7 @@ const Home = props => {
           </Text>
         </View>
         <View style={styles.buttonContainer}>
-          <Button
-            submitForm={handleLogout}
-            // disabled={toggleCheckBox}
-            // styles={[{backgroundColor: toggleCheckBox ? '#22689f' : 'grey'}]}
-            disabled={true}
-            title="Log Out"
-          />
+          <Button submitForm={handleLogout} disabled={true} title="Log Out" />
         </View>
       </View>
     </ScrollView>
@@ -43,25 +69,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    // alignItems: 'center',
-    // display: 'flex',
-    // justifyContent: 'center',
-    // flexDirection: 'column',
   },
   header: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: 180,
   },
   headerMain: {
     fontSize: 32,
     paddingVertical: 25,
-    color: 'black',
     fontWeight: '800',
+    color: 'black',
   },
   subHeading: {
     textAlign: 'center',
+    color: '#625D5D',
   },
 });
 export default Home;

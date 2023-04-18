@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -22,12 +22,14 @@ import {TextField} from '../Components/TextField';
 
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import axios from 'axios';
+import {AuthContext} from '../Navigation/AuthContext';
 
 import LocalStorage from '../utils/LocalStorage';
+import {BASE_URL, REGISTER_API} from '../utils/Constants';
 
 const Signup = props => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
-
+  const {userDetails} = useContext(AuthContext);
   const fieldValues = {
     userName: '',
     email: '',
@@ -77,7 +79,11 @@ const Signup = props => {
     const userNameError = validateName(values.userName);
     const emailError = validateEmail(values.email);
     const pwdError = validatePassword(values.password);
-    const confPwdError = validconfPassword(values);
+    const confPwdError = validconfPassword(
+      values.password,
+      values.confPassword,
+    );
+
     if (userNameError) {
       valErrors = {...valErrors, userName: userNameError};
       valid = false;
@@ -90,7 +96,7 @@ const Signup = props => {
       valErrors = {...valErrors, password: pwdError};
       valid = false;
     }
-    if (pwdError !== confPwdError) {
+    if (confPwdError?.length > 0) {
       valErrors = {...valErrors, confPassword: confPwdError};
       valid = false;
     }
@@ -107,8 +113,6 @@ const Signup = props => {
     handleRegister();
     return true;
   };
-
-  // const handleSubmit = async (e) =>
 
   const onConditionPress = () => {
     return console.warn('Presssed Condition');
@@ -145,7 +149,7 @@ const Signup = props => {
 
   const handleRegister = () => {
     axios
-      .post('http://192.168.1.252:4000/api/register', {
+      .post(BASE_URL + REGISTER_API, {
         name: values.userName,
         email: values.email,
         password: values.password,
@@ -154,6 +158,7 @@ const Signup = props => {
         console.log('Response::::::::::', response);
 
         LocalStorage.saveData('UserData', response?.data);
+        userDetails(response?.data);
         props.navigation.navigate('Home');
       })
       .catch(function (error) {
@@ -190,10 +195,6 @@ const Signup = props => {
               handleChangeText('userName', val);
             }}
             isIcon={false}
-            // iconName1={'visibility'}
-            // iconName2={'visibility-off'}
-            // isIconVisible={passVisible}
-            // iconPress={iconPress}
           />
           <View style={styles.invalidField}>
             {errors.userName ? (
@@ -212,10 +213,6 @@ const Signup = props => {
               handleChangeText('email', val);
             }}
             isIcon={false}
-            // iconName1={'visibility'}
-            // iconName2={'visibility-off'}
-            // isIconVisible={passVisible}
-            // iconPress={iconPress}
           />
           <View style={styles.invalidField}>
             {errors.email ? (
@@ -261,27 +258,16 @@ const Signup = props => {
               handleChangeText('confPassword', val);
             }}
           />
-          {/* <View style={styles.inputContainer}>
-            <Text style={styles.label}>Confirm Password</Text>
-            <View style={styles.inputContainerPwd}>
-              <TextInput
-                secureTextEntry={passVisible1}
-                value={values.confPassword}
-                error={errors.confPassword}
-                onChangeText={value => handleChangeText('confPassword', value)}
-              />
-              <Icon
-                style={[styles.iconEye, {width: '10%'}]}
-                name={passVisible1 ? 'visibility' : 'visibility-off'}
-                onPress={() => setPassVisible1(!passVisible1)}></Icon>
-            </View>
-          </View> */}
+          <View style={styles.invalidField}>
+            {errors?.confPassword ? (
+              <Text style={styles.invalidTxt}>{errors?.confPassword}</Text>
+            ) : null}
+          </View>
           <View style={styles.textInputField}>
             <View style={styles.checkboxContainer}>
               <CheckBox
                 value={toggleCheckBox}
                 onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
-                // tintColors={toggleCheckBox ? '#4630EB' : 'black'}
               />
             </View>
             <Text style={styles.inputField}>
@@ -302,19 +288,8 @@ const Signup = props => {
             <Button
               submitForm={submitForm}
               disabled={toggleCheckBox}
-              // styles={[{backgroundColor: toggleCheckBox ? '#22689f' : 'grey'}]}
               title="Register"
             />
-            {/* <Pressable onPress={submitForm}>
-              <Text
-                style={[
-                  styles.pressableBtn,
-                  {backgroundColor: toggleCheckBox ? '#22689f' : 'grey'},
-                ]}
-                disabled={!toggleCheckBox}>
-                Register
-              </Text>
-            </Pressable> */}
           </View>
           <View style={styles.loginInput}>
             <Text>Already Have an Account?</Text>
@@ -333,7 +308,6 @@ const Signup = props => {
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems : 'center',
     flex: 1,
     paddingHorizontal: 10,
   },
@@ -352,17 +326,6 @@ const styles = StyleSheet.create({
   subHeading: {
     paddingBottom: 30,
     textAlign: 'center',
-  },
-  label: {
-    color: '#625D5D',
-    fontWeight: '400',
-  },
-  inputContainer: {
-    width: '100%',
-    borderBottomColor: 'lightgrey',
-    borderBottomWidth: 2,
-    marginBottom: 15,
-    paddingBottom: 5,
   },
   textInputField: {
     marginBottom: 15,
@@ -385,9 +348,6 @@ const styles = StyleSheet.create({
   inputField: {
     width: '90%',
   },
-  inputStyle: {
-    fontSize: 20,
-  },
   invalidField: {
     display: 'flex',
     justifyContent: 'flex-start',
@@ -400,19 +360,11 @@ const styles = StyleSheet.create({
   },
   invalidTxt: {
     color: 'red',
+    paddingBottom: 15,
   },
   loginTxt: {
     color: '#22689f',
     fontWeight: 'bold',
-  },
-  iconEye: {
-    fontSize: 22,
-    color: '#625D5D',
-  },
-  inputContainerPwd: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
   },
 });
 export default Signup;
