@@ -2,11 +2,13 @@ import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 
-const Header = () => {
+const Header = ({navigation}) => {
   return (
     <View style={styles.headerMain}>
       <Text style={styles.headerTxt}>VShop</Text>
-      <TouchableOpacity style={styles.headTouchable}>
+      <TouchableOpacity
+        style={styles.headTouchable}
+        onPress={() => navigation.navigate('UserProfile')}>
         <Icon style={styles.iconProfile} name="account-circle"></Icon>
       </TouchableOpacity>
     </View>

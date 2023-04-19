@@ -6,17 +6,17 @@ import UnAuthStack from './UnAuthStack';
 import {AuthContext} from './AuthContext';
 
 const AuthStack = props => {
-  const [userData, setUserData] = useState(props?.userDetails || '');
+  const [token, setToken] = useState(props?.userDetails?.token);
 
   const authContext = useMemo(() => {
     return {
       userDetails: data => {
         LocalStorage.saveData('UserData', data);
-        setUserData(data);
+        setToken(data?.token);
       },
       signOut: () => {
         LocalStorage.ClearData();
-        setUserData('');
+        setToken('');
       },
     };
   }, []);
@@ -26,17 +26,17 @@ const AuthStack = props => {
   return (
     <AuthContext.Provider value={authContext}>
       <RootStack.Navigator>
-        {!!userData?.token && userData?.token ? (
-          <RootStack.Screen
-            name="BottomNavigator"
-            options={{headerShown: false}}
-            children={props => <BottomNavigator {...props} />}
-          />
-        ) : (
+        {token === null || token === '' ? (
           <RootStack.Screen
             name="Login Screen"
             options={{headerShown: false}}
             component={UnAuthStack}
+          />
+        ) : (
+          <RootStack.Screen
+            name="BottomNavigator"
+            options={{headerShown: false}}
+            children={props => <BottomNavigator {...props} />}
           />
         )}
       </RootStack.Navigator>

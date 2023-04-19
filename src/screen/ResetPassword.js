@@ -19,11 +19,6 @@ const ResetPassword = () => {
   const [values, setValues] = useState(fieldValues);
 
   const handleChangeText = (key, mValue) => {
-    // setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(values, "///");
-    // if (errors[e.target.name]) {
-    // setErrors({ ...errors, [e.target.name]: "" });
-    // console.log(errors, "<><");
     setValues(value => {
       let newValue = {...value};
       if (key === 'password') {
@@ -40,8 +35,6 @@ const ResetPassword = () => {
       return newValue;
     });
   };
-
-  // console.log('values:::', errors);
 
   const validate = () => {
     let valErrors = {...errors};
@@ -139,11 +132,7 @@ const ResetPassword = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button
-            submitForm={submitForm}
-            disabled={true}
-            title="Reset"
-          />
+          <Button submitForm={submitForm} disabled={true} title="Reset" />
         </View>
       </View>
     </ScrollView>

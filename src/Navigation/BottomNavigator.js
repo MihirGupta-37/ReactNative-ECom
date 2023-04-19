@@ -40,12 +40,15 @@ function BottomTab() {
 
           return <Icon name={iconName} size={size} color={color} />;
         },
+        tabBarStyle: {
+          height: 55,
+        },
         tabBarActiveTintColor: '#22689f',
         tabBarInactiveTintColor: 'gray',
       })}>
       <BottomTabs.Screen
         name="Home"
-        options={{headerShown: true}}
+        options={{headerShown: false}}
         children={() => <MainStack />}
         listeners={({navigation}) => ({
           tabPress: e => {
@@ -84,48 +87,4 @@ export default function BottomNavigator() {
       />
     </BottomTabStack.Navigator>
   );
-
-  // return (
-  //   <Tab.Navigator
-  //     screenOptions={({route}) => ({
-  //       tabBarIcon: ({focused, color, size}) => {
-  //         let iconName;
-
-  //         if (route.name === 'Home') {
-  //           iconName = focused ? 'home' : 'home';
-  //         } else if (route.name === 'Cart') {
-  //           iconName = focused ? 'shopping-cart' : 'shopping-cart';
-  //         }
-
-  //         return <Icon name={iconName} size={size} color={color} />;
-  //       },
-  //       tabBarActiveTintColor: '#22689f',
-  //       tabBarInactiveTintColor: 'gray',
-  //     })}>
-  //     <Tab.Screen
-  //       name="Home"
-  //       options={{headerShown: true}}
-  //       children={() => <MainStack />}
-  //       listeners={({navigation}) => ({
-  //         tabPress: e => {
-  //           e.preventDefault();
-
-  //           navigation.navigate('Home', {screen: 'Home'});
-  //         },
-  //       })}
-  //     />
-  //     <Tab.Screen
-  //       name="Cart"
-  //       options={{headerShown: true}}
-  //       children={() => <MainStack />}
-  //       listeners={({navigation}) => ({
-  //         tabPress: e => {
-  //           e.preventDefault();
-
-  //           navigation.navigate('Cart', {screen: 'Cart'});
-  //         },
-  //       })}
-  //     />
-  //   </Tab.Navigator>
-  // );
 }

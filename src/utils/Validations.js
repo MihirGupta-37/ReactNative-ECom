@@ -65,7 +65,6 @@ export const validateName = value => {
 };
 
 export const validconfPassword = (value, cValue) => {
-  console.log('Conf Password::::::', value, 'ddd', cValue);
   if (cValue === '') {
     return 'Please enter Confirm password';
   }

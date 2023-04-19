@@ -1,4 +1,3 @@
-import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const saveData = async (key, value) => {
@@ -23,12 +22,9 @@ const getData = async key => {
   }
 };
 
-const removeData = async key => {
-  try {
-    await AsyncStorage.removeItem(key);
-  } catch (e) {
-    // error reading value
-  }
+const ClearData = () => {
+  console.log('Cleardata');
+  AsyncStorage.clear();
 };
 
-export default {saveData, getData, removeData};
+export default {saveData, getData, ClearData};

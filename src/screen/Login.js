@@ -2,22 +2,16 @@ import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
-  Pressable,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
 
 import {validateEmail, validatePassword} from '../utils/Validations';
-
 import {TextField} from '../Components/TextField';
 import {Button} from '../Components/Button';
-
 import axios from 'axios';
 import {AuthContext} from '../Navigation/AuthContext';
-
-import LocalStorage from '../utils/LocalStorage';
 import {BASE_URL, LOGIN_API} from '../utils/Constants';
 
 const Login = props => {
@@ -129,10 +123,7 @@ const Login = props => {
       })
       .then(function (response) {
         console.log('Response::::::::::', response?.data);
-
-        // LocalStorage.saveData('UserData', response?.data);
         userDetails(response?.data);
-        //   props.navigation.navigate('Home');
       })
       .catch(function (error) {
         console.log('Error::::::::::', error.response);

@@ -1,9 +1,9 @@
 import React from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Home from '../screen/HomeScreen/Home';
-import Login from '../screen/Login';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Cart from '../screen/CartScreen/Cart';
+import UserProfile from '../screen/HomeScreen/UserProfile';
 
 export default function () {
   const AuthStack = createNativeStackNavigator();
@@ -31,9 +31,9 @@ export default function () {
           headerShadowVisible: false,
         }}
       />
-      {/* <AuthStack.Screen
-        name="Login"
-        component={Login}
+      <AuthStack.Screen
+        name="UserProfile"
+        component={UserProfile}
         options={{
           title: '',
           headerStyle: {
@@ -41,7 +41,7 @@ export default function () {
           },
           headerShadowVisible: false,
         }}
-      /> */}
+      />
     </AuthStack.Navigator>
   );
 }

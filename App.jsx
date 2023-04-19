@@ -7,15 +7,15 @@ import {NavigationContainer} from '@react-navigation/native';
 function App() {
   const [userDetails, setUserDetails] = useState('');
 
+  useEffect(() => {
+    handleData();
+  }, []);
+
   const handleData = () => {
     LocalStorage.getData('UserData').then(res => {
       setUserDetails(res);
     });
   };
-
-  useEffect(() => {
-    handleData();
-  }, []);
 
   return (
     <NavigationContainer>

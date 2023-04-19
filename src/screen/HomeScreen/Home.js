@@ -1,49 +1,29 @@
-import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import React, {useEffect, useContext} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {Button} from '../../Components/Button';
 import LocalStorage from '../../utils/LocalStorage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import BottomNavigator from '../../Navigation/BottomNavigator';
 import Header from '../../Components/Header';
 import Images from '../../Components/Images';
+import {AuthContext} from '../../Navigation/AuthContext';
 
-const Home = props => {
+const Home = ({navigation}) => {
+  const {signOut} = useContext(AuthContext);
+
   useEffect(() => {
     LocalStorage.getData('UserData').then(res => console.log('userData--->'));
   }, []);
 
   const handleLogout = () => {
     console.log('logout click');
-    AsyncStorage.clear();
-    setTimeout(() => props.navigation.navigate('Login'), 2000);
+    // AsyncStorage.clear();
+    setTimeout(() => signOut(), 2000);
   };
-
-  // const handleRegister = () => {
-  //   axios
-  //     .post(BASE_URL + REGISTER_API, {
-  //       name: values.userName,
-  //       email: values.email,
-  //       password: values.password,
-  //     })
-  //     .then(function (response) {
-  //       console.log('Response::::::::::', response);
-
-  //       LocalStorage.saveData('UserData', response?.data);
-  //       props.navigation.navigate('Home');
-  //     })
-  //     .catch(function (error) {
-  //       console.log('Error::::::::::', error.response);
-  //       ToastAndroid.showWithGravityAndOffset(
-  //         'User already Exists!',
-  //         ToastAndroid.LONG,
-  //         ToastAndroid.BOTTOM,
-  //         25,
-  //         50,
-  //       );
-  //     });
-  // };
-
-  // const [dataList, setDataList] = useState([]);
 
   return (
     <ScrollView>
@@ -60,6 +40,10 @@ const Home = props => {
         <View style={styles.buttonContainer}>
           <Button submitForm={handleLogout} disabled={true} title="Log Out" />
         </View>
+
+        <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
+          <Text>profile</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
