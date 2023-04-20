@@ -12,6 +12,7 @@ export const TextField = props => {
           placeholder={props.placeholder}
           placeholderTextColor="lightgrey"
           autoCapitalize="none"
+          editable={props.editable}
           secureTextEntry={props.secureTextEntry}
           autoCorrect={false}
           name={props.name}

@@ -25,13 +25,17 @@ const Home = ({navigation}) => {
     setTimeout(() => signOut(), 2000);
   };
 
+  const profilePress = () => {
+    navigation.navigate('UserProfile');
+  };
+
   return (
     <ScrollView>
-      <Header />
+      <Header profilePress={profilePress} />
       <Images />
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerMain}>Home</Text>
+          <Text style={styles.headerMain}>Our Latest Products</Text>
           <Text style={styles.subHeading}>
             Join our Community to get different feedbacks and reviews about
             Products!
@@ -40,10 +44,6 @@ const Home = ({navigation}) => {
         <View style={styles.buttonContainer}>
           <Button submitForm={handleLogout} disabled={true} title="Log Out" />
         </View>
-
-        <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
-          <Text>profile</Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );

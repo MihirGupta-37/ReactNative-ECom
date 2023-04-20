@@ -2,13 +2,13 @@ import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 
-const Header = ({navigation}) => {
+const Header = props => {
   return (
     <View style={styles.headerMain}>
       <Text style={styles.headerTxt}>VShop</Text>
       <TouchableOpacity
         style={styles.headTouchable}
-        onPress={() => navigation.navigate('UserProfile')}>
+        onPress={props.profilePress}>
         <Icon style={styles.iconProfile} name="account-circle"></Icon>
       </TouchableOpacity>
     </View>
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   headerTxt: {
     fontWeight: '600',
     fontSize: 20,
-    color: '#000',
+    color: '#22689f',
     marginLeft: 20,
   },
   headTouchable: {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   iconProfile: {
     fontSize: 30,
-    color: '#625D5D',
+    color: '#22689f',
   },
 });
 export default Header;

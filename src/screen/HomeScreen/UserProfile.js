@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import LocalStorage from '../../utils/LocalStorage';
 import {
   View,
   Text,
@@ -10,12 +11,90 @@ import {
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {TextField} from '../../Components/TextField';
 import {Button} from '../../Components/Button';
+import {useEffect} from 'react';
+import axios from 'axios';
+import {BASE_URL, PROFILE_API} from '../../utils/Constants';
 
 const UserProfile = props => {
   const profileIconPress = () => {
     console.warn('Pressed Icon');
   };
 
+  const [userDetails, setUserDetails] = useState('');
+
+  useEffect(() => {
+    handleData();
+  }, []);
+
+  const handleData = () => {
+    LocalStorage.getData('UserData').then(res => {
+      setUserDetails(res);
+      setValues(value => {
+        let newValue = {...value};
+
+        newValue.userName = res?.user?.name;
+        newValue.email = res?.user?.email;
+
+        return newValue;
+      });
+    });
+  };
+
+  console.log('userDetails---->', userDetails);
+
+  const fieldValues = {
+    userName: '',
+    email: '',
+  };
+
+  const [values, setValues] = useState(fieldValues);
+
+  const handleRegister = () => {
+    let headerValue = {Authorization: `${userDetails?.token}`};
+    // console.log(
+    //   'URL::::',
+    //   BASE_URL + PROFILE_API,
+    //   'headerValue::::::',
+    //   headerValue,
+    // );
+    axios
+      .put(
+        BASE_URL + PROFILE_API,
+        {
+          name: values.userName,
+          email: values.email,
+        },
+        {headers: headerValue},
+      )
+      .then(function (response) {
+        console.log('Response::::::::::', response);
+
+        LocalStorage.saveData('UserData', response?.data);
+        userDetails(response?.data);
+      })
+      .catch(function (error) {
+        console.log('Error::::::::::', error.response);
+      });
+  };
+
+  const submitForm = e => {
+    e.preventDefault();
+
+    handleRegister();
+  };
+
+  const handleChangeText = (key, mValue) => {
+    setValues(value => {
+      let newValue = {...value};
+
+      if (key === 'userName') {
+        newValue.userName = mValue;
+      } else {
+        newValue.email = mValue;
+      }
+      return newValue;
+    });
+  };
   return (
     <ScrollView>
       <View style={[styles.container]}>
@@ -28,25 +107,49 @@ const UserProfile = props => {
           </TouchableOpacity>
         </View>
         <View style={styles.inputMain}>
+          {/* <View style={styles.InputField}> */}
+          <TextField
+            style={{fontSize: 17}}
+            placeholder="Full Name"
+            value={values.userName}
+            isIcon={true}
+            isIconVisible={true}
+            iconName1={'person-outline'}
+            onChangeText={val => {
+              handleChangeText('userName', val);
+            }}
+          />
+          {/* </View> */}
+
           <View style={styles.InputField}>
-            <Icon name="person-outline" style={styles.IconField} />
-            <TextInput
+            <TextField
               style={{fontSize: 17}}
-              placeholder="Full Name"></TextInput>
+              placeholder="Email"
+              value={values.email}
+              editable={false}
+              isIcon={true}
+              isIconVisible={true}
+              iconName1={'mail-outline'}
+              onChangeText={val => {
+                handleChangeText('email', val);
+              }}></TextField>
           </View>
-          <View style={styles.InputField}>
-            <Icon name="mail-outline" style={styles.IconField} />
-            <TextInput style={{fontSize: 17}} placeholder="Email"></TextInput>
-          </View>
-          <View style={styles.InputField}>
-            <Icon name="date-range" style={styles.IconField} />
-            <TextInput
+
+          {/* <View style={styles.InputField}>
+            <TextField
               style={{fontSize: 17}}
-              placeholder="Joined-On"></TextInput>
-          </View>
-        </View>
-        <View style={styles.buttonMain}>
-          <Button title="My Orders" style={styles.ButtonInput}></Button>
+              placeholder="Joined-On"
+              isIcon={true}
+              isIconVisible={true}
+              iconName1={'date-range'}></TextField>
+          </View> */}
+
+          <Button
+            submitForm={submitForm}
+            disabled={true}
+            title="Update"
+            style={styles.buttonContainer}
+          />
         </View>
       </View>
     </ScrollView>
@@ -80,28 +183,25 @@ const styles = StyleSheet.create({
     fontSize: 150,
     color: '#625D5D',
     alignSelf: 'center',
-    marginVertical: 15,
+    marginVertical: 10,
   },
   inputMain: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    width: '80%',
+    alignSelf: 'center',
   },
   InputField: {
     display: 'flex',
     flexDirection: 'row',
-    width: '80%',
+    justifyContent: 'center',
+    // width: '90%',
     marginVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#625D5D',
   },
   IconField: {
     fontSize: 40,
     width: '20%',
     color: '#22689f',
-  },
-  buttonMain: {
-    width: '100%',
   },
 });
 export default UserProfile;

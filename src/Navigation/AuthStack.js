@@ -7,7 +7,7 @@ import {AuthContext} from './AuthContext';
 
 const AuthStack = props => {
   const [token, setToken] = useState(props?.userDetails?.token);
-
+  console.log('token::::', token);
   const authContext = useMemo(() => {
     return {
       userDetails: data => {
@@ -26,7 +26,7 @@ const AuthStack = props => {
   return (
     <AuthContext.Provider value={authContext}>
       <RootStack.Navigator>
-        {token === null || token === '' ? (
+        {!token ? (
           <RootStack.Screen
             name="Login Screen"
             options={{headerShown: false}}

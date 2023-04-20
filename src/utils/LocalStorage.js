@@ -27,4 +27,8 @@ const ClearData = () => {
   AsyncStorage.clear();
 };
 
+const updateData = () => {
+  
+}
+
 export default {saveData, getData, ClearData};
