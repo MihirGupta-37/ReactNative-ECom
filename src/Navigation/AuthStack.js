@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LocalStorage from '../utils/LocalStorage';
 import BottomNavigator from './BottomNavigator';
@@ -6,27 +6,35 @@ import UnAuthStack from './UnAuthStack';
 import {AuthContext} from './AuthContext';
 
 const AuthStack = props => {
-  const [token, setToken] = useState(props?.userDetails?.token);
-  console.log('token::::', token);
+  console.log('(props?.token--->', props?.token);
+  const [userData, setUserData] = useState(props?.userDetails || '');
+  const [token, setToken] = useState(props?.token ?? '');
+
   const authContext = useMemo(() => {
     return {
       userDetails: data => {
         LocalStorage.saveData('UserData', data);
-        setToken(data?.token);
+        setUserData(data?.token);
       },
       signOut: () => {
         LocalStorage.ClearData();
         setToken('');
+        setUserData('');
+      },
+      userToken: data => {
+        LocalStorage.saveData('Token', data);
+        setToken(data);
       },
     };
   }, []);
 
   const RootStack = createNativeStackNavigator();
-
+  console.log('token---->', token);
   return (
     <AuthContext.Provider value={authContext}>
       <RootStack.Navigator>
-        {!token ? (
+        {/* {userData == '' || userData?.token === ''|| */}
+        {token == '' ? (
           <RootStack.Screen
             name="Login Screen"
             options={{headerShown: false}}

@@ -16,7 +16,7 @@ import {
   validateName,
   validconfPassword,
 } from '../utils/Validations';
-import Navigation from '../Navigation/NavigationScreen';
+
 import {Button} from '../Components/Button';
 import {TextField} from '../Components/TextField';
 
@@ -30,6 +30,7 @@ import {BASE_URL, REGISTER_API} from '../utils/Constants';
 const Signup = props => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const {userDetails} = useContext(AuthContext);
+  const {userToken} = useContext(AuthContext);
   const fieldValues = {
     userName: '',
     email: '',
@@ -159,6 +160,7 @@ const Signup = props => {
 
         LocalStorage.saveData('UserData', response?.data);
         userDetails(response?.data);
+        userToken(response?.data?.token);
         props.navigation.navigate('Home');
       })
       .catch(function (error) {

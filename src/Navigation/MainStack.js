@@ -28,7 +28,7 @@ export default function () {
           headerStyle: {
             backgroundColor: '#f2f2f2',
           },
-          headerShadowVisible: false,
+          headerShown: false,
         }}
       />
       <AuthStack.Screen

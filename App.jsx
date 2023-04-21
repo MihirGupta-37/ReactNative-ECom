@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 function App() {
   const [userDetails, setUserDetails] = useState('');
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     handleData();
@@ -15,11 +16,12 @@ function App() {
     LocalStorage.getData('UserData').then(res => {
       setUserDetails(res);
     });
+    LocalStorage.getData('Token').then(res => setToken(res));
   };
 
   return (
     <NavigationContainer>
-      <AuthStack userDetails={userDetails} />
+      <AuthStack userDetails={userDetails} token={token} />
       {/* <Navigation token={token} /> */}
     </NavigationContainer>
   );

@@ -23,7 +23,7 @@ const Login = props => {
     email: '',
     password: '',
   });
-  const {userDetails} = useContext(AuthContext);
+  const {userDetails, userToken} = useContext(AuthContext);
   const [values, setValues] = useState(fieldValues);
 
   const handleChangeText = (key, mValue) => {
@@ -105,16 +105,6 @@ const Login = props => {
     props.navigation.navigate('Fpassword');
   };
 
-  const onPressTxt2 = () => {
-    setValues(value => {
-      let newValue = {...value};
-      newValue.email = '';
-      newValue.password = '';
-      return newValue;
-    });
-    props.navigation.navigate('Home');
-  };
-
   const handleRegister = () => {
     axios
       .post(BASE_URL + LOGIN_API, {
@@ -124,6 +114,7 @@ const Login = props => {
       .then(function (response) {
         console.log('Response::::::::::', response?.data);
         userDetails(response?.data);
+        userToken(response?.data?.token);
       })
       .catch(function (error) {
         console.log('Error::::::::::', error.response);
@@ -203,11 +194,6 @@ const Login = props => {
           <TouchableOpacity>
             <Text style={styles.loginTxt} onPress={onPressTxt1}>
               Forgot Password?
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.loginTxt} onPress={onPressTxt2}>
-              Home?
             </Text>
           </TouchableOpacity>
         </View>

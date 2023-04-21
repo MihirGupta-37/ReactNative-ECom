@@ -8,21 +8,6 @@ import Cart from '../screen/CartScreen/Cart';
 import MainStack from '../Navigation/MainStack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-function HomeScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function CartScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Cart!</Text>
-    </View>
-  );
-}
 const BottomTabs = createBottomTabNavigator();
 
 function BottomTab() {
@@ -60,7 +45,7 @@ function BottomTab() {
       />
       <BottomTabs.Screen
         name="Cart"
-        options={{headerShown: true}}
+        options={{headerShown: false}}
         children={() => <MainStack />}
         listeners={({navigation}) => ({
           tabPress: e => {
@@ -74,7 +59,6 @@ function BottomTab() {
   );
 }
 
-//const Tab = createBottomTabNavigator();
 export default function BottomNavigator() {
   const BottomTabStack = createNativeStackNavigator();
 

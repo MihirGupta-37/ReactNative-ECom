@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
@@ -16,63 +15,48 @@ import axios from 'axios';
 import {BASE_URL, PROFILE_API} from '../../utils/Constants';
 
 const UserProfile = props => {
-  const profileIconPress = () => {
-    console.warn('Pressed Icon');
-  };
-
-  const [userDetails, setUserDetails] = useState('');
+  const [token, setToken] = useState('');
+  const [values, setValues] = useState({
+    userName: '',
+    email: '',
+  });
 
   useEffect(() => {
     handleData();
   }, []);
 
+  const profileIconPress = () => {
+    console.warn('Pressed Icon');
+  };
+
   const handleData = () => {
     LocalStorage.getData('UserData').then(res => {
-      setUserDetails(res);
+      // console.log('res--->', res);
+      setToken(res?.token);
       setValues(value => {
         let newValue = {...value};
-
         newValue.userName = res?.user?.name;
         newValue.email = res?.user?.email;
-
         return newValue;
       });
     });
   };
 
-  console.log('userDetails---->', userDetails);
-
-  const fieldValues = {
-    userName: '',
-    email: '',
-  };
-
-  const [values, setValues] = useState(fieldValues);
+  // console.log('userDetails---->', userDetails);
 
   const handleRegister = () => {
-    let headerValue = {Authorization: `${userDetails?.token}`};
-    // console.log(
-    //   'URL::::',
-    //   BASE_URL + PROFILE_API,
-    //   'headerValue::::::',
-    //   headerValue,
-    // );
+    let header = {headers: {Authorization: token}};
+    let payload = {
+      name: values.userName,
+      email: values.email,
+    };
     axios
-      .put(
-        BASE_URL + PROFILE_API,
-        {
-          name: values.userName,
-          email: values.email,
-        },
-        {headers: headerValue},
-      )
-      .then(function (response) {
-        console.log('Response::::::::::', response);
-
+      .put(BASE_URL + PROFILE_API, payload, header)
+      .then(response => {
+        console.log('Response::::::::::1111', response);
         LocalStorage.saveData('UserData', response?.data);
-        userDetails(response?.data);
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log('Error::::::::::', error.response);
       });
   };
@@ -107,7 +91,6 @@ const UserProfile = props => {
           </TouchableOpacity>
         </View>
         <View style={styles.inputMain}>
-          {/* <View style={styles.InputField}> */}
           <TextField
             style={{fontSize: 17}}
             placeholder="Full Name"
@@ -119,7 +102,6 @@ const UserProfile = props => {
               handleChangeText('userName', val);
             }}
           />
-          {/* </View> */}
 
           <View style={styles.InputField}>
             <TextField
@@ -134,15 +116,6 @@ const UserProfile = props => {
                 handleChangeText('email', val);
               }}></TextField>
           </View>
-
-          {/* <View style={styles.InputField}>
-            <TextField
-              style={{fontSize: 17}}
-              placeholder="Joined-On"
-              isIcon={true}
-              isIconVisible={true}
-              iconName1={'date-range'}></TextField>
-          </View> */}
 
           <Button
             submitForm={submitForm}
@@ -195,7 +168,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    // width: '90%',
     marginVertical: 15,
   },
   IconField: {

@@ -1,18 +1,21 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {Button} from '../../Components/Button';
 import LocalStorage from '../../utils/LocalStorage';
 import Header from '../../Components/Header';
 import Images from '../../Components/Images';
 import {AuthContext} from '../../Navigation/AuthContext';
+import MyProducts from './MyProducts';
 
 const Home = ({navigation}) => {
+
   const {signOut} = useContext(AuthContext);
 
   useEffect(() => {
@@ -36,10 +39,15 @@ const Home = ({navigation}) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerMain}>Our Latest Products</Text>
-          <Text style={styles.subHeading}>
-            Join our Community to get different feedbacks and reviews about
-            Products!
-          </Text>
+        </View>
+        <View style={styles.productMain}>
+          <MyProducts />
+          {/* <FlatList data={categoryList} renderItem={({item, index}) => {
+            return (
+              <TouchableOpacity style>
+              </TouchableOpacity>
+            )
+          }}/> */}
         </View>
         <View style={styles.buttonContainer}>
           <Button submitForm={handleLogout} disabled={true} title="Log Out" />
@@ -64,10 +72,6 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
     fontWeight: '800',
     color: 'black',
-  },
-  subHeading: {
-    textAlign: 'center',
-    color: '#625D5D',
   },
 });
 export default Home;

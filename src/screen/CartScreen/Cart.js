@@ -1,11 +1,15 @@
 import React from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Header from '../../Components/Header';
 
 const Cart = props => {
+  const profilePress = () => {
+    navigation.navigate('UserProfile');
+  };
+
   return (
     <ScrollView>
+      <Header profilePress={profilePress} />
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerMain}>My Cart</Text>
@@ -18,4 +22,25 @@ const Cart = props => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  headerMain: {
+    fontSize: 32,
+    paddingVertical: 25,
+    fontWeight: '800',
+    color: 'black',
+  },
+  subHeading: {
+    textAlign: 'center',
+  },
+});
 export default Cart;
