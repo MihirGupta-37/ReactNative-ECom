@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 const Header = props => {
   return (
     <View style={styles.headerMain}>
-      <Text style={styles.headerTxt}>VShop</Text>
+      <Text style={styles.headerTxt}>VSHOP</Text>
       <TouchableOpacity
         style={styles.headTouchable}
         onPress={props.profilePress}>

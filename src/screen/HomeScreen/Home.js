@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Image,
 } from 'react-native';
 import {Button} from '../../Components/Button';
 import LocalStorage from '../../utils/LocalStorage';
@@ -15,7 +16,6 @@ import {AuthContext} from '../../Navigation/AuthContext';
 import MyProducts from './MyProducts';
 
 const Home = ({navigation}) => {
-
   const {signOut} = useContext(AuthContext);
 
   useEffect(() => {
@@ -40,19 +40,19 @@ const Home = ({navigation}) => {
         <View style={styles.header}>
           <Text style={styles.headerMain}>Our Latest Products</Text>
         </View>
-        <View style={styles.productMain}>
-          <MyProducts />
-          {/* <FlatList data={categoryList} renderItem={({item, index}) => {
+        {/* <View style={styles.productMain}> */}
+        <MyProducts />
+        {/* <FlatList data={categoryList} renderItem={({item, index}) => {
             return (
               <TouchableOpacity style>
               </TouchableOpacity>
             )
           }}/> */}
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button submitForm={handleLogout} disabled={true} title="Log Out" />
-        </View>
       </View>
+      <View style={styles.buttonContainer}>
+        <Button submitForm={handleLogout} disabled={true} title="Log Out" />
+      </View>
+      {/* </View> */}
     </ScrollView>
   );
 };
@@ -69,9 +69,12 @@ const styles = StyleSheet.create({
   },
   headerMain: {
     fontSize: 32,
-    paddingVertical: 25,
+    marginVertical: 15,
     fontWeight: '800',
     color: 'black',
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    borderRadius: 1,
   },
 });
 export default Home;

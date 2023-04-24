@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 
 import {validateEmail, validatePassword} from '../utils/Validations';
@@ -117,9 +118,9 @@ const Login = props => {
         userToken(response?.data?.token);
       })
       .catch(function (error) {
-        console.log('Error::::::::::', error.response);
+        console.log('Error::::::::::', error.response.data.message);
         ToastAndroid.showWithGravityAndOffset(
-          'User already Exists!',
+          error.response.data.message,
           ToastAndroid.LONG,
           ToastAndroid.BOTTOM,
           25,
