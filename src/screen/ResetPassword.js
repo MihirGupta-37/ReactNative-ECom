@@ -1,22 +1,42 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
 
 import {Button} from '../Components/Button';
-import {validatePassword, validconfPassword} from '../utils/Validations';
+import {
+  validatePassword,
+  validconfPassword,
+  validateOtp,
+} from '../utils/Validations';
 import {TextField} from '../Components/TextField';
+import axios from 'axios';
+import {BASE_URL, RESETPASSWORD_API} from '../utils/Constants';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
 
-const ResetPassword = () => {
+const ResetPassword = props => {
   const [errors, setErrors] = useState({
     password: '',
     confPassword: '',
   });
 
   const fieldValues = {
-    password: '',
-    confPassword: '',
+    password: 'Mihir@12345678',
+    confPassword: 'Mihir@12345678',
   };
 
   const [values, setValues] = useState(fieldValues);
+  const [passVisible, setPassVisible] = useState(true);
+  const [passVisible1, setPassVisible1] = useState(true);
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({value, cellCount: 4});
+  const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
 
   const handleChangeText = (key, mValue) => {
     setValues(value => {
@@ -34,6 +54,24 @@ const ResetPassword = () => {
       newValue.confPassword = '';
       return newValue;
     });
+  };
+
+  const handleRegister = () => {
+    let payload = {
+      otp: parseInt(value),
+      password: values.password,
+      confirmPassword: values.confPassword,
+    };
+    console.log('payload::::', payload);
+    axios
+      .put(BASE_URL + RESETPASSWORD_API, payload)
+      .then(response => {
+        console.log('Response::::::::::', response);
+        props.navigation.navigate('Login');
+      })
+      .catch(error => {
+        console.log('Error::::::::::', error.response);
+      });
   };
 
   const validate = () => {
@@ -62,8 +100,9 @@ const ResetPassword = () => {
     if (!validate()) {
       return false;
     }
-    console.log('Submitted', values);
-    setValues(values);
+    handleRegister();
+    // console.log('Submitted', values);
+    // setValues(values);
     return true;
   };
 
@@ -80,12 +119,65 @@ const ResetPassword = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerMain}>Reset Password</Text>
-          <Text style={styles.subHeading}>
-            Join our Community to get different feedbacks and reviews about
-            Products!
-          </Text>
         </View>
-
+        <View style={styles.otpMain}>
+          <CodeField
+            ref={ref}
+            {...prop}
+            // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+            value={value}
+            onChangeText={setValue}
+            cellCount={4}
+            rootStyle={styles.codeFieldRoot}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({index, symbol, isFocused}) => (
+              <Text
+                key={index}
+                style={[styles.cell, isFocused && styles.focusCell]}
+                onLayout={getCellOnLayoutHandler(index)}>
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
+            )}
+          />
+          {/* <TextInput
+            style={styles.otpField}
+            placeholder="-"
+            keyboardType="number-pad"
+            maxLength={1}
+            onChangeText={val => {
+              handleChangeText('otp', val);
+            }}></TextInput>
+          <TextInput
+            style={styles.otpField}
+            placeholder="-"
+            keyboardType="number-pad"
+            maxLength={1}
+            onChangeText={val => {
+              handleChangeText('otp', val);
+            }}></TextInput>
+          <TextInput
+            style={styles.otpField}
+            placeholder="-"
+            keyboardType="number-pad"
+            maxLength={1}
+            onChangeText={val => {
+              handleChangeText('otp', val);
+            }}></TextInput>
+          <TextInput
+            style={styles.otpField}
+            placeholder="-"
+            keyboardType="number-pad"
+            maxLength={1}
+            onChangeText={val => {
+              handleChangeText('otp', val);
+            }}></TextInput> */}
+        </View>
+        {/* <View style={styles.invalidFieldOtp}>
+          {errors.otp ? (
+            <Text style={styles.invalidTxt}>{errors.otp}</Text>
+          ) : null}
+        </View> */}
         <TextField
           title="Password"
           name="password"
@@ -124,7 +216,6 @@ const ResetPassword = () => {
             handleChangeText('confPassword', val);
           }}
         />
-
         <View style={styles.invalidField}>
           {errors.confPassword ? (
             <Text style={styles.invalidTxt}>{errors.confPassword}</Text>
@@ -148,26 +239,53 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: 180,
+    marginBottom: 20,
   },
   headerMain: {
     fontSize: 32,
-    paddingVertical: 25,
+    paddingTop: 25,
     color: 'black',
     fontWeight: '800',
   },
   subHeading: {
     textAlign: 'center',
   },
-  buttonContainer: {
-    marginVertical: 20,
-  },
   invalidField: {
     display: 'flex',
     justifyContent: 'flex-start',
+    marginBottom: 25,
   },
   invalidTxt: {
     color: 'red',
+  },
+  invalidFieldOtp: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    marginBottom: 40,
+    alignItems: 'center',
+  },
+  otpMain: {
+    flex: 1,
+    padding: 30,
+  },
+  // otpField: {
+  //   height: 60,
+  //   width: '15%',
+  //   borderColor: '#22689f',
+  //   textAlign: 'center',
+  //   shadowColor: 'black',
+  //   borderWidth: 2,
+  //   borderRadius: 8,
+  // },
+  codeFieldRoot: {marginTop: 20},
+  cell: {
+    width: 55,
+    height: 50,
+    lineHeight: 38,
+    fontSize: 24,
+    borderWidth: 2,
+    borderColor: '#22689f',
+    textAlign: 'center',
   },
 });
 export default ResetPassword;

@@ -1,85 +1,89 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Text, View, StyleSheet, FlatList, Image} from 'react-native';
 import {BASE_URL, PRODUCTS_API} from '../../utils/Constants';
 import axios from 'axios';
-import LocalStorage from '../../utils/LocalStorage';
-import {Rating, AirbnbRating} from 'react-native-ratings';
+import {AirbnbRating} from 'react-native-ratings';
 
 // let loadMore = true;
 
-const MyProducts = props => {
+const MyProducts = ({navigation}) => {
   const [categoryList, setCategoryList] = useState([]);
   const [page, setPage] = useState(1);
   const [showmore, setShowmore] = useState(false);
   const [lengthMore, setLengthMore] = useState(false);
 
-  const hideShowHandler = index => {
-    // categoryList[index].isReadMore = true;
-    // console.log('item', id);
-    // if (id) {
-    // setShowmore(!showmore);
+  // const hideShowHandler = index => {
+  //   // categoryList[index].isReadMore = true;
+  //   // console.log('item', id);
+  //   // if (id) {
+  //   // setShowmore(!showmore);
 
-    setCategoryList(prev => {
-      let newTime = [...prev];
+  //   setCategoryList(prev => {
+  //     let newTime = [...prev];
 
-      if (newTime[index].isReadMore) {
-        newTime[index].isReadMore = false;
-      } else {
-        newTime[index].isReadMore = true;
-      }
+  //     if (newTime[index].isReadMore) {
+  //       newTime[index].isReadMore = false;
+  //     } else {
+  //       newTime[index].isReadMore = true;
+  //     }
 
-      // console.log('newTime:::', newTime);
-      return newTime;
-    });
-    // setCategoryList[
-    //   {...categoryList, ...(categoryList[index].isReadMore = !isReadMore)}
-    // ];
-    // }
-  };
-  console.log('categoryList:::', categoryList);
-  const onTextLayout = useCallback(e => {
-    setLengthMore(e.nativeEvent.lines.length >= 2);
-  }, []);
+  //     // console.log('newTime:::', newTime);
+  //     return newTime;
+  //   });
+  //   // setCategoryList[
+  //   //   {...categoryList, ...(categoryList[index].isReadMore = !isReadMore)}
+  //   // ];
+  //   // }
+  // };
+  // console.log('categoryList:::', categoryList);
+  // const onTextLayout = useCallback(e => {
+  //   setLengthMore(e.nativeEvent.lines.length >= 2);
+  // }, []);
 
-  const handleRegister = () => {
-    let query = `?page=${page}`;
-    axios({
-      method: 'get',
-      url: BASE_URL + PRODUCTS_API + query,
-      // url: 'https://jsonplaceholder.typicode.com/photos',
-    })
-      .then(response => {
-        console.log('Response:::::', response.data);
-        if (response.data?.products.length == 0) {
-          loadMore = false;
-        }
-        loadMore = true;
+  // const handleRegister = () => {
+  //   let query = `?page=${page}`;
+  //   axios({
+  //     method: 'get',
+  //     url: BASE_URL + PRODUCTS_API + query,
+  //     // url: 'https://jsonplaceholder.typicode.com/photos',
+  //   })
+  //     .then(response => {
+  //       console.log('Response:::::', response.data);
+  //       if (response.data?.products.length == 0) {
+  //         loadMore = false;
+  //       }
+  //       loadMore = true;
 
-        let arrayOfRes = response?.data?.products.map(data => {
-          data['isReadMore'] = false;
-          return data;
-        });
+  //       let arrayOfRes = response?.data?.products.map(data => {
+  //         data['isReadMore'] = false;
+  //         return data;
+  //       });
 
-        setCategoryList([...categoryList, ...arrayOfRes]);
-        setPage(page + 1);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  //       setCategoryList([...categoryList, ...arrayOfRes]);
+  //       setPage(page + 1);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
-  // useMemo(() => {
-  //   return(item.name.slice(0, 30).concat('...'))
-  // }, [])
+  // // useMemo(() => {
+  // //   return(item.name.slice(0, 30).concat('...'))
+  // // }, [])
 
-  useEffect(() => {
-    handleRegister();
-  }, []);
+  // useEffect(() => {
+  //   handleRegister();
+  // }, []);
 
-  const onEndReached = () => {
-    if (loadMore) {
-      handleRegister();
-    }
+  // const onEndReached = () => {
+  //   if (loadMore) {
+  //     handleRegister();
+  //   }
+  // };
+
+  const onClick = item => {
+    console.log('q');
+    navigation.navigate('ProductDetails', {id: item._id});
   };
 
   return (
@@ -130,7 +134,11 @@ const MyProducts = props => {
                   />
                   <Text style={{fontSize: 20}}>{item.ratings}</Text>
                 </View>
-                <Text style={styles.productButton}>SHOP NOW</Text>
+                <Text
+                  style={styles.productButton}
+                  onPress={item => onClick(item)}>
+                  SHOP NOW
+                </Text>
               </View>
             </View>
           )}

@@ -74,3 +74,10 @@ export const validconfPassword = (value, cValue) => {
   }
   return '';
 };
+
+export const validateOtp = value => {
+  console.log('value::::', value);
+  if (IsEmpty(value)) {
+    return 'Please enter OTP';
+  }
+};

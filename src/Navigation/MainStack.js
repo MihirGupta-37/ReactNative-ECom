@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screen/HomeScreen/Home';
 import Cart from '../screen/CartScreen/Cart';
 import UserProfile from '../screen/HomeScreen/UserProfile';
+import ProductDetails from '../screen/HomeScreen/ProductDetails';
 
 export default function () {
   const AuthStack = createNativeStackNavigator();
@@ -34,6 +35,17 @@ export default function () {
       <AuthStack.Screen
         name="UserProfile"
         component={UserProfile}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+          headerShadowVisible: false,
+        }}
+      />
+      <AuthStack.Screen
+        name="ProductDetails"
+        component={ProductDetails}
         options={{
           title: '',
           headerStyle: {

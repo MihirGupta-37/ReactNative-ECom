@@ -3,7 +3,9 @@ import React from 'react';
 import Login from '../screen/Login';
 import Signup from '../screen/Signup';
 import Fpassword from '../screen/Fpassword';
+import ResetPassword from '../screen/ResetPassword';
 import Home from '../screen/HomeScreen/Home';
+
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 export default function () {
@@ -31,6 +33,17 @@ export default function () {
       <UnAuthStack.Screen
         name="Fpassword"
         component={Fpassword}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+          headerShadowVisible: false,
+        }}
+      />
+      <UnAuthStack.Screen
+        name="ResetPassword"
+        component={ResetPassword}
         options={{
           title: '',
           headerStyle: {

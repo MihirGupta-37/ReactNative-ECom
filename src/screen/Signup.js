@@ -164,9 +164,9 @@ const Signup = props => {
         props.navigation.navigate('Home');
       })
       .catch(function (error) {
-        console.log('Error::::::::::', error.response.data.message);
+        console.log('Error::::::::::', error?.response?.data?.message);
         ToastAndroid.showWithGravityAndOffset(
-          error.response.data.message,
+          'User already Exists!',
           ToastAndroid.LONG,
           ToastAndroid.BOTTOM,
           25,

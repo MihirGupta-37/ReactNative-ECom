@@ -4,32 +4,30 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {Button} from '../Components/Button';
 import {validateEmail} from '../utils/Validations';
 import {TextField} from '../Components/TextField';
+import axios from 'axios';
+import {BASE_URL, FORGOTPASSWORD_API} from '../utils/Constants';
 
-const Fpassword = () => {
+const Fpassword = props => {
+  const fieldValues = {
+    email: 'mihirgupta63@gmail.com',
+  };
+
   const [errors, setErrors] = useState({
     email: '',
   });
-
-  const fieldValues = {
-    email: '',
-  };
 
   const [values, setValues] = useState(fieldValues);
 
   const handleChangeText = (key, mValue) => {
     setValues(value => {
       let newValue = {...value};
-      if (key === 'email') {
-        newValue.email = mValue;
-      } else {
-        return newValue;
-      }
+      key === 'email';
+      newValue.email = mValue;
+      return newValue;
     });
     setErrors(value => {
       let newValue = {...value};
-
       newValue.email = '';
-
       return newValue;
     });
   };
@@ -47,14 +45,37 @@ const Fpassword = () => {
     return valid;
   };
 
+  const handleRegister = () => {
+    axios
+      .post(BASE_URL + FORGOTPASSWORD_API, {
+        email: values.email,
+      })
+      .then(function (response) {
+        console.log('Response::::::::::', response?.data);
+        props.navigation.navigate('ResetPassword');
+      })
+      .catch(function (error) {
+        console.log('Error::::::::::', error.response.data.message);
+        ToastAndroid.showWithGravityAndOffset(
+          error.response.data.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
+      });
+  };
+
   const submitForm = e => {
     if (!validate()) {
       return false;
     }
-    console.log('Submitted', values);
-    setValues(values);
+    handleRegister();
+    // console.log('Submitted', values);
+    // setValues(values);
     return true;
   };
+  // console.log('values::::', values);
 
   return (
     <ScrollView>
@@ -79,7 +100,6 @@ const Fpassword = () => {
           }}
           isIcon={false}
         />
-
         <View style={styles.invalidField}>
           {errors.email ? (
             <Text style={styles.invalidTxt}>{errors.email}</Text>
@@ -87,11 +107,7 @@ const Fpassword = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button
-            submitForm={submitForm}
-            disabled={true}
-            title="Send OTP"
-          />
+          <Button submitForm={submitForm} disabled={true} title="Send OTP" />
         </View>
       </View>
     </ScrollView>
@@ -118,9 +134,6 @@ const styles = StyleSheet.create({
   subHeading: {
     textAlign: 'center',
     color: '#625D5D',
-  },
-  buttonContainer: {
-    marginVertical: 10,
   },
   invalidField: {
     display: 'flex',
