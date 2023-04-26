@@ -31,7 +31,6 @@ const UserProfile = props => {
 
   const handleData = () => {
     LocalStorage.getData('UserData').then(res => {
-      // console.log('res--->', res);
       setToken(res?.token);
       setValues(value => {
         let newValue = {...value};
@@ -42,8 +41,6 @@ const UserProfile = props => {
     });
   };
 
-  // console.log('userDetails---->', userDetails);
-
   const handleRegister = () => {
     let header = {headers: {Authorization: token}};
     let payload = {
@@ -53,7 +50,7 @@ const UserProfile = props => {
     axios
       .put(BASE_URL + PROFILE_API, payload, header)
       .then(response => {
-        console.log('Response::::::::::1111', response);
+        console.log('Response::::::::::', response);
         LocalStorage.saveData('UserData', response?.data);
       })
       .catch(error => {

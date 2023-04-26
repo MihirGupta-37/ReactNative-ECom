@@ -1,19 +1,10 @@
 import React, {useEffect, useContext, useState, useCallback} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  Image,
-} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
 import {Button} from '../../Components/Button';
 import LocalStorage from '../../utils/LocalStorage';
 import Header from '../../Components/Header';
 import Images from '../../Components/Images';
 import {AuthContext} from '../../Navigation/AuthContext';
-import MyProducts from './MyProducts';
 import axios from 'axios';
 import {BASE_URL, PRODUCTS_API} from '../../utils/Constants';
 import ProductListComp from '../../Components/ProductListComp';
@@ -54,16 +45,10 @@ const Home = ({navigation}) => {
       } else {
         newTime[index].isReadMore = true;
       }
-
-      // console.log('newTime:::', newTime);
       return newTime;
     });
-    // setCategoryList[
-    //   {...categoryList, ...(categoryList[index].isReadMore = !isReadMore)}
-    // ];
-    // }
   };
-  console.log('categoryList:::', categoryList);
+  // console.log('categoryList:::', categoryList);
 
   const onTextLayout = useCallback(e => {
     setLengthMore(e.nativeEvent.lines.length >= 2);
@@ -74,7 +59,6 @@ const Home = ({navigation}) => {
     axios({
       method: 'get',
       url: BASE_URL + PRODUCTS_API + query,
-      // url: 'https://jsonplaceholder.typicode.com/photos',
     })
       .then(response => {
         console.log('Response:::::', response.data);
@@ -96,10 +80,6 @@ const Home = ({navigation}) => {
       });
   };
 
-  // useMemo(() => {
-  //   return(item.name.slice(0, 30).concat('...'))
-  // }, [])
-
   useEffect(() => {
     handleRegister();
   }, []);
@@ -110,8 +90,10 @@ const Home = ({navigation}) => {
     }
   };
 
-  const onClickDetails = () => {
-    navigation.navigate('ProductDetails');
+  const onClickDetails = item => {
+    navigation.navigate('ProductDetails', {
+      id: item._id,
+    });
   };
 
   return (
@@ -133,25 +115,16 @@ const Home = ({navigation}) => {
                 item={item}
                 onTextLayout={onTextLayout}
                 lengthMore={lengthMore}
-                onClickDetails={onClickDetails}
+                onClickDetails={() => onClickDetails(item)}
+                hideShowHandler={() => hideShowHandler(index)}
               />
             )}
           />
         ) : null}
-        {/* <View style={styles.productMain}> */}
-        {/* <MyProducts /> */}
-
-        {/* <FlatList data={categoryList} renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity style>
-              </TouchableOpacity>
-            )
-          }}/> */}
       </View>
       <View style={styles.buttonContainer}>
         <Button submitForm={handleLogout} disabled={true} title="Log Out" />
       </View>
-      {/* </View> */}
     </ScrollView>
   );
 };

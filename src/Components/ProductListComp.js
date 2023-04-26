@@ -7,6 +7,7 @@ export default function ProductListComp({
   onTextLayout,
   lengthMore,
   onClickDetails,
+  hideShowHandler,
 }) {
   return (
     <View style={styles.productCard}>
@@ -31,9 +32,7 @@ export default function ProductListComp({
             {item.name}
           </Text>
           {lengthMore ? (
-            <Text
-              onPress={() => hideShowHandler(index)}
-              style={{lineHeight: 21}}>
+            <Text onPress={() => hideShowHandler()} style={{lineHeight: 21}}>
               {item?.isReadMore ? 'Read less...' : 'Read more...'}
             </Text>
           ) : null}
@@ -49,7 +48,10 @@ export default function ProductListComp({
           />
           <Text style={{fontSize: 20}}>{item.ratings}</Text>
         </View>
-        <Text style={styles.productButton} onPress={onClickDetails}>
+        <Text
+          style={styles.productButton}
+           onPress={() => onClickDetails()}
+        >
           SHOP NOW
         </Text>
       </View>
@@ -69,7 +71,6 @@ const styles = StyleSheet.create({
   CardImg: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    // overflow: 'hidden',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

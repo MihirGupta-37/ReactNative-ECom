@@ -12,75 +12,6 @@ const MyProducts = ({navigation}) => {
   const [showmore, setShowmore] = useState(false);
   const [lengthMore, setLengthMore] = useState(false);
 
-  // const hideShowHandler = index => {
-  //   // categoryList[index].isReadMore = true;
-  //   // console.log('item', id);
-  //   // if (id) {
-  //   // setShowmore(!showmore);
-
-  //   setCategoryList(prev => {
-  //     let newTime = [...prev];
-
-  //     if (newTime[index].isReadMore) {
-  //       newTime[index].isReadMore = false;
-  //     } else {
-  //       newTime[index].isReadMore = true;
-  //     }
-
-  //     // console.log('newTime:::', newTime);
-  //     return newTime;
-  //   });
-  //   // setCategoryList[
-  //   //   {...categoryList, ...(categoryList[index].isReadMore = !isReadMore)}
-  //   // ];
-  //   // }
-  // };
-  // console.log('categoryList:::', categoryList);
-  // const onTextLayout = useCallback(e => {
-  //   setLengthMore(e.nativeEvent.lines.length >= 2);
-  // }, []);
-
-  // const handleRegister = () => {
-  //   let query = `?page=${page}`;
-  //   axios({
-  //     method: 'get',
-  //     url: BASE_URL + PRODUCTS_API + query,
-  //     // url: 'https://jsonplaceholder.typicode.com/photos',
-  //   })
-  //     .then(response => {
-  //       console.log('Response:::::', response.data);
-  //       if (response.data?.products.length == 0) {
-  //         loadMore = false;
-  //       }
-  //       loadMore = true;
-
-  //       let arrayOfRes = response?.data?.products.map(data => {
-  //         data['isReadMore'] = false;
-  //         return data;
-  //       });
-
-  //       setCategoryList([...categoryList, ...arrayOfRes]);
-  //       setPage(page + 1);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // // useMemo(() => {
-  // //   return(item.name.slice(0, 30).concat('...'))
-  // // }, [])
-
-  // useEffect(() => {
-  //   handleRegister();
-  // }, []);
-
-  // const onEndReached = () => {
-  //   if (loadMore) {
-  //     handleRegister();
-  //   }
-  // };
-
   const onClick = item => {
     console.log('q');
     navigation.navigate('ProductDetails', {id: item._id});
@@ -160,7 +91,6 @@ const styles = StyleSheet.create({
   CardImg: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    // overflow: 'hidden',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

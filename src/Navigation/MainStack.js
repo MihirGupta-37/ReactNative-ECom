@@ -49,7 +49,7 @@ export default function () {
         options={{
           title: '',
           headerStyle: {
-            backgroundColor: '#f2f2f2',
+            backgroundColor: '#fff',
           },
           headerShadowVisible: false,
         }}

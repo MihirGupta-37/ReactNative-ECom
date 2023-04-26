@@ -5,7 +5,6 @@ import {Button} from '../Components/Button';
 import {
   validatePassword,
   validconfPassword,
-  validateOtp,
 } from '../utils/Validations';
 import {TextField} from '../Components/TextField';
 import axios from 'axios';
@@ -92,7 +91,6 @@ const ResetPassword = props => {
       valid = false;
     }
     setErrors(valErrors);
-    // console.log('12d3', valErrors);
     return valid;
   };
 
@@ -101,8 +99,6 @@ const ResetPassword = props => {
       return false;
     }
     handleRegister();
-    // console.log('Submitted', values);
-    // setValues(values);
     return true;
   };
 
@@ -124,7 +120,7 @@ const ResetPassword = props => {
           <CodeField
             ref={ref}
             {...prop}
-            // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+           
             value={value}
             onChangeText={setValue}
             cellCount={4}
@@ -140,44 +136,8 @@ const ResetPassword = props => {
               </Text>
             )}
           />
-          {/* <TextInput
-            style={styles.otpField}
-            placeholder="-"
-            keyboardType="number-pad"
-            maxLength={1}
-            onChangeText={val => {
-              handleChangeText('otp', val);
-            }}></TextInput>
-          <TextInput
-            style={styles.otpField}
-            placeholder="-"
-            keyboardType="number-pad"
-            maxLength={1}
-            onChangeText={val => {
-              handleChangeText('otp', val);
-            }}></TextInput>
-          <TextInput
-            style={styles.otpField}
-            placeholder="-"
-            keyboardType="number-pad"
-            maxLength={1}
-            onChangeText={val => {
-              handleChangeText('otp', val);
-            }}></TextInput>
-          <TextInput
-            style={styles.otpField}
-            placeholder="-"
-            keyboardType="number-pad"
-            maxLength={1}
-            onChangeText={val => {
-              handleChangeText('otp', val);
-            }}></TextInput> */}
         </View>
-        {/* <View style={styles.invalidFieldOtp}>
-          {errors.otp ? (
-            <Text style={styles.invalidTxt}>{errors.otp}</Text>
-          ) : null}
-        </View> */}
+      
         <TextField
           title="Password"
           name="password"
@@ -268,15 +228,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
   },
-  // otpField: {
-  //   height: 60,
-  //   width: '15%',
-  //   borderColor: '#22689f',
-  //   textAlign: 'center',
-  //   shadowColor: 'black',
-  //   borderWidth: 2,
-  //   borderRadius: 8,
-  // },
   codeFieldRoot: {marginTop: 20},
   cell: {
     width: 55,

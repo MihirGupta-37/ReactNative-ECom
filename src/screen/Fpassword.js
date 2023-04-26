@@ -71,11 +71,8 @@ const Fpassword = props => {
       return false;
     }
     handleRegister();
-    // console.log('Submitted', values);
-    // setValues(values);
     return true;
   };
-  // console.log('values::::', values);
 
   return (
     <ScrollView>

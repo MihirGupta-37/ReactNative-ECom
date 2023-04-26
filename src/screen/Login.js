@@ -73,7 +73,6 @@ const Login = props => {
     if (!validate()) {
       return false;
     }
-    // setValues(values);
     handleRegister();
     return true;
   };

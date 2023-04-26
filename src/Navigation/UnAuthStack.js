@@ -4,7 +4,6 @@ import Login from '../screen/Login';
 import Signup from '../screen/Signup';
 import Fpassword from '../screen/Fpassword';
 import ResetPassword from '../screen/ResetPassword';
-import Home from '../screen/HomeScreen/Home';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 

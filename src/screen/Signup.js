@@ -2,9 +2,7 @@ import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
-  Pressable,
   ScrollView,
   TouchableOpacity,
   ToastAndroid,
@@ -19,11 +17,8 @@ import {
 
 import {Button} from '../Components/Button';
 import {TextField} from '../Components/TextField';
-
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import axios from 'axios';
 import {AuthContext} from '../Navigation/AuthContext';
-
 import LocalStorage from '../utils/LocalStorage';
 import {BASE_URL, REGISTER_API} from '../utils/Constants';
 
