@@ -4,4 +4,4 @@ export const REGISTER_API = 'register';
 export const PROFILE_API = 'me/update';
 export const FORGOTPASSWORD_API = 'password/forgot/';
 export const RESETPASSWORD_API = 'password/reset';
-export const PRODUCTS_API = 'product/';
+export const PRODUCTS_API = 'product';

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {AirbnbRating} from 'react-native-ratings';
 
 export default function ProductListComp({
@@ -37,21 +38,22 @@ export default function ProductListComp({
             </Text>
           ) : null}
         </View>
-        <Text style={styles.textAreaPrice}>${item.price}</Text>
-        <View style={styles.ratingStar}>
-          <AirbnbRating
-            count={5}
-            showRating={false}
-            defaultRating={0}
-            size={15}
-            ratingContainerStyle={{paddingHorizontal: 5}}
-          />
-          <Text style={{fontSize: 20}}>{item.ratings}</Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Text style={styles.textAreaPrice}>
+            {'\u20B9'}
+            {item.price}
+          </Text>
+          <View style={styles.ratingStar}>
+            <Icon name={'star'} style={{color: '#DBA800', marginTop: 5}} />
+            <Text>{item.ratings}/5</Text>
+          </View>
         </View>
-        <Text
-          style={styles.productButton}
-           onPress={() => onClickDetails()}
-        >
+        <Text style={styles.productButton} onPress={() => onClickDetails()}>
           SHOP NOW
         </Text>
       </View>
