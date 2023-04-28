@@ -2,12 +2,9 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
 
 import {Button} from '../Components/Button';
-import {
-  validatePassword,
-  validconfPassword,
-} from '../utils/Validations';
+import {validatePassword, validconfPassword} from '../utils/Validations';
 import {TextField} from '../Components/TextField';
-import axios from 'axios';
+// import axios from 'axios';
 import {BASE_URL, RESETPASSWORD_API} from '../utils/Constants';
 import {
   CodeField,
@@ -15,6 +12,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import ApiManager from '../api/ApiManager';
 
 const ResetPassword = props => {
   const [errors, setErrors] = useState({
@@ -56,14 +54,15 @@ const ResetPassword = props => {
   };
 
   const handleRegister = () => {
-    let payload = {
-      otp: parseInt(value),
-      password: values.password,
-      confirmPassword: values.confPassword,
-    };
-    console.log('payload::::', payload);
-    axios
-      .put(BASE_URL + RESETPASSWORD_API, payload)
+    ApiManager.PutAPI(
+      '',
+      {
+        otp: parseInt(value),
+        password: values.password,
+        confirmPassword: values.confPassword,
+      },
+      BASE_URL + RESETPASSWORD_API,
+    )
       .then(response => {
         console.log('Response::::::::::', response);
         props.navigation.navigate('Login');
@@ -120,7 +119,6 @@ const ResetPassword = props => {
           <CodeField
             ref={ref}
             {...prop}
-           
             value={value}
             onChangeText={setValue}
             cellCount={4}
@@ -137,7 +135,7 @@ const ResetPassword = props => {
             )}
           />
         </View>
-      
+
         <TextField
           title="Password"
           name="password"

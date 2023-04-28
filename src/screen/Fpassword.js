@@ -6,6 +6,7 @@ import {validateEmail} from '../utils/Validations';
 import {TextField} from '../Components/TextField';
 import axios from 'axios';
 import {BASE_URL, FORGOTPASSWORD_API} from '../utils/Constants';
+import ApiManager from '../api/ApiManager';
 
 const Fpassword = props => {
   const fieldValues = {
@@ -46,10 +47,13 @@ const Fpassword = props => {
   };
 
   const handleRegister = () => {
-    axios
-      .post(BASE_URL + FORGOTPASSWORD_API, {
+    ApiManager.PostAPI(
+      '',
+      {
         email: values.email,
-      })
+      },
+      BASE_URL + FORGOTPASSWORD_API,
+    )
       .then(function (response) {
         console.log('Response::::::::::', response?.data);
         props.navigation.navigate('ResetPassword');

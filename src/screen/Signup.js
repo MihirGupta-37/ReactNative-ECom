@@ -17,10 +17,11 @@ import {
 
 import {Button} from '../Components/Button';
 import {TextField} from '../Components/TextField';
-import axios from 'axios';
+// import axios from 'axios';
 import {AuthContext} from '../Navigation/AuthContext';
 import LocalStorage from '../utils/LocalStorage';
 import {BASE_URL, REGISTER_API} from '../utils/Constants';
+import ApiManager from '../api/ApiManager';
 
 const Signup = props => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -144,24 +145,33 @@ const Signup = props => {
   };
 
   const handleRegister = () => {
-    axios
-      .post(BASE_URL + REGISTER_API, {
+    ApiManager.PostAPI(
+      '',
+      {
         name: values.userName,
         email: values.email,
         password: values.password,
-      })
+      },
+      BASE_URL + REGISTER_API,
+    )
       .then(function (response) {
         console.log('Response::::::::::', response);
-
         LocalStorage.saveData('UserData', response?.data);
         userDetails(response?.data);
         userToken(response?.data?.token);
+        ToastAndroid.showWithGravityAndOffset(
+          'Signed In Successfully!!',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
         props.navigation.navigate('Home');
       })
       .catch(function (error) {
         console.log('Error::::::::::', error?.response?.data?.message);
         ToastAndroid.showWithGravityAndOffset(
-          'User already Exists!',
+          error?.response?.data?.message,
           ToastAndroid.LONG,
           ToastAndroid.BOTTOM,
           25,

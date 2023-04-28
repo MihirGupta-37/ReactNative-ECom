@@ -11,9 +11,10 @@ import {
 import {validateEmail, validatePassword} from '../utils/Validations';
 import {TextField} from '../Components/TextField';
 import {Button} from '../Components/Button';
-import axios from 'axios';
+// import {axios, post} from 'axios';
 import {AuthContext} from '../Navigation/AuthContext';
 import {BASE_URL, LOGIN_API} from '../utils/Constants';
+import ApiManager from '../api/ApiManager';
 
 const Login = props => {
   const fieldValues = {
@@ -106,17 +107,27 @@ const Login = props => {
   };
 
   const handleRegister = () => {
-    axios
-      .post(BASE_URL + LOGIN_API, {
+    ApiManager.PostAPI(
+      '',
+      {
         email: values.email,
         password: values.password,
-      })
-      .then(function (response) {
+      },
+      BASE_URL + LOGIN_API,
+    )
+      .then(response => {
         console.log('Response::::::::::', response?.data);
         userDetails(response?.data);
         userToken(response?.data?.token);
+        ToastAndroid.showWithGravityAndOffset(
+          'Login Successfull!!',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log('Error::::::::::', error.response.data.message);
         ToastAndroid.showWithGravityAndOffset(
           error.response.data.message,
@@ -125,7 +136,8 @@ const Login = props => {
           25,
           50,
         );
-      });
+      })
+      .finally(() => {});
   };
 
   return (

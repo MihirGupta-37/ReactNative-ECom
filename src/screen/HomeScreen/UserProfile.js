@@ -11,8 +11,9 @@ import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {TextField} from '../../Components/TextField';
 import {Button} from '../../Components/Button';
 import {useEffect} from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import {BASE_URL, PROFILE_API} from '../../utils/Constants';
+import ApiManager from '../../api/ApiManager';
 
 const UserProfile = props => {
   const [token, setToken] = useState('');
@@ -42,16 +43,24 @@ const UserProfile = props => {
   };
 
   const handleRegister = () => {
-    let header = {headers: {Authorization: token}};
-    let payload = {
-      name: values.userName,
-      email: values.email,
-    };
-    axios
-      .put(BASE_URL + PROFILE_API, payload, header)
+    ApiManager.PutAPI(
+      token,
+      {
+        name: values.userName,
+        email: values.email,
+      },
+      BASE_URL + PROFILE_API,
+    )
       .then(response => {
         console.log('Response::::::::::', response);
         LocalStorage.saveData('UserData', response?.data);
+        ToastAndroid.showWithGravityAndOffset(
+          'Your Profile Has Been Updated',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
       })
       .catch(error => {
         console.log('Error::::::::::', error.response);

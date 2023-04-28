@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {BASE_URL, PRODUCTS_API} from '../../utils/Constants';
-import axios from 'axios';
+// import axios from 'axios';
 import {Button} from '../../Components/Button';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import ApiManager from '../../api/ApiManager';
 
 const ProductDetails = ({navigation, route, item}) => {
   const [product, setProduct] = useState('');
@@ -21,11 +22,7 @@ const ProductDetails = ({navigation, route, item}) => {
 
   const ProductsDetailsApi = () => {
     let query = `${route?.params?.id}`;
-    console.log('id::::', route);
-    axios({
-      method: 'get',
-      url: BASE_URL + PRODUCTS_API + query,
-    })
+    ApiManager.GetAPI('', BASE_URL + PRODUCTS_API + query)
       .then(response => {
         console.log('Response-ID:::::', response?.data?.product);
         setProduct(response?.data?.product);
@@ -34,13 +31,10 @@ const ProductDetails = ({navigation, route, item}) => {
         console.log('Error:::::', error?.response);
       });
   };
-  console.log('product?.images[0]?.url;;;;;;', product);
   useEffect(() => {
-    // console.log('qqq');
     ProductsDetailsApi();
   }, [route?.params?.id]);
 
-  // console.log('111-------->', navigation, route);
   return (
     <ScrollView style={{backgroundColor: '#fff'}}>
       <View style={styles.container}>

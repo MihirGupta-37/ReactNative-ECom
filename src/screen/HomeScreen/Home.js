@@ -22,13 +22,14 @@ import {
   CollapseHeader,
   CollapseBody,
 } from 'accordion-collapse-react-native';
+import ApiManager from '../../api/ApiManager';
 
 const Home = ({navigation}) => {
   const {signOut} = useContext(AuthContext);
 
   const [productList, setProductList] = useState([]);
   const [page, setPage] = useState(1);
-  const [showmore, setShowmore] = useState(false);
+  // const [showmore, setShowmore] = useState(false);
   const [lengthMore, setLengthMore] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState();
@@ -77,18 +78,12 @@ const Home = ({navigation}) => {
       return newValue;
     });
   };
-  // console.log('categoryList:::', categoryList);
 
   useEffect(() => {
     toggleModal();
   }, [visible]);
 
   const hideShowHandler = index => {
-    // productList[index].isReadMore = true;
-    // console.log('item', id);
-    // if (id) {
-    // setShowmore(!showmore);
-
     setProductList(prev => {
       let newTime = [...prev];
 
@@ -100,21 +95,25 @@ const Home = ({navigation}) => {
       return newTime;
     });
   };
-  // console.log('productList:::', productList);
 
   const onTextLayout = useCallback(e => {
     setLengthMore(e.nativeEvent.lines.length >= 2);
   }, []);
 
   const handleRegister = () => {
-    // console.log('Method Call:::::::', page);
+    console.log('Method Call:::::::', page);
     let query = `?page=${page}`;
+    // let query = `?page=1`;
 
     let baseUrl =
-      categoryList?.category === '' &&
-      categoryList?.lowPrice === '' &&
-      categoryList?.highPrice === ''
-        ? BASE_URL + PRODUCTS_API + query
+      categoryList?.category !== '' && categoryList?.lowPrice === ''
+        ? `${BASE_URL + PRODUCTS_API + query}${'&category='}${
+            categoryList?.category
+          }`
+        : categoryList?.category === '' && categoryList?.lowPrice !== ''
+        ? `${BASE_URL + PRODUCTS_API + query}${'&price[gte]='}${
+            categoryList?.lowPrice
+          }${'&price[lte]='}${categoryList?.lowPrice}`
         : categoryList?.category !== '' &&
           categoryList?.lowPrice !== '' &&
           categoryList?.highPrice !== ''
@@ -123,19 +122,14 @@ const Home = ({navigation}) => {
           }${'&price[gte]='}${categoryList?.lowPrice}${'&price[lte]='}${
             categoryList?.lowPrice
           }`
-        : `${BASE_URL + PRODUCTS_API + query}${'&category='}${
-            categoryList?.category
-          }`;
+        : BASE_URL + PRODUCTS_API + query;
 
-    // console.log('Base URL :::::::', baseUrl);
     if (categoryList?.category === '')
-      axios({
-        method: 'get',
-        url: BASE_URL + PRODUCTS_API + query,
-      })
+      ApiManager.GetAPI('', baseUrl)
         .then(response => {
-          // console.log('Response:::::', response.data);
-          if (response.data?.products.length === 0) {
+          console.log('Response:::::', response.data);
+          // loadMore = false;
+          if (response.data?.products.length == 0) {
             loadMore = false;
           } else {
             loadMore = true;
@@ -159,7 +153,6 @@ const Home = ({navigation}) => {
 
   const onEndReached = () => {
     if (loadMore) {
-      // console.log('Enter Time :::::::');
       handleRegister();
     }
   };
@@ -310,7 +303,7 @@ const Home = ({navigation}) => {
                     <TouchableOpacity>
                       <Text
                         style={styles.categoryList}
-                        onPress={() => handleFilter('price', `10000`, '')}>
+                        onPress={() => handleFilter('price', `10000`, 'above')}>
                         {'\u20B9'}10000 and above
                       </Text>
                     </TouchableOpacity>
@@ -331,12 +324,6 @@ const Home = ({navigation}) => {
                 </View>
               </View>
             </View>
-            {/* <ScrollView
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-            horizontal>
-          </ScrollView> */}
-            {/* <FlatList data={} */}
           </Modal>
         </View>
         {productList?.length > 0 ? (
@@ -387,10 +374,7 @@ const styles = StyleSheet.create({
   categoryList: {
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-    // borderColor: '#22689f',
-    // borderWidth: 2,
     padding: 10,
-    // borderRadius: 20,
     textAlign: 'center',
     fontSize: 15,
     fontWeight: 'bold',
@@ -408,10 +392,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-    // padding: 40,
-    // borderRadius: 20,
-    // shadowColor: 'black',
-    // elevation: 5,
   },
   modalContainer: {
     width: '80%',
