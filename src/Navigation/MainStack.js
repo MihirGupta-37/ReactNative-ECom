@@ -5,6 +5,7 @@ import Home from '../screen/HomeScreen/Home';
 import Cart from '../screen/CartScreen/Cart';
 import UserProfile from '../screen/HomeScreen/UserProfile';
 import ProductDetails from '../screen/HomeScreen/ProductDetails';
+import Login from '../screen/Login';
 
 export default function () {
   const AuthStack = createNativeStackNavigator();
@@ -54,6 +55,17 @@ export default function () {
           headerShadowVisible: false,
         }}
       />
+      {/* <AuthStack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+          headerShadowVisible: false,
+        }}
+      /> */}
     </AuthStack.Navigator>
   );
 }

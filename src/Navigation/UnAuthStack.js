@@ -6,6 +6,7 @@ import Fpassword from '../screen/Fpassword';
 import ResetPassword from '../screen/ResetPassword';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Home from '../screen/HomeScreen/Home';
 
 export default function () {
   const UnAuthStack = createNativeStackNavigator();
@@ -51,6 +52,17 @@ export default function () {
           headerShadowVisible: false,
         }}
       />
+      {/* <UnAuthStack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+          headerShown: false,
+        }}
+      /> */}
     </UnAuthStack.Navigator>
   );
 }

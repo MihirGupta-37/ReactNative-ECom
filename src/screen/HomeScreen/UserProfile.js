@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import LocalStorage from '../../utils/LocalStorage';
 import {
   View,
@@ -14,13 +14,21 @@ import {useEffect} from 'react';
 // import axios from 'axios';
 import {BASE_URL, PROFILE_API} from '../../utils/Constants';
 import ApiManager from '../../api/ApiManager';
+import {AuthContext} from '../../Navigation/AuthContext';
 
 const UserProfile = props => {
+  const {signOut} = useContext(AuthContext);
+
   const [token, setToken] = useState('');
   const [values, setValues] = useState({
     userName: '',
     email: '',
   });
+
+  const handleLogout = () => {
+    console.log('logout click');
+    setTimeout(() => signOut(), 2000);
+  };
 
   useEffect(() => {
     handleData();
@@ -130,6 +138,9 @@ const UserProfile = props => {
             style={styles.buttonContainer}
           />
         </View>
+        <View style={styles.buttonContainer}>
+          <Button submitForm={handleLogout} disabled={true} title="Log Out" />
+        </View>
       </View>
     </ScrollView>
   );
@@ -180,6 +191,10 @@ const styles = StyleSheet.create({
     fontSize: 40,
     width: '20%',
     color: '#22689f',
+  },
+  buttonContainer: {
+    width: '80%',
+    alignSelf: 'center',
   },
 });
 export default UserProfile;
