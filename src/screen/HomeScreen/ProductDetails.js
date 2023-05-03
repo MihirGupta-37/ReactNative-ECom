@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import LocalStorage from '../../utils/LocalStorage';
 import {
   View,
   Text,
@@ -13,31 +14,92 @@ import {BASE_URL, PRODUCTS_API} from '../../utils/Constants';
 import {Button} from '../../Components/Button';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import ApiManager from '../../api/ApiManager';
+import {Loader} from '../../Components/Loader';
 
 const ProductDetails = ({navigation, route, item}) => {
+  const [cartItems, setCartItems] = useState([]);
   const [product, setProduct] = useState('');
-
+  const [loading, setLoading] = useState(false);
+  const [isAddedItem, setIsAddedItem] = useState('');
   const {width} = Dimensions.get('window');
   const height = width * 0.7;
 
+  useEffect(() => {
+    LocalStorage.getData('AddToCart').then(res => {
+      console.log('res::::', res);
+      if (res?.length > 0) {
+        setCartItems(res);
+      }
+      ProductsDetailsApi();
+    });
+  }, [route?.params?.id]);
+  const handleData = () => {};
+
+  // const loadCartData = async () => {
+  //   const data = await AsyncStorage.getItem('cartItems');
+  //   if (data) {
+  //     setCartItems(JSON.parse(data));
+  //   }
+  // };
+
+  // const saveCartData = async () => {
+  //   await AsyncStorage.setItem('cartItems', JSON.stringify(cartItems));
+  // };
+
+  // const addToCart = (item) => {
+  //   setCartItems([...cartItems, item]);
+  //   saveCartData();
+  // };
+
+  // const deleteFromCart = (index) => {
+  //   const newCartItems = [...cartItems];
+  //   newCartItems.splice(index, 1);
+  //   setCartItems(newCartItems);
+  //   saveCartData();
+  // };
+
+  // useEffect(() => {
+  //   loadCartData();
+  // }, []);
+
   const ProductsDetailsApi = () => {
     let query = `${route?.params?.id}`;
+    setLoading(true);
     ApiManager.GetAPI('', BASE_URL + PRODUCTS_API + query)
       .then(response => {
-        console.log('Response-ID:::::', response?.data?.product);
+        setLoading(false);
+        // console.log('Response-ID:::::', response?.data?.product);
         setProduct(response?.data?.product);
+        ProductCheckIsAdded(cartItems, response?.data?.product);
       })
       .catch(error => {
+        setLoading(false);
         console.log('Error:::::', error?.response);
       });
   };
-  useEffect(() => {
-    ProductsDetailsApi();
-  }, [route?.params?.id]);
+  const ProductCheckIsAdded = (arrayOfCart, recode) => {
+    const existingItem = arrayOfCart?.find(item => item?.id === recode?.id);
+    setIsAddedItem(existingItem);
+    console.log('existingItem', existingItem);
+  };
+
+  const submitForm = () => {
+    let newArray = cartItems;
+    newArray.push(product);
+    setCartItems(newArray);
+    LocalStorage.saveData('AddToCart', newArray);
+    console.log('newArray', newArray);
+    ProductCheckIsAdded(newArray, product);
+  };
+
+  const GoToCart = () => {
+    navigation.navigate('Cart');
+  };
 
   return (
     <ScrollView style={{backgroundColor: '#fff'}}>
       <View style={styles.container}>
+        <Loader loading={loading} />
         <View style={styles.header}>
           <Text style={styles.headerMain}>PRODUCT DETAILS</Text>
         </View>
@@ -85,7 +147,19 @@ const ProductDetails = ({navigation, route, item}) => {
               </Text>
             </View>
             <View>
-              <Button title="ADD TO CART" disabled={true}></Button>
+              {!isAddedItem ? (
+                <Button
+                  title="ADD TO CART"
+                  disabled={true}
+                  submitForm={submitForm}
+                />
+              ) : (
+                <Button
+                  title="GO TO CART"
+                  disabled={true}
+                  submitForm={GoToCart}
+                />
+              )}
             </View>
           </View>
         </View>

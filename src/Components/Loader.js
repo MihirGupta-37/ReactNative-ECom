@@ -5,7 +5,7 @@ import Image1 from '../img/progress.gif';
 export const Loader = props => {
   const {loading, ...attributes} = props;
 
-  console.log('loading', loading);
+  // console.log('loading', loading);
   return (
     <Modal
       transparent={true}

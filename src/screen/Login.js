@@ -107,6 +107,7 @@ const Login = props => {
   };
 
   const handleRegister = () => {
+    console.log('BASE_URL + LOGIN_API-->',BASE_URL + LOGIN_API);
     ApiManager.PostAPI(
       '',
       {
@@ -128,7 +129,7 @@ const Login = props => {
         );
       })
       .catch(error => {
-        console.log('Error::::::::::', error.response.data.message);
+        console.log('Error::::::::::', error);
         ToastAndroid.showWithGravityAndOffset(
           error.response.data.message,
           ToastAndroid.LONG,

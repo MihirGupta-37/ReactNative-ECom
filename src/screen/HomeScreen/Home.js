@@ -122,8 +122,6 @@ const Home = ({navigation}) => {
             categoryList?.highPrice
           }`
         : BASE_URL + PRODUCTS_API + query;
-
-    console.log('Base Url :::::::::>>>', baseUrl);
     ApiManager.GetAPI('', baseUrl)
       .then(response => {
         setLoading(false);
@@ -196,18 +194,15 @@ const Home = ({navigation}) => {
                   <CollapseBody>
                     <TouchableOpacity
                       onPress={() =>
-                        handleFilter('category', `men's Clothing`, '')
+                        handleFilter('category', `men's clothing`, '')
                       }>
                       <Text style={styles.categoryList}>Men's Clothing</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() =>
-                        handleFilter('category', `men's Clothing`, '')
-                      }>
+                    <TouchableOpacity>
                       <Text
                         style={styles.categoryList}
                         onPress={() =>
-                          handleFilter('category', `women's Clothing`, '')
+                          handleFilter('category', `women's clothing`, '')
                         }>
                         Women's Clothing
                       </Text>
@@ -298,7 +293,7 @@ const Home = ({navigation}) => {
                     <TouchableOpacity>
                       <Text
                         style={styles.categoryList}
-                        onPress={() => handleFilter('price', '10000', 'above')}>
+                        onPress={() => handleFilter('price', '10000', '')}>
                         {'\u20B9'}10000 and above
                       </Text>
                     </TouchableOpacity>
