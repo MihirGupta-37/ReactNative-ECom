@@ -1,10 +1,6 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import Home from '../screen/HomeScreen/Home';
-import Cart from '../screen/CartScreen/Cart';
 import MainStack from '../Navigation/MainStack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -38,7 +34,6 @@ function BottomTab() {
         listeners={({navigation}) => ({
           tabPress: e => {
             e.preventDefault();
-
             navigation.navigate('Home', {screen: 'Home'});
           },
         })}
@@ -50,7 +45,6 @@ function BottomTab() {
         listeners={({navigation}) => ({
           tabPress: e => {
             e.preventDefault();
-
             navigation.navigate('Cart', {screen: 'Cart'});
           },
         })}

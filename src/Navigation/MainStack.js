@@ -5,7 +5,6 @@ import Home from '../screen/HomeScreen/Home';
 import Cart from '../screen/CartScreen/Cart';
 import UserProfile from '../screen/HomeScreen/UserProfile';
 import ProductDetails from '../screen/HomeScreen/ProductDetails';
-import Login from '../screen/Login';
 
 export default function () {
   const AuthStack = createNativeStackNavigator();

@@ -13,7 +13,6 @@ const MyProducts = ({navigation}) => {
   const [lengthMore, setLengthMore] = useState(false);
 
   const onClick = item => {
-    console.log('q');
     navigation.navigate('ProductDetails', {id: item._id});
   };
 

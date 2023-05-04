@@ -25,7 +25,7 @@ const Login = props => {
     email: '',
     password: '',
   });
-  const {userDetails, userToken} = useContext(AuthContext);
+  const {userDetails} = useContext(AuthContext);
   const [values, setValues] = useState(fieldValues);
 
   const handleChangeText = (key, mValue) => {
@@ -107,7 +107,6 @@ const Login = props => {
   };
 
   const handleRegister = () => {
-    console.log('BASE_URL + LOGIN_API-->',BASE_URL + LOGIN_API);
     ApiManager.PostAPI(
       '',
       {
@@ -119,7 +118,7 @@ const Login = props => {
       .then(response => {
         console.log('Response::::::::::', response?.data);
         userDetails(response?.data);
-        userToken(response?.data?.token);
+        //  userToken(response?.data?.token);
         ToastAndroid.showWithGravityAndOffset(
           'Login Successfull!!',
           ToastAndroid.LONG,

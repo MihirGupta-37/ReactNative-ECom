@@ -77,6 +77,7 @@ const ProductDetails = ({navigation, route, item}) => {
         console.log('Error:::::', error?.response);
       });
   };
+
   const ProductCheckIsAdded = (arrayOfCart, recode) => {
     const existingItem = arrayOfCart?.find(item => item?.id === recode?.id);
     setIsAddedItem(existingItem);
@@ -88,7 +89,6 @@ const ProductDetails = ({navigation, route, item}) => {
     newArray.push(product);
     setCartItems(newArray);
     LocalStorage.saveData('AddToCart', newArray);
-    console.log('newArray', newArray);
     ProductCheckIsAdded(newArray, product);
   };
 

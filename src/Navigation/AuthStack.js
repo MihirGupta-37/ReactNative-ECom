@@ -20,20 +20,21 @@ const AuthStack = props => {
     };
   }, []);
   const RootStack = createNativeStackNavigator();
+  // console.log('UserData::::::', userData === '', !userData?.token);
   return (
     <AuthContext.Provider value={authContext}>
       <RootStack.Navigator>
-        {userData === '' || userData?.token ? (
-          <RootStack.Screen
-            name="BottomNavigator"
-            options={{headerShown: false}}
-            children={props => <BottomNavigator {...props} />}
-          />
-        ) : (
+        {userData === '' && userData?.token === null ? (
           <RootStack.Screen
             name="Login Screen"
             options={{headerShown: false}}
             component={UnAuthStack}
+          />
+        ) : (
+          <RootStack.Screen
+            name="BottomNavigator"
+            options={{headerShown: false}}
+            children={props => <BottomNavigator {...props} />}
           />
         )}
       </RootStack.Navigator>
