@@ -26,7 +26,7 @@ const UserProfile = props => {
   });
 
   const handleLogout = () => {
-    // console.log('logout click');
+    console.log('logout click');
     setTimeout(() => signOut(), 2000);
   };
 

@@ -41,7 +41,9 @@ const Home = ({navigation}) => {
   });
 
   useEffect(() => {
-    LocalStorage.getData('UserData').then(res => console.log('userData--->'));
+    LocalStorage.getData('UserData').then(
+      res => 0, //console.log('userData--->')
+    );
     handleRegister();
   }, [page]);
 
@@ -122,6 +124,7 @@ const Home = ({navigation}) => {
             categoryList?.highPrice
           }`
         : BASE_URL + PRODUCTS_API + query;
+    console.log('BASE_URL::::', BASE_URL, categoryList);
     ApiManager.GetAPI('', baseUrl)
       .then(response => {
         setLoading(false);
@@ -152,7 +155,6 @@ const Home = ({navigation}) => {
       <Header profilePress={profilePress} />
       <Images />
       <Loader loading={loading} />
-
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerMain}>Our Latest Products</Text>
@@ -198,55 +200,33 @@ const Home = ({navigation}) => {
                       }>
                       <Text style={styles.categoryList}>Men's Clothing</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() =>
-                          handleFilter('category', `women's clothing`, '')
-                        }>
-                        Women's Clothing
-                      </Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        handleFilter('category', `women's clothing`, '')
+                      }>
+                      <Text style={styles.categoryList}>Women's Clothing</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() => handleFilter('category', `Kids`, '')}>
-                        Kids
-                      </Text>
+                    <TouchableOpacity
+                      onPress={() => handleFilter('category', `Kids`, '')}>
+                      <Text style={styles.categoryList}>Kids</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() =>
-                          handleFilter('category', `electronics`, '')
-                        }>
-                        Electronics
-                      </Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        handleFilter('category', `electronics`, '')
+                      }>
+                      <Text style={styles.categoryList}>Electronics</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() =>
-                          handleFilter('category', `jewelery`, '')
-                        }>
-                        Jewelery
-                      </Text>
+                    <TouchableOpacity
+                      onPress={() => handleFilter('category', `jewelery`, '')}>
+                      <Text style={styles.categoryList}>Jewelery</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() =>
-                          handleFilter('category', `Footwear`, '')
-                        }>
-                        FootWear
-                      </Text>
+                    <TouchableOpacity
+                      onPress={() => handleFilter('category', `Footwear`, '')}>
+                      <Text style={styles.categoryList}>FootWear</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() => handleFilter('category', `Beauty`, '')}>
-                        Beauty
-                      </Text>
+                    <TouchableOpacity
+                      onPress={() => handleFilter('category', `Beauty`, '')}>
+                      <Text style={styles.categoryList}>Beauty</Text>
                     </TouchableOpacity>
                   </CollapseBody>
                 </Collapse>
@@ -269,31 +249,27 @@ const Home = ({navigation}) => {
                     </View>
                   </CollapseHeader>
                   <CollapseBody>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() => handleFilter('price', '0', '1500')}>
+                    <TouchableOpacity
+                      onPress={() => handleFilter('price', '0', '1500')}>
+                      <Text style={styles.categoryList}>
                         {'\u20B9'}0 to {'\u20B9'}1500
                       </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() => handleFilter('price', '1500', '5000')}>
+                    <TouchableOpacity
+                      onPress={() => handleFilter('price', '1500', '5000')}>
+                      <Text style={styles.categoryList}>
                         {'\u20B9'}1500 to {'\u20B9'}5000
                       </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() => handleFilter('price', '5000', '10000')}>
+                    <TouchableOpacity
+                      onPress={() => handleFilter('price', '5000', '10000')}>
+                      <Text style={styles.categoryList}>
                         {'\u20B9'}5000 to {'\u20B9'}10000
                       </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text
-                        style={styles.categoryList}
-                        onPress={() => handleFilter('price', '10000', '')}>
+                    <TouchableOpacity
+                      onPress={() => handleFilter('price', '10000', '200000')}>
+                      <Text style={styles.categoryList}>
                         {'\u20B9'}10000 and above
                       </Text>
                     </TouchableOpacity>
@@ -347,7 +323,26 @@ const Home = ({navigation}) => {
             )}
             // keyExtractor={item => item.id.toString()}
           />
-        ) : null}
+        ) : (
+          <Text
+            style={{
+              textAlign: 'center',
+              marginTop: 30,
+              fontSize: 20,
+              color: 'black',
+              borderColor: 'black',
+              borderWidth: 2,
+              width: '70%',
+              alignSelf: 'center',
+              padding: 10,
+              borderRadius: 10,
+            }}>
+            <Icon
+              name="report-problem"
+              style={{fontSize: 20, color: '#8B8000'}}></Icon>
+            <Text>NO DATA AVAILABLE</Text>
+          </Text>
+        )}
       </View>
       {/* <View style={styles.buttonContainer}>
         <Button submitForm={handleLogout} disabled={true} title="Log Out" />
@@ -420,13 +415,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginTop: 20,
     borderRadius: 15,
-  },
-  modalBackground: {
-    flex: 1,
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    backgroundColor: 'blue',
   },
   spinWrapper: {
     height: 130,

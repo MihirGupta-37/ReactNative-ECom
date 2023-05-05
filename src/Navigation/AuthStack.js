@@ -6,8 +6,8 @@ import UnAuthStack from './UnAuthStack';
 import {AuthContext} from './AuthContext';
 
 const AuthStack = props => {
-  const [userData, setUserData] = useState(props?.userDetails || '');
-  const authContext = useMemo(() => {
+  const [userData, setUserData] = useState(null);
+   const authContext = useMemo(() => {
     return {
       userDetails: data => {
         LocalStorage.saveData('UserData', data);
@@ -19,12 +19,17 @@ const AuthStack = props => {
       },
     };
   }, []);
+
+  useEffect(() => {
+    setUserData(props?.userDetails);
+  }, [props]);
+
   const RootStack = createNativeStackNavigator();
-  // console.log('UserData::::::', userData === '', !userData?.token);
+
   return (
     <AuthContext.Provider value={authContext}>
-      <RootStack.Navigator>
-        {userData === '' && userData?.token === null ? (
+       <RootStack.Navigator>
+        {!userData ? (
           <RootStack.Screen
             name="Login Screen"
             options={{headerShown: false}}

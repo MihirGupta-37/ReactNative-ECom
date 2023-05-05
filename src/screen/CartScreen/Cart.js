@@ -3,10 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   FlatList,
   TouchableOpacity,
   Image,
+  Modal,
 } from 'react-native';
 import Header from '../../Components/Header';
 import LocalStorage from '../../utils/LocalStorage';
@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {numberWithCommas} from '../../utils/Validations';
 
 const Cart = ({navigation}) => {
+  const [showModal, setShowModal] = useState(false);
   const [addedProduct, setAddedProduct] = useState([]);
   useEffect(() => {
     handleCartData();
@@ -64,27 +65,16 @@ const Cart = ({navigation}) => {
     }, 0);
   };
 
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
     <View style={styles.container}>
       <Header profilePress={profilePress} />
       <View>
-        <View
-          style={{
-            marginVertical: 20,
-            backgroundColor: '#fff',
-            borderColor: 'black',
-            borderWidth: 1,
-            borderRadius: 10,
-            padding: 10,
-          }}>
-          <Text
-            style={{
-              textAlign: 'left',
-              fontSize: 20,
-              color: 'black',
-              marginLeft: 20,
-              marginVertical: 7,
-            }}>
+        <View style={styles.buynowContainer}>
+          <Text style={styles.totalTxt}>
             Subtotal {'\u20B9'}
             <Text style={{fontWeight: 'bold'}}>
               {numberWithCommas(calculateTotal())}
@@ -95,8 +85,30 @@ const Cart = ({navigation}) => {
             Your order is available for FREE Delivery
           </Text>
           <TouchableOpacity>
-            <Text style={styles.buynowBtn}>Buy Now</Text>
+            <Text
+              style={styles.buynowBtn}
+              onPress={() => {
+                toggleModal();
+              }}>
+              Buy Now
+            </Text>
           </TouchableOpacity>
+          <Modal transparent visible={showModal}>
+            <View style={styles.modalView}>
+              <View style={styles.modalContainer}>
+                <Text style={styles.modalMaintxt}>
+                  <Icon name="check-circle" style={{fontSize: 15}}></Icon>
+                  Hooray!
+                </Text>
+                <Text style={{color: 'black'}}>
+                  Your Order Has been Placed!
+                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                  <Text style={styles.modalHomeBtn}>Go Back to Home</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         </View>
         <FlatList
           data={addedProduct}
@@ -118,7 +130,6 @@ const Cart = ({navigation}) => {
               <View style={styles.cardContent}>
                 <View style={styles.productHeading}>
                   <Text style={styles.productCategory}>{item.category}</Text>
-
                   <View style={{width: '88%', marginBottom: 10}}>
                     <Text style={styles.productName}>{item.name}</Text>
                   </View>
@@ -140,13 +151,7 @@ const Cart = ({navigation}) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    marginTop: 10,
-                  }}>
+                <View style={styles.lowerBtnContainer}>
                   <View style={styles.ratingStar}>
                     <Icon
                       name={'star'}
@@ -281,6 +286,58 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '90%',
     marginVertical: 10,
+  },
+  modalView: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingVertical: 25,
+    borderRadius: 20,
+    elevation: 20,
+    borderColor: 'black',
+    borderWidth: 5,
+  },
+  modalHomeBtn: {
+    borderColor: 'black',
+    borderWidth: 1,
+    width: '50%',
+    textAlign: 'center',
+    marginVertical: 10,
+    color: 'white',
+    padding: 5,
+    backgroundColor: '#22689f',
+    borderRadius: 5,
+  },
+  modalMaintxt: {
+    color: 'green',
+    fontSize: 20,
+  },
+  lowerBtnContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginTop: 10,
+  },
+  totalTxt: {
+    textAlign: 'left',
+    fontSize: 20,
+    color: 'black',
+    marginLeft: 20,
+    marginVertical: 7,
+  },
+  buynowContainer: {
+    marginVertical: 20,
+    backgroundColor: '#fff',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
   },
 });
 export default Cart;
