@@ -3,17 +3,14 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   FlatList,
   TouchableOpacity,
   Modal,
-  Image,
 } from 'react-native';
 
 import LocalStorage from '../../utils/LocalStorage';
 import Header from '../../Components/Header';
 import Images from '../../Components/Images';
-
 import {BASE_URL, PRODUCTS_API} from '../../utils/Constants';
 import ProductListComp from '../../Components/ProductListComp';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
@@ -33,6 +30,7 @@ const Home = ({navigation}) => {
   const [lengthMore, setLengthMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [textColor, setTextColor] = useState('#22689f');
 
   const [categoryList, setCategoryList] = useState({
     category: '',
@@ -53,6 +51,10 @@ const Home = ({navigation}) => {
 
   const toggleModal = () => {
     setShowModal(!showModal);
+  };
+
+  const handleTextColor = () => {
+    setTextColor('red');
   };
 
   const handleFilter = (key, mValue, price) => {
@@ -198,35 +200,63 @@ const Home = ({navigation}) => {
                       onPress={() =>
                         handleFilter('category', `men's clothing`, '')
                       }>
-                      <Text style={styles.categoryList}>Men's Clothing</Text>
+                      <Text
+                        onPress={handleTextColor}
+                        style={[styles.categoryList, {color: textColor}]}>
+                        Men's Clothing
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() =>
                         handleFilter('category', `women's clothing`, '')
                       }>
-                      <Text style={styles.categoryList}>Women's Clothing</Text>
+                      <Text
+                        onPress={handleTextColor}
+                        style={[styles.categoryList, {color: textColor}]}>
+                        Women's Clothing
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('category', `Kids`, '')}>
-                      <Text style={styles.categoryList}>Kids</Text>
+                      <Text
+                        onPress={handleTextColor}
+                        style={[styles.categoryList, {color: textColor}]}>
+                        Kids
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() =>
                         handleFilter('category', `electronics`, '')
                       }>
-                      <Text style={styles.categoryList}>Electronics</Text>
+                      <Text
+                        onPress={handleTextColor}
+                        style={[styles.categoryList, {color: textColor}]}>
+                        Electronics
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('category', `jewelery`, '')}>
-                      <Text style={styles.categoryList}>Jewelery</Text>
+                      <Text
+                        onPress={handleTextColor}
+                        style={[styles.categoryList, {color: textColor}]}>
+                        Jewelery
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('category', `Footwear`, '')}>
-                      <Text style={styles.categoryList}>FootWear</Text>
+                      <Text
+                        onPress={handleTextColor}
+                        style={[styles.categoryList, {color: textColor}]}>
+                        FootWear
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('category', `Beauty`, '')}>
-                      <Text style={styles.categoryList}>Beauty</Text>
+                      <Text
+                        onPress={handleTextColor}
+                        style={[styles.categoryList, {color: textColor}]}>
+                        Beauty
+                      </Text>
                     </TouchableOpacity>
                   </CollapseBody>
                 </Collapse>

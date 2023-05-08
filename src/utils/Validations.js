@@ -87,3 +87,14 @@ export function numberWithCommas(x) {
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   return parts.join('.');
 }
+
+export const validateCardNo = value => {
+  if (IsEmpty(value)) {
+    return 'Please enter Card No.';
+  }
+  if (!value.match(/^[\d]{16}$/)) {
+    // eslint-disable-line
+    return 'Invalid Card No.';
+  }
+  return false;
+};

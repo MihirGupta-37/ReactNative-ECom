@@ -88,7 +88,7 @@ const Cart = ({navigation}) => {
             <Text
               style={styles.buynowBtn}
               onPress={() => {
-                toggleModal();
+                navigation.navigate('Payment');
               }}>
               Buy Now
             </Text>

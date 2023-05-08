@@ -10,7 +10,7 @@ export const TextField = props => {
         <TextInput
           style={[styles.inputStyle, {width: '90%'}]}
           placeholder={props.placeholder}
-          placeholderTextColor="lightgrey"
+          placeholderTextColor="grey"
           autoCapitalize="none"
           editable={props.editable}
           secureTextEntry={props.secureTextEntry}
