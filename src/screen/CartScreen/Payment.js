@@ -1,63 +1,67 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {numberWithCommas} from '../../utils/Validations';
-import {TextField} from '../../Components/TextField';
+import {BASE_URL, PAYMENT_API} from '../../utils/Constants';
 import {Button} from '../../Components/Button';
-import {validateCardNo} from '../../utils/Validations';
-import {CardField, useStripe} from '@stripe/stripe-react-native';
+import {
+  CardField,
+  useStripe,
+  confirmPayment,
+} from '@stripe/stripe-react-native';
+import ApiManager from '../../api/ApiManager';
 
-const Payment = () => {
-  // const {confirmPayment} = useStripe();
-  const [addedProduct, setAddedProduct] = useState([]);
-  const fieldValues = {
-    cardNo: '',
-  };
-  const [values, setValues] = useState(fieldValues);
-  const [errors, setErrors] = useState({
-    cardNo: '',
-  });
+const Payment = props => {
+  const {confirmPayment} = useStripe();
+  const [showModal, setShowModal] = useState(false);
 
-  const handleChangeText = (key, mValue) => {
-    setValues(value => {
-      let newValue = {...value};
-      key === 'cardNo';
-      newValue.cardNo = mValue;
-      return newValue;
+  const FetchPayment = () => {
+    console.log('URL PAYMENT :::::', BASE_URL + PAYMENT_API, 'payload', {
+      amount: props?.route?.params?.payAmount,
     });
-    setErrors(value => {
-      let newValue = {...value};
-      newValue.cardNo = '';
-      return newValue;
-    });
+
+    ApiManager.PostAPI(
+      '',
+      {
+        amount: props.route.params.payAmount,
+      },
+      BASE_URL + PAYMENT_API,
+    )
+      .then(response => {
+        console.log('payment Response::::::::::', response?.data);
+      })
+      .catch(error => {
+        console.log('payment Error::::::::::', error);
+      })
+      .finally(() => {});
   };
 
-  const validate = () => {
-    let valErrors = {...errors};
-    let valid = true;
+  //   const client_secret = data.client_secret;
 
-    const cardNoError = validateCardNo(values.cardNo);
-    if (cardNoError) {
-      valErrors = {...valErrors, cardNo: cardNoError};
-      valid = false;
-    }
-    setErrors(valErrors);
-    return valid;
+  // if (!stripe || !elements) return;
+  //  const result = await stripe.confirmPayment(client_secret, {
+  // payment_method: {
+  //  card: elements.getElement(CardField),
+  //  billing_details: {
+  //   amount: props.route.params.payAmount
+  //  },
+  //  },
+  //  });
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
   const submitForm = e => {
-    if (!validate()) {
-      return false;
-    }
-    return true;
+    FetchPayment();
   };
-
-  const calculateTotal = () => {
-    return addedProduct.reduce((total, item) => {
-      let amount = total + item.price * item.quantity;
-      return amount;
-    }, 0);
-  };
+  
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -68,60 +72,62 @@ const Payment = () => {
           <Text style={styles.totalTxt}>
             Subtotal {'\u20B9'}
             <Text style={{fontWeight: 'bold'}}>
-              {numberWithCommas(calculateTotal())}
+              {props.route.params.payAmount}
+              {/* {numberWithCommas(payAmount)} */}
             </Text>
           </Text>
-          <Text style={{color: 'green', marginLeft: 20, marginBottom: 15}}>
+          <Text style={{color: 'lightgreen', marginLeft: 20, marginBottom: 15}}>
             <Icon name="check-circle" style={{fontSize: 15}}></Icon>
             Your order is available for FREE Delivery
           </Text>
         </View>
-        {/* <CardField
-          postalCodeEnabled={false}
-          placeholders={{
-            number: '4242 4242 4242 4242',
-            expiration: 'MM/YY',
-            cvc: 'CVC',
-          }}
-          cardStyle={{
-            backgroundColor: '#FFFFFF',
-            textColor: '#000000',
-          }}
-          style={{
-            width: '100%',
-            height: 50,
-            marginVertical: 30,
-          }}
-          onCardChange={cardDetails => {
-            console.log('cardDetails', cardDetails);
-          }}
-          onFocus={focusedField => {
-            console.log('focusField', focusedField);
-          }}
-        /> */}
-        <TextField
-          title="Enter Card No."
-          name="cardNo"
-          placeholder="**** **** **** ****"
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={values.cardNo}
-          error={errors.cardNo}
-          onChangeText={val => {
-            handleChangeText('cardNo', val);
-          }}
-          isIcon={false}
-        />
-        <View style={styles.invalidField}>
-          {errors.cardNo ? (
-            <Text style={styles.invalidTxt}>{errors.cardNo}</Text>
-          ) : null}
+        <View style={styles.PaymentField}>
+          <View style={{marginLeft: 10, marginVertical: 7}}>
+            <Text style={{fontSize: 17}}>Card Details:</Text>
+          </View>
+          <CardField
+            postalCodeEnabled={false}
+            placeholders={{
+              number: '4242 4242 4242 4242',
+              expiration: 'MM/YY',
+              cvc: 'CVC',
+            }}
+            cardStyle={{
+              borderWidth: 2,
+              borderColor: '#22689f',
+              borderRadius: 10,
+              backgroundColor: '#FFFFFF',
+              textColor: '#000000',
+            }}
+            style={{
+              width: '100%',
+              height: 70,
+              marginVertical: 10,
+            }}
+            onCardChange={cardDetails => {
+              console.log('cardDetails', cardDetails);
+            }}
+            onFocus={focusedField => {
+              console.log('focusField', focusedField);
+            }}
+          />
         </View>
-        {/* <View>
-          <TextInput></TextInput>
-        </View> */}
+        <Modal transparent visible={showModal}>
+          <View style={styles.modalView}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalMaintxt}>
+                <Icon name="check-circle" style={{fontSize: 15}}></Icon>
+                Hooray!
+              </Text>
+              <Text style={{color: 'black'}}>Your Order Has been Placed!</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <Text style={styles.modalHomeBtn}>Go Back to Home</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
         <View style={styles.buttonContainer}>
-          <Button submitForm={submitForm} disabled={true} title="Submit" />
+          <Button submitForm={submitForm} disabled={true} title="Pay Now" />
         </View>
       </View>
     </ScrollView>
@@ -140,7 +146,7 @@ const styles = StyleSheet.create({
   },
   headerMain: {
     fontSize: 27,
-    marginVertical: 15,
+    marginVertical: 30,
     fontWeight: '800',
     color: 'black',
     borderBottomColor: 'black',
@@ -150,16 +156,15 @@ const styles = StyleSheet.create({
   },
   buynowContainer: {
     marginVertical: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#22689f',
     borderColor: 'black',
     borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
+    padding: 20,
   },
   totalTxt: {
     textAlign: 'left',
-    fontSize: 20,
-    color: 'black',
+    fontSize: 25,
+    color: '#ffff',
     marginLeft: 20,
     marginVertical: 7,
   },
@@ -170,6 +175,44 @@ const styles = StyleSheet.create({
   invalidTxt: {
     color: 'red',
     paddingBottom: 15,
+  },
+  PaymentField: {},
+  modalView: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingVertical: 25,
+    borderRadius: 20,
+    elevation: 20,
+    borderColor: 'black',
+    borderWidth: 5,
+  },
+  modalHomeBtn: {
+    borderColor: 'black',
+    borderWidth: 1,
+    width: '50%',
+    textAlign: 'center',
+    marginVertical: 10,
+    color: 'white',
+    padding: 5,
+    backgroundColor: '#22689f',
+    borderRadius: 5,
+  },
+  modalMaintxt: {
+    color: 'green',
+    fontSize: 20,
+  },
+  lowerBtnContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginTop: 10,
   },
 });
 export default Payment;

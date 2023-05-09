@@ -64,10 +64,11 @@ const Cart = ({navigation}) => {
       return amount;
     }, 0);
   };
+  // console.log('amount:::', calculateTotal());
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
+  // const toggleModal = () => {
+  //   setShowModal(!showModal);
+  // };
 
   return (
     <View style={styles.container}>
@@ -88,12 +89,12 @@ const Cart = ({navigation}) => {
             <Text
               style={styles.buynowBtn}
               onPress={() => {
-                navigation.navigate('Payment');
+                navigation.navigate('Payment', {payAmount: calculateTotal()});
               }}>
               Buy Now
             </Text>
           </TouchableOpacity>
-          <Modal transparent visible={showModal}>
+          {/* <Modal transparent visible={showModal}>
             <View style={styles.modalView}>
               <View style={styles.modalContainer}>
                 <Text style={styles.modalMaintxt}>
@@ -108,7 +109,7 @@ const Cart = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             </View>
-          </Modal>
+          </Modal> */}
         </View>
         <FlatList
           data={addedProduct}
@@ -266,7 +267,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginHorizontal: 35,
     textAlign: 'center',
-    width: '25%',
+    width: '10%',
     fontSize: 15,
     borderColor: 'red',
     borderWidth: 1,
@@ -287,43 +288,43 @@ const styles = StyleSheet.create({
     width: '90%',
     marginVertical: 10,
   },
-  modalView: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    width: '80%',
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingVertical: 25,
-    borderRadius: 20,
-    elevation: 20,
-    borderColor: 'black',
-    borderWidth: 5,
-  },
-  modalHomeBtn: {
-    borderColor: 'black',
-    borderWidth: 1,
-    width: '50%',
-    textAlign: 'center',
-    marginVertical: 10,
-    color: 'white',
-    padding: 5,
-    backgroundColor: '#22689f',
-    borderRadius: 5,
-  },
-  modalMaintxt: {
-    color: 'green',
-    fontSize: 20,
-  },
-  lowerBtnContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginTop: 10,
-  },
+  // modalView: {
+  //   flex: 1,
+  //   backgroundColor: 'rgba(0,0,0,0.5)',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  // modalContainer: {
+  //   width: '80%',
+  //   backgroundColor: 'white',
+  //   paddingHorizontal: 20,
+  //   paddingVertical: 25,
+  //   borderRadius: 20,
+  //   elevation: 20,
+  //   borderColor: 'black',
+  //   borderWidth: 5,
+  // },
+  // modalHomeBtn: {
+  //   borderColor: 'black',
+  //   borderWidth: 1,
+  //   width: '50%',
+  //   textAlign: 'center',
+  //   marginVertical: 10,
+  //   color: 'white',
+  //   padding: 5,
+  //   backgroundColor: '#22689f',
+  //   borderRadius: 5,
+  // },
+  // modalMaintxt: {
+  //   color: 'green',
+  //   fontSize: 20,
+  // },
+  // lowerBtnContainer: {
+  //   display: 'flex',
+  //   flexDirection: 'row',
+  //   justifyContent: 'flex-start',
+  //   marginTop: 10,
+  // },
   totalTxt: {
     textAlign: 'left',
     fontSize: 20,

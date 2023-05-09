@@ -98,3 +98,10 @@ export const validateCardNo = value => {
   }
   return false;
 };
+
+export const validateAddress = value => {
+  console.log('value::::', value);
+  if (IsEmpty(value)) {
+    return 'Please Enter Your Address';
+  }
+};

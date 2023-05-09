@@ -17,11 +17,11 @@ function App() {
     });
   };
   return (
-    // <StripeProvider publishableKey={PUBLISHABLE_KEY}>
-    <NavigationContainer>
-      <AuthStack userDetails={userDetails} />
-    </NavigationContainer>
-    // </StripeProvider>
+    <StripeProvider publishableKey={PUBLISHABLE_KEY}>
+      <NavigationContainer>
+        <AuthStack userDetails={userDetails} />
+      </NavigationContainer>
+    </StripeProvider>
   );
 }
 export default App;

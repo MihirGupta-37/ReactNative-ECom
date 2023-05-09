@@ -30,7 +30,6 @@ const Home = ({navigation}) => {
   const [lengthMore, setLengthMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [textColor, setTextColor] = useState('#22689f');
 
   const [categoryList, setCategoryList] = useState({
     category: '',
@@ -51,10 +50,6 @@ const Home = ({navigation}) => {
 
   const toggleModal = () => {
     setShowModal(!showModal);
-  };
-
-  const handleTextColor = () => {
-    setTextColor('red');
   };
 
   const handleFilter = (key, mValue, price) => {
@@ -149,6 +144,7 @@ const Home = ({navigation}) => {
       id: item._id,
     });
   };
+  console.log('categoryList::::>>>>', categoryList);
 
   return (
     // <ScrollView>
@@ -201,8 +197,16 @@ const Home = ({navigation}) => {
                         handleFilter('category', `men's clothing`, '')
                       }>
                       <Text
-                        onPress={handleTextColor}
-                        style={[styles.categoryList, {color: textColor}]}>
+                        //  onPress={handleTextColor}
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.category === `men's clothing`
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         Men's Clothing
                       </Text>
                     </TouchableOpacity>
@@ -211,16 +215,31 @@ const Home = ({navigation}) => {
                         handleFilter('category', `women's clothing`, '')
                       }>
                       <Text
-                        onPress={handleTextColor}
-                        style={[styles.categoryList, {color: textColor}]}>
+                        // onPress={handleTextColor}
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.category === `women's clothing`
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         Women's Clothing
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('category', `Kids`, '')}>
                       <Text
-                        onPress={handleTextColor}
-                        style={[styles.categoryList, {color: textColor}]}>
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.category === `Kids`
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         Kids
                       </Text>
                     </TouchableOpacity>
@@ -229,32 +248,60 @@ const Home = ({navigation}) => {
                         handleFilter('category', `electronics`, '')
                       }>
                       <Text
-                        onPress={handleTextColor}
-                        style={[styles.categoryList, {color: textColor}]}>
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.category === `electronics`
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         Electronics
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('category', `jewelery`, '')}>
                       <Text
-                        onPress={handleTextColor}
-                        style={[styles.categoryList, {color: textColor}]}>
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.category === `jewelery`
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         Jewelery
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('category', `Footwear`, '')}>
                       <Text
-                        onPress={handleTextColor}
-                        style={[styles.categoryList, {color: textColor}]}>
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.category === `Footwear`
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         FootWear
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('category', `Beauty`, '')}>
                       <Text
-                        onPress={handleTextColor}
-                        style={[styles.categoryList, {color: textColor}]}>
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.category === `Beauty`
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         Beauty
                       </Text>
                     </TouchableOpacity>
@@ -281,25 +328,61 @@ const Home = ({navigation}) => {
                   <CollapseBody>
                     <TouchableOpacity
                       onPress={() => handleFilter('price', '0', '1500')}>
-                      <Text style={styles.categoryList}>
+                      <Text
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.highPrice === '1500'
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         {'\u20B9'}0 to {'\u20B9'}1500
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('price', '1500', '5000')}>
-                      <Text style={styles.categoryList}>
+                      <Text
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.highPrice === '5000'
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         {'\u20B9'}1500 to {'\u20B9'}5000
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('price', '5000', '10000')}>
-                      <Text style={styles.categoryList}>
+                      <Text
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.highPrice === '10000'
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         {'\u20B9'}5000 to {'\u20B9'}10000
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleFilter('price', '10000', '200000')}>
-                      <Text style={styles.categoryList}>
+                      <Text
+                        style={[
+                          styles.categoryList,
+                          {
+                            color:
+                              categoryList?.highPrice === '200000'
+                                ? '#22689f'
+                                : '#808080',
+                          },
+                        ]}>
                         {'\u20B9'}10000 and above
                       </Text>
                     </TouchableOpacity>

@@ -8,3 +8,4 @@ export const RESETPASSWORD_API = 'password/reset';
 export const PRODUCTS_API = 'product/';
 export const PUBLISHABLE_KEY =
   'pk_test_51Mw0YdSC9csYlBSxe39Uhg8TPw9azOIpiHUJFO0RNrEUwZ5E57aZBLEgLKMDVMwwMC33ynLhhITwnBK7EVqC4Eil00N1P1tYgB';
+export const PAYMENT_API = 'payment/process';
