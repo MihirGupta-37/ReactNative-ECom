@@ -26,43 +26,15 @@ const ProductDetails = ({navigation, route, item}) => {
 
   useEffect(() => {
     LocalStorage.getData('AddToCart').then(res => {
-      console.log('res::::', res);
+      // console.log('res::::', res);
       if (res?.length > 0) {
         setCartItems(res);
       }
-      ProductsDetailsApi();
+      ProductsDetailsApi(res);
     });
   }, [route?.params?.id]);
-  const handleData = () => {};
 
-  // const loadCartData = async () => {
-  //   const data = await AsyncStorage.getItem('cartItems');
-  //   if (data) {
-  //     setCartItems(JSON.parse(data));
-  //   }
-  // };
-
-  // const saveCartData = async () => {
-  //   await AsyncStorage.setItem('cartItems', JSON.stringify(cartItems));
-  // };
-
-  // const addToCart = (item) => {
-  //   setCartItems([...cartItems, item]);
-  //   saveCartData();
-  // };
-
-  // const deleteFromCart = (index) => {
-  //   const newCartItems = [...cartItems];
-  //   newCartItems.splice(index, 1);
-  //   setCartItems(newCartItems);
-  //   saveCartData();
-  // };
-
-  // useEffect(() => {
-  //   loadCartData();
-  // }, []);
-
-  const ProductsDetailsApi = () => {
+  const ProductsDetailsApi = arrayOfCart => {
     let query = `${route?.params?.id}`;
     setLoading(true);
     ApiManager.GetAPI('', BASE_URL + PRODUCTS_API + query)
@@ -70,7 +42,7 @@ const ProductDetails = ({navigation, route, item}) => {
         setLoading(false);
         // console.log('Response-ID:::::', response?.data?.product);
         setProduct(response?.data?.product);
-        ProductCheckIsAdded(cartItems, response?.data?.product);
+        ProductCheckIsAdded(arrayOfCart, response?.data?.product);
       })
       .catch(error => {
         setLoading(false);
@@ -79,9 +51,8 @@ const ProductDetails = ({navigation, route, item}) => {
   };
 
   const ProductCheckIsAdded = (arrayOfCart, recode) => {
-    const existingItem = arrayOfCart?.find(item => item?.id === recode?.id);
+    const existingItem = arrayOfCart?.find(item => item?._id === recode?._id);
     setIsAddedItem(existingItem);
-    console.log('existingItem', existingItem);
   };
 
   const submitForm = () => {
@@ -112,7 +83,7 @@ const ProductDetails = ({navigation, route, item}) => {
                     key={index}
                     source={{uri: image?.url ?? ''}}
                     style={{
-                      width: 392,
+                      width: 340,
                       height: 300,
                       resizeMode: 'contain',
                     }}

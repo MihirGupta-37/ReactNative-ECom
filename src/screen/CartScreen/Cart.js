@@ -111,66 +111,92 @@ const Cart = ({navigation}) => {
             </View>
           </Modal> */}
         </View>
-        <FlatList
-          data={addedProduct}
-          nestedScrollEnabled={true}
-          numColumns={1}
-          renderItem={({item, index}) => (
-            <View style={styles.cardContainer}>
-              <Image
-                source={{
-                  uri: item.images[0]?.url,
-                }}
-                style={{
-                  height: 150,
-                  width: '20%',
-                  resizeMode: 'contain',
-                  marginLeft: 10,
-                }}
-              />
-              <View style={styles.cardContent}>
-                <View style={styles.productHeading}>
-                  <Text style={styles.productCategory}>{item.category}</Text>
-                  <View style={{width: '88%', marginBottom: 10}}>
-                    <Text style={styles.productName}>{item.name}</Text>
+        {addedProduct?.length > 0 ? (
+          <FlatList
+            data={addedProduct}
+            nestedScrollEnabled={true}
+            numColumns={1}
+            renderItem={({item, index}) => (
+              <View style={styles.cardContainer}>
+                <Image
+                  source={{
+                    uri: item.images[0]?.url,
+                  }}
+                  style={{
+                    height: 150,
+                    width: '20%',
+                    resizeMode: 'contain',
+                    marginLeft: 10,
+                  }}
+                />
+                <View style={styles.cardContent}>
+                  <View style={styles.productHeading}>
+                    <Text style={styles.productCategory}>{item.category}</Text>
+                    <View style={{width: '88%', marginBottom: 10}}>
+                      <Text style={styles.productName}>{item.name}</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.mainBtnContainer}>
-                  <Text style={styles.productPrice}>
-                    {'\u20B9'}
-                    {item.price}
-                  </Text>
-                  <View style={styles.btnContainer}>
-                    <TouchableOpacity
-                      onPress={() => handleRemoveProduct(item, index)}>
-                      <Text style={styles.productQuantityBtn}>-</Text>
+                  <View style={styles.mainBtnContainer}>
+                    <Text style={styles.productPrice}>
+                      {'\u20B9'}
+                      {item.price}
+                    </Text>
+                    <View style={styles.btnContainer}>
+                      <TouchableOpacity
+                        onPress={() => handleRemoveProduct(item, index)}>
+                        <Text style={styles.productQuantityBtn}>-</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.productQuantity}>
+                        {item.quantity}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => handleAddProduct(item, index)}>
+                        <Text style={styles.productQuantityBtn}>+</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <View style={styles.lowerBtnContainer}>
+                    <View style={styles.ratingStar}>
+                      <Icon
+                        name={'star'}
+                        style={{color: '#DBA800', marginTop: 5}}
+                      />
+                      <Text>{item.ratings}/5</Text>
+                    </View>
+                    <TouchableOpacity>
+                      <Icon
+                        name="delete-outline"
+                        onPress={() => handleRemoveCart(item)}
+                        style={styles.deleteBtn}></Icon>
                     </TouchableOpacity>
-                    <Text style={styles.productQuantity}>{item.quantity}</Text>
-                    <TouchableOpacity
-                      onPress={() => handleAddProduct(item, index)}>
-                      <Text style={styles.productQuantityBtn}>+</Text>
-                    </TouchableOpacity>
                   </View>
-                </View>
-                <View style={styles.lowerBtnContainer}>
-                  <View style={styles.ratingStar}>
-                    <Icon
-                      name={'star'}
-                      style={{color: '#DBA800', marginTop: 5}}
-                    />
-                    <Text>{item.ratings}/5</Text>
-                  </View>
-                  <TouchableOpacity>
-                    <Icon
-                      name="delete-outline"
-                      onPress={() => handleRemoveCart(item)}
-                      style={styles.deleteBtn}></Icon>
-                  </TouchableOpacity>
                 </View>
               </View>
-            </View>
-          )}
-        />
+            )}
+          />
+        ) : (
+          <View
+            style={{
+              marginTop: 30,
+              width: '71%',
+              alignSelf: 'center',
+              padding: 10,
+              borderRadius: 10,
+            }}>
+            <Icon
+              name="shopping-bag"
+              style={{
+                fontSize: 100,
+                color: '#22689f',
+                textAlign: 'center',
+              }}></Icon>
+            <Text>
+              <Text style={{fontSize: 25, color: 'black'}}>
+                Your Cart Is Empty !
+              </Text>
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -183,10 +209,10 @@ const styles = StyleSheet.create({
     paddingBottom: 270,
   },
   cardContainer: {
-    width: '95%',
+    width: '100%',
     alignSelf: 'center',
     borderRadius: 10,
-    elevation: 5,
+    elevation: 4,
     backgroundColor: '#fff',
     marginVertical: 6,
     marginHorizontal: 6,

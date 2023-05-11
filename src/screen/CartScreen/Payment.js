@@ -20,11 +20,20 @@ import ApiManager from '../../api/ApiManager';
 const Payment = props => {
   const {confirmPayment} = useStripe();
   const [showModal, setShowModal] = useState(false);
+  const [cardInfo, setCardInfo] = useState(null);
+
+  const FetchCardDetail = cardDetail => {
+    if (cardDetail.complete) {
+      setCardInfo(cardDetail);
+    } else {
+      setCardInfo(null);
+    }
+  };
 
   const FetchPayment = () => {
-    console.log('URL PAYMENT :::::', BASE_URL + PAYMENT_API, 'payload', {
-      amount: props?.route?.params?.payAmount,
-    });
+    // console.log('URL PAYMENT :::::', BASE_URL + PAYMENT_API, 'payload', {
+    //   amount: props?.route?.params?.payAmount,
+    // });
 
     ApiManager.PostAPI(
       '',
@@ -35,9 +44,17 @@ const Payment = props => {
     )
       .then(response => {
         console.log('payment Response::::::::::', response?.data);
+        toggleModal();
       })
       .catch(error => {
         console.log('payment Error::::::::::', error);
+        ToastAndroid.showWithGravityAndOffset(
+          'Error in Placing The Order',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
       })
       .finally(() => {});
   };
@@ -61,7 +78,7 @@ const Payment = props => {
   const submitForm = e => {
     FetchPayment();
   };
-  
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -105,7 +122,7 @@ const Payment = props => {
               marginVertical: 10,
             }}
             onCardChange={cardDetails => {
-              console.log('cardDetails', cardDetails);
+              FetchCardDetail(cardDetails);
             }}
             onFocus={focusedField => {
               console.log('focusField', focusedField);
@@ -115,19 +132,30 @@ const Payment = props => {
         <Modal transparent visible={showModal}>
           <View style={styles.modalView}>
             <View style={styles.modalContainer}>
-              <Text style={styles.modalMaintxt}>
-                <Icon name="check-circle" style={{fontSize: 15}}></Icon>
-                Hooray!
+              <Icon
+                name="check-circle"
+                style={{
+                  fontSize: 100,
+                  alignSelf: 'center',
+                  color: 'green',
+                }}></Icon>
+              <Text style={styles.modalMaintxt}>Hooray!</Text>
+              <Text style={{color: 'black', textAlign: 'center', fontSize: 17}}>
+                Your Order Has been Placed!
               </Text>
-              <Text style={{color: 'black'}}>Your Order Has been Placed!</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate('Home')}>
                 <Text style={styles.modalHomeBtn}>Go Back to Home</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
         <View style={styles.buttonContainer}>
-          <Button submitForm={submitForm} disabled={true} title="Pay Now" />
+          <Button
+            submitForm={submitForm}
+            disabled={!cardInfo}
+            title="Pay Now"
+          />
         </View>
       </View>
     </ScrollView>
@@ -194,19 +222,21 @@ const styles = StyleSheet.create({
     borderWidth: 5,
   },
   modalHomeBtn: {
+    alignSelf: 'center',
     borderColor: 'black',
     borderWidth: 1,
     width: '50%',
-    textAlign: 'center',
     marginVertical: 10,
     color: 'white',
-    padding: 5,
+    textAlign: 'center',
+    paddingVertical: 5,
     backgroundColor: '#22689f',
     borderRadius: 5,
   },
   modalMaintxt: {
     color: 'green',
-    fontSize: 20,
+    fontSize: 25,
+    textAlign: 'center',
   },
   lowerBtnContainer: {
     display: 'flex',

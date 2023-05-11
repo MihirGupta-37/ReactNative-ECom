@@ -120,7 +120,7 @@ const Login = props => {
         userDetails(response?.data);
         //  userToken(response?.data?.token);
         ToastAndroid.showWithGravityAndOffset(
-          'Login Successfull!!',
+          'Login Successfull !',
           ToastAndroid.LONG,
           ToastAndroid.BOTTOM,
           25,

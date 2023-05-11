@@ -144,11 +144,9 @@ const Home = ({navigation}) => {
       id: item._id,
     });
   };
-  console.log('categoryList::::>>>>', categoryList);
+  // console.log('categoryList::::>>>>', categoryList);
 
   return (
-    // <ScrollView>
-
     <View style={{flex: 1}}>
       <Header profilePress={profilePress} />
       <Images />
@@ -167,7 +165,7 @@ const Home = ({navigation}) => {
             <View style={styles.modalView}>
               <View style={styles.modalContainer}>
                 <TouchableOpacity
-                  style={{width: '10%', marginLeft: 265}}
+                  style={{width: '10%'}}
                   onPress={() => {
                     //  setVisible(false)
                     toggleModal();
@@ -457,12 +455,7 @@ const Home = ({navigation}) => {
           </Text>
         )}
       </View>
-      {/* <View style={styles.buttonContainer}>
-        <Button submitForm={handleLogout} disabled={true} title="Log Out" />
-      </View> */}
     </View>
-
-    // </ScrollView>
   );
 };
 
