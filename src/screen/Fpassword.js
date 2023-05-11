@@ -4,42 +4,34 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {Button} from '../Components/Button';
 import {validateEmail} from '../utils/Validations';
 import {TextField} from '../Components/TextField';
+import axios from 'axios';
+import {BASE_URL, FORGOTPASSWORD_API} from '../utils/Constants';
+import ApiManager from '../api/ApiManager';
 
-const Fpassword = () => {
+const Fpassword = props => {
+  const fieldValues = {
+    email: 'mihirgupta63@gmail.com',
+  };
+
   const [errors, setErrors] = useState({
     email: '',
   });
 
-  const fieldValues = {
-    email: '',
-  };
-
   const [values, setValues] = useState(fieldValues);
 
   const handleChangeText = (key, mValue) => {
-    // setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(values, "///");
-    // if (errors[e.target.name]) {
-    // setErrors({ ...errors, [e.target.name]: "" });
-    // console.log(errors, "<><");
     setValues(value => {
       let newValue = {...value};
-      if (key === 'email') {
-        newValue.email = mValue;
-      } else {
-        return newValue;
-      }
+      key === 'email';
+      newValue.email = mValue;
+      return newValue;
     });
     setErrors(value => {
       let newValue = {...value};
-
       newValue.email = '';
-
       return newValue;
     });
   };
-
-  // console.log('values:::', errors);
 
   const validate = () => {
     let valErrors = {...errors};
@@ -54,12 +46,35 @@ const Fpassword = () => {
     return valid;
   };
 
+  const handleRegister = () => {
+    ApiManager.PostAPI(
+      '',
+      {
+        email: values.email,
+      },
+      BASE_URL + FORGOTPASSWORD_API,
+    )
+      .then(function (response) {
+        console.log('Response::::::::::', response?.data);
+        props.navigation.navigate('ResetPassword');
+      })
+      .catch(function (error) {
+        console.log('Error::::::::::', error.response.data.message);
+        ToastAndroid.showWithGravityAndOffset(
+          error.response.data.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
+      });
+  };
+
   const submitForm = e => {
     if (!validate()) {
       return false;
     }
-    console.log('Submitted', values);
-    setValues(values);
+    handleRegister();
     return true;
   };
 
@@ -70,7 +85,7 @@ const Fpassword = () => {
           <Text style={styles.headerMain}>Forgot Password</Text>
           <Text style={styles.subHeading}>
             Join our Community to get different feedbacks and reviews about
-            Products and stuff!
+            Products!
           </Text>
         </View>
 
@@ -86,7 +101,6 @@ const Fpassword = () => {
           }}
           isIcon={false}
         />
-
         <View style={styles.invalidField}>
           {errors.email ? (
             <Text style={styles.invalidTxt}>{errors.email}</Text>
@@ -94,13 +108,7 @@ const Fpassword = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button
-            submitForm={submitForm}
-            // disabled={toggleCheckBox}
-            // styles={[{backgroundColor: toggleCheckBox ? '#22689f' : 'grey'}]}
-            disabled={true}
-            title="Send OTP here"
-          />
+          <Button submitForm={submitForm} disabled={true} title="Send OTP" />
         </View>
       </View>
     </ScrollView>
@@ -111,10 +119,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    // alignItems: 'center',
-    // display: 'flex',
-    // justifyContent: 'center',
-    // flexDirection: 'column',
   },
   header: {
     display: 'flex',
@@ -130,9 +134,7 @@ const styles = StyleSheet.create({
   },
   subHeading: {
     textAlign: 'center',
-  },
-  buttonContainer: {
-    marginVertical: 20,
+    color: '#625D5D',
   },
   invalidField: {
     display: 'flex',
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
   },
   invalidTxt: {
     color: 'red',
+    paddingBottom: 15,
   },
 });
 export default Fpassword;

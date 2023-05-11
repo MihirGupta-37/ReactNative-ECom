@@ -3,7 +3,6 @@ import {Pressable, StyleSheet, Text} from 'react-native';
 import {useState} from 'react';
 
 export const Button = props => {
-  console.log(props);
   return (
     <Pressable
       onPress={props.submitForm}

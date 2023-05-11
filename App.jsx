@@ -1,30 +1,27 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
-
-import Navigation from './src/Navigation/NavigationScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useState, useEffect} from 'react';
+import LocalStorage from './src/utils/LocalStorage';
+import AuthStack from './src/Navigation/AuthStack';
+import {NavigationContainer} from '@react-navigation/native';
+import {StripeProvider} from '@stripe/stripe-react-native';
+import {PUBLISHABLE_KEY} from './src/utils/Constants';
+import Payment from './src/screen/CartScreen/Payment';
 
 function App() {
-  return <Navigation />;
+  const [userDetails, setUserDetails] = useState('');
+  useEffect(() => {
+    handleData();
+  }, []);
+  const handleData = () => {
+    LocalStorage.getData('UserData').then(res => {
+      setUserDetails(res);
+    });
+  };
+  return (
+    <StripeProvider publishableKey={PUBLISHABLE_KEY}>
+      <NavigationContainer>
+        <AuthStack userDetails={userDetails} />
+      </NavigationContainer>
+    </StripeProvider>
+  );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
 export default App;

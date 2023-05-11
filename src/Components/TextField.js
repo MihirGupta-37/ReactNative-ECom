@@ -3,7 +3,6 @@ import {View, TextInput, StyleSheet, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 
 export const TextField = props => {
-  console.log(props, 'val');
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.label}>{props.title}</Text>
@@ -11,8 +10,9 @@ export const TextField = props => {
         <TextInput
           style={[styles.inputStyle, {width: '90%'}]}
           placeholder={props.placeholder}
-          placeholderTextColor="lightgrey"
+          placeholderTextColor="grey"
           autoCapitalize="none"
+          editable={props.editable}
           secureTextEntry={props.secureTextEntry}
           autoCorrect={false}
           name={props.name}
@@ -32,6 +32,7 @@ export const TextField = props => {
 const styles = StyleSheet.create({
   inputStyle: {
     fontSize: 15,
+    color: 'black',
   },
   iconEye: {
     fontSize: 22,
@@ -41,8 +42,8 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 2,
-    marginBottom: 15,
     paddingBottom: 5,
+    marginBottom: 12,
   },
   label: {
     color: '#625D5D',

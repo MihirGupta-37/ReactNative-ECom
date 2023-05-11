@@ -39,7 +39,7 @@ export const validatePassword = value => {
     return 'Password must contain at least one Digit.';
   }
 
-  const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/; // eslint-disable-line
+  const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
   if (!isContainsSymbol.test(value)) {
     return 'Password must contain at least one Special Symbol.';
   }
@@ -64,17 +64,44 @@ export const validateName = value => {
   return false;
 };
 
-export const validconfPassword = value => {
-  console.log(value, 'valllllle');
-  if (IsEmpty(value)) {
+export const validconfPassword = (value, cValue) => {
+  if (cValue === '') {
     return 'Please enter Confirm password';
   }
-  console.log(value.password, 'value.password');
 
-  if (value.password !== value.confPassword) {
-    console.log(value.password, 'value.password');
-
+  if (value !== cValue) {
     return 'Password and Confirm Password does not match.';
   }
+  return '';
+};
+
+export const validateOtp = value => {
+  console.log('value::::', value);
+  if (IsEmpty(value)) {
+    return 'Please enter OTP';
+  }
+};
+
+export function numberWithCommas(x) {
+  var parts = x.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+}
+
+export const validateCardNo = value => {
+  if (IsEmpty(value)) {
+    return 'Please enter Card No.';
+  }
+  if (!value.match(/^[\d]{16}$/)) {
+    // eslint-disable-line
+    return 'Invalid Card No.';
+  }
   return false;
+};
+
+export const validateAddress = value => {
+  console.log('value::::', value);
+  if (IsEmpty(value)) {
+    return 'Please Enter Your Address';
+  }
 };
