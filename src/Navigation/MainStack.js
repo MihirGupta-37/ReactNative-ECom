@@ -6,6 +6,9 @@ import Cart from '../screen/CartScreen/Cart';
 import UserProfile from '../screen/HomeScreen/UserProfile';
 import ProductDetails from '../screen/HomeScreen/ProductDetails';
 import Payment from '../screen/CartScreen/Payment';
+import About from '../screen/AboutScreen/About';
+import More from '../screen/MoreScreen/More';
+import Contact from '../screen/AboutScreen/Contact';
 
 export default function () {
   const AuthStack = createNativeStackNavigator();
@@ -58,6 +61,39 @@ export default function () {
       <AuthStack.Screen
         name="Payment"
         component={Payment}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+          headerShadowVisible: false,
+        }}
+      />
+      <AuthStack.Screen
+        name="About"
+        component={About}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+          headerShadowVisible: false,
+        }}
+      />
+      <AuthStack.Screen
+        name="More"
+        component={More}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+          headerShadowVisible: false,
+        }}
+      />
+      <AuthStack.Screen
+        name="Contact"
+        component={Contact}
         options={{
           title: '',
           headerStyle: {

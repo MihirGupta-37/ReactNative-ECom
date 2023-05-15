@@ -10,11 +10,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {BASE_URL, PRODUCTS_API} from '../../utils/Constants';
-// import axios from 'axios';
 import {Button} from '../../Components/Button';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import ApiManager from '../../api/ApiManager';
 import {Loader} from '../../Components/Loader';
+import Pinchable from 'react-native-pinchable';
 
 const ProductDetails = ({navigation, route, item}) => {
   const [cartItems, setCartItems] = useState([]);
@@ -79,15 +79,17 @@ const ProductDetails = ({navigation, route, item}) => {
             <ScrollView pagingEnabled horizontal>
               {product?.images?.map(function (image, index) {
                 return (
-                  <Image
-                    key={index}
-                    source={{uri: image?.url ?? ''}}
-                    style={{
-                      width: 340,
-                      height: 300,
-                      resizeMode: 'contain',
-                    }}
-                  />
+                  <Pinchable>
+                    <Image
+                      key={index}
+                      source={{uri: image?.url ?? ''}}
+                      style={{
+                        width: 340,
+                        height: 300,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </Pinchable>
                 );
               })}
             </ScrollView>
@@ -113,7 +115,7 @@ const ProductDetails = ({navigation, route, item}) => {
                   marginHorizontal: 5,
                 }}
               />
-              <Text style={{fontSize: 15, marginTop: 15}}>
+              <Text style={{fontSize: 15, marginTop: 15, color: 'grey'}}>
                 {product.ratings}/5
               </Text>
             </View>
@@ -188,6 +190,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     letterSpacing: 1,
     marginVertical: 15,
+    color: 'grey',
   },
   productPrice: {
     fontSize: 18,

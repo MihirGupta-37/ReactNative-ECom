@@ -6,22 +6,32 @@ import {
   ScrollView,
   Modal,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {BASE_URL, PAYMENT_API} from '../../utils/Constants';
 import {Button} from '../../Components/Button';
-import {
-  CardField,
-  useStripe,
-  confirmPayment,
-} from '@stripe/stripe-react-native';
+import {CardField} from '@stripe/stripe-react-native';
 import ApiManager from '../../api/ApiManager';
+import {TextField} from '../../Components/TextField';
+import {validateAddress, validateName} from '../../utils/Validations';
 
 const Payment = props => {
-  const {confirmPayment} = useStripe();
+
+  // const {confirmPayment, loading} = useConfirmPayment();
   const [showModal, setShowModal] = useState(false);
   const [cardInfo, setCardInfo] = useState(null);
+  const fieldValues = {
+    userName: '',
+    Address: '',
+  };
+  const [values, setValues] = useState(fieldValues);
+  const [errors, setErrors] = useState({
+    userName: '',
+    Address: '',
+  });
 
+  //Fetching Card Details On Completion
   const FetchCardDetail = cardDetail => {
     if (cardDetail.complete) {
       setCardInfo(cardDetail);
@@ -30,11 +40,8 @@ const Payment = props => {
     }
   };
 
-  const FetchPayment = () => {
-    // console.log('URL PAYMENT :::::', BASE_URL + PAYMENT_API, 'payload', {
-    //   amount: props?.route?.params?.payAmount,
-    // });
-
+  //Api Call For Payment Response
+  const FetchPayment = async () => {
     ApiManager.PostAPI(
       '',
       {
@@ -55,28 +62,76 @@ const Payment = props => {
           25,
           50,
         );
-      })
-      .finally(() => {});
+      });
+    // Client Secret Handling
+
+    // const {clientSecret} = await response.data;
+
+    // const {error, paymentIntent} = await confirmPayment(clientSecret, {
+    //   paymentMethodType: 'Card',
+    //   paymentMethodData: {
+    //     billingDetails: [values],
+    //   },
+    // });
+
+    // if (error) {
+    //   console.log(`Error code: ${error.code}, error.message`);
+    // } else if (paymentIntent) {
+    //   console.log('Success', `Payment Successful: ${paymentIntent.id}`);
+    // }
   };
 
-  //   const client_secret = data.client_secret;
+  // Handling Text In Input Field
+  const handleChangeText = (key, mValue) => {
+    setValues(value => {
+      let newValue = {...value};
 
-  // if (!stripe || !elements) return;
-  //  const result = await stripe.confirmPayment(client_secret, {
-  // payment_method: {
-  //  card: elements.getElement(CardField),
-  //  billing_details: {
-  //   amount: props.route.params.payAmount
-  //  },
-  //  },
-  //  });
+      if (key === 'userName') {
+        newValue.userName = mValue;
+      } else {
+        newValue.Address = mValue;
+      }
+      return newValue;
+    });
+    setErrors(value => {
+      let newValue = {...value};
+      newValue.userName = '';
+      newValue.Address = '';
+      return newValue;
+    });
+  };
 
+  //Validation For Input Field
+  const validate = () => {
+    let valErrors = {...errors};
+    let valid = true;
+
+    const userNameError = validateName(values.userName);
+    const AddressError = validateAddress(values.Address);
+    if (userNameError) {
+      valErrors = {...valErrors, userName: userNameError};
+      valid = false;
+    }
+    if (AddressError) {
+      valErrors = {...valErrors, Address: AddressError};
+      valid = false;
+    }
+    setErrors(valErrors);
+    return valid;
+  };
+
+  //Toggle For Modal
   const toggleModal = () => {
     setShowModal(!showModal);
   };
 
+  //Submitting on Button
   const submitForm = e => {
+    if (!validate()) {
+      return false;
+    }
     FetchPayment();
+    return true;
   };
 
   return (
@@ -90,7 +145,6 @@ const Payment = props => {
             Subtotal {'\u20B9'}
             <Text style={{fontWeight: 'bold'}}>
               {props.route.params.payAmount}
-              {/* {numberWithCommas(payAmount)} */}
             </Text>
           </Text>
           <Text style={{color: 'lightgreen', marginLeft: 20, marginBottom: 15}}>
@@ -100,7 +154,41 @@ const Payment = props => {
         </View>
         <View style={styles.PaymentField}>
           <View style={{marginLeft: 10, marginVertical: 7}}>
-            <Text style={{fontSize: 17}}>Card Details:</Text>
+            <TextField
+              title="Full Name"
+              name="userName"
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={values.userName}
+              error={errors.userName}
+              onChangeText={val => {
+                handleChangeText('userName', val);
+              }}
+              isIcon={false}
+            />
+            <View style={styles.invalidField}>
+              {errors.userName ? (
+                <Text style={styles.invalidTxt}>{errors.userName}</Text>
+              ) : null}
+            </View>
+            <TextField
+              title="Address"
+              name="Address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={values.Address}
+              error={errors.Address}
+              onChangeText={val => {
+                handleChangeText('Address', val);
+              }}
+              isIcon={false}
+            />
+            <View style={styles.invalidField}>
+              {errors.Address ? (
+                <Text style={styles.invalidTxt}>{errors.Address}</Text>
+              ) : null}
+            </View>
+            <Text style={{fontSize: 15, color: '#625D5D'}}>Card Details:</Text>
           </View>
           <CardField
             postalCodeEnabled={false}
@@ -114,7 +202,8 @@ const Payment = props => {
               borderColor: '#22689f',
               borderRadius: 10,
               backgroundColor: '#FFFFFF',
-              textColor: '#000000',
+              textColor: 'black',
+              placeholderColor: 'lightgrey',
             }}
             style={{
               width: '100%',
@@ -123,6 +212,7 @@ const Payment = props => {
             }}
             onCardChange={cardDetails => {
               FetchCardDetail(cardDetails);
+              // console.log('cardDetails', cardDetails);
             }}
             onFocus={focusedField => {
               console.log('focusField', focusedField);
@@ -150,12 +240,8 @@ const Payment = props => {
             </View>
           </View>
         </Modal>
-        <View style={styles.buttonContainer}>
-          <Button
-            submitForm={submitForm}
-            disabled={!cardInfo}
-            title="Pay Now"
-          />
+        <View>
+          <Button submitForm={submitForm} disabled={cardInfo} title="Pay Now" />
         </View>
       </View>
     </ScrollView>
@@ -174,7 +260,7 @@ const styles = StyleSheet.create({
   },
   headerMain: {
     fontSize: 27,
-    marginVertical: 30,
+    marginVertical: 10,
     fontWeight: '800',
     color: 'black',
     borderBottomColor: 'black',
@@ -204,7 +290,6 @@ const styles = StyleSheet.create({
     color: 'red',
     paddingBottom: 15,
   },
-  PaymentField: {},
   modalView: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -238,11 +323,13 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
   },
-  lowerBtnContainer: {
+  invalidField: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginTop: 10,
+  },
+  invalidTxt: {
+    color: 'red',
+    paddingBottom: 15,
   },
 });
 export default Payment;

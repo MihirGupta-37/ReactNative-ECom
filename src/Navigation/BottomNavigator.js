@@ -17,6 +17,8 @@ function BottomTab() {
             iconName = focused ? 'home' : 'home';
           } else if (route.name === 'Cart') {
             iconName = focused ? 'shopping-cart' : 'shopping-cart';
+          } else if (route.name === 'More') {
+            iconName = focused ? 'more-horiz' : 'more-horiz';
           }
 
           return <Icon name={iconName} size={size} color={color} />;
@@ -46,6 +48,17 @@ function BottomTab() {
           tabPress: e => {
             e.preventDefault();
             navigation.navigate('Cart', {screen: 'Cart'});
+          },
+        })}
+      />
+      <BottomTabs.Screen
+        name="More"
+        options={{headerShown: false}}
+        children={() => <MainStack />}
+        listeners={({navigation}) => ({
+          tabPress: e => {
+            e.preventDefault();
+            navigation.navigate('More', {screen: 'More'});
           },
         })}
       />

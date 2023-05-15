@@ -14,7 +14,6 @@ import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {numberWithCommas} from '../../utils/Validations';
 
 const Cart = ({navigation}) => {
-  const [showModal, setShowModal] = useState(false);
   const [addedProduct, setAddedProduct] = useState([]);
   useEffect(() => {
     handleCartData();
@@ -64,16 +63,14 @@ const Cart = ({navigation}) => {
       return amount;
     }, 0);
   };
-  // console.log('amount:::', calculateTotal());
-
-  // const toggleModal = () => {
-  //   setShowModal(!showModal);
-  // };
 
   return (
     <View style={styles.container}>
       <Header profilePress={profilePress} />
-      <View>
+      <View
+        style={{
+          paddingHorizontal: 10,
+        }}>
         <View style={styles.buynowContainer}>
           <Text style={styles.totalTxt}>
             Subtotal {'\u20B9'}
@@ -87,29 +84,20 @@ const Cart = ({navigation}) => {
           </Text>
           <TouchableOpacity>
             <Text
-              style={styles.buynowBtn}
+              style={[
+                styles.buynowBtn,
+                {
+                  backgroundColor:
+                    addedProduct.length === 0 ? 'grey' : '#22689f',
+                },
+              ]}
+              disabled={addedProduct.length === 0}
               onPress={() => {
                 navigation.navigate('Payment', {payAmount: calculateTotal()});
               }}>
               Buy Now
             </Text>
           </TouchableOpacity>
-          {/* <Modal transparent visible={showModal}>
-            <View style={styles.modalView}>
-              <View style={styles.modalContainer}>
-                <Text style={styles.modalMaintxt}>
-                  <Icon name="check-circle" style={{fontSize: 15}}></Icon>
-                  Hooray!
-                </Text>
-                <Text style={{color: 'black'}}>
-                  Your Order Has been Placed!
-                </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                  <Text style={styles.modalHomeBtn}>Go Back to Home</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal> */}
         </View>
         {addedProduct?.length > 0 ? (
           <FlatList
@@ -161,7 +149,7 @@ const Cart = ({navigation}) => {
                         name={'star'}
                         style={{color: '#DBA800', marginTop: 5}}
                       />
-                      <Text>{item.ratings}/5</Text>
+                      <Text style={{color: 'grey'}}>{item.ratings}/5</Text>
                     </View>
                     <TouchableOpacity>
                       <Icon
@@ -175,14 +163,7 @@ const Cart = ({navigation}) => {
             )}
           />
         ) : (
-          <View
-            style={{
-              marginTop: 30,
-              width: '71%',
-              alignSelf: 'center',
-              padding: 10,
-              borderRadius: 10,
-            }}>
+          <View style={styles.emptyCartView}>
             <Icon
               name="shopping-bag"
               style={{
@@ -205,7 +186,6 @@ const Cart = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
     paddingBottom: 270,
   },
   cardContainer: {
@@ -268,9 +248,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 5,
     paddingHorizontal: 17,
+    color: 'black',
   },
   productQuantityBtn: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: '#22689f',
     paddingVertical: 4.5,
     paddingHorizontal: 15,
     borderColor: 'black',
@@ -278,7 +259,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
     fontWeight: 'bold',
-    color: 'black',
+    color: '#ffff',
   },
   ratingStar: {
     display: 'flex',
@@ -303,7 +284,6 @@ const styles = StyleSheet.create({
   },
   buynowBtn: {
     alignSelf: 'center',
-    backgroundColor: '#22689f',
     color: '#fff',
     paddingVertical: 10,
     paddingHorizontal: 15,
@@ -314,43 +294,6 @@ const styles = StyleSheet.create({
     width: '90%',
     marginVertical: 10,
   },
-  // modalView: {
-  //   flex: 1,
-  //   backgroundColor: 'rgba(0,0,0,0.5)',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // modalContainer: {
-  //   width: '80%',
-  //   backgroundColor: 'white',
-  //   paddingHorizontal: 20,
-  //   paddingVertical: 25,
-  //   borderRadius: 20,
-  //   elevation: 20,
-  //   borderColor: 'black',
-  //   borderWidth: 5,
-  // },
-  // modalHomeBtn: {
-  //   borderColor: 'black',
-  //   borderWidth: 1,
-  //   width: '50%',
-  //   textAlign: 'center',
-  //   marginVertical: 10,
-  //   color: 'white',
-  //   padding: 5,
-  //   backgroundColor: '#22689f',
-  //   borderRadius: 5,
-  // },
-  // modalMaintxt: {
-  //   color: 'green',
-  //   fontSize: 20,
-  // },
-  // lowerBtnContainer: {
-  //   display: 'flex',
-  //   flexDirection: 'row',
-  //   justifyContent: 'flex-start',
-  //   marginTop: 10,
-  // },
   totalTxt: {
     textAlign: 'left',
     fontSize: 20,
@@ -365,6 +308,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
+  },
+  emptyCartView: {
+    marginTop: 30,
+    width: '71%',
+    alignSelf: 'center',
+    padding: 10,
+    borderRadius: 10,
   },
 });
 export default Cart;

@@ -25,10 +25,10 @@ const UserProfile = props => {
     email: '',
   });
 
-  const handleLogout = () => {
-    console.log('logout click');
-    setTimeout(() => signOut(), 2000);
-  };
+  // const handleLogout = () => {
+  //   console.log('logout click');
+  //   setTimeout(() => signOut(), 2000);
+  // };
 
   useEffect(() => {
     handleData();
@@ -138,9 +138,9 @@ const UserProfile = props => {
             style={styles.buttonContainer}
           />
         </View>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <Button submitForm={handleLogout} disabled={true} title="Log Out" />
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );
@@ -192,9 +192,9 @@ const styles = StyleSheet.create({
     width: '20%',
     color: '#22689f',
   },
-  buttonContainer: {
-    width: '80%',
-    alignSelf: 'center',
-  },
+  // buttonContainer: {
+  //   width: '80%',
+  //   alignSelf: 'center',
+  // },
 });
 export default UserProfile;

@@ -100,7 +100,7 @@ export const validateCardNo = value => {
 };
 
 export const validateAddress = value => {
-  console.log('value::::', value);
+  // console.log('value::::', value);
   if (IsEmpty(value)) {
     return 'Please Enter Your Address';
   }

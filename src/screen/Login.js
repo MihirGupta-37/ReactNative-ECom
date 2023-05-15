@@ -82,10 +82,6 @@ const Login = props => {
     setPassVisible(!passVisible);
   };
 
-  const iconPress1 = () => {
-    setPassVisible1(!passVisible1);
-  };
-
   const onPressTxt = () => {
     setValues(value => {
       let newValue = {...value};

@@ -33,7 +33,9 @@ export default function ProductListComp({
             {item.name}
           </Text>
           {lengthMore ? (
-            <Text onPress={() => hideShowHandler()} style={{lineHeight: 21}}>
+            <Text
+              onPress={() => hideShowHandler()}
+              style={{lineHeight: 21, color: 'black'}}>
               {item?.isReadMore ? 'Read less...' : 'Read more...'}
             </Text>
           ) : null}
@@ -50,7 +52,7 @@ export default function ProductListComp({
           </Text>
           <View style={styles.ratingStar}>
             <Icon name={'star'} style={{color: '#DBA800', marginTop: 5}} />
-            <Text>{item.ratings}/5</Text>
+            <Text style={{color: 'black'}}>{item.ratings}/5</Text>
           </View>
         </View>
         <Text style={styles.productButton} onPress={() => onClickDetails()}>

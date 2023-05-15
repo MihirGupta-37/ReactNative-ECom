@@ -38,14 +38,16 @@ const Home = ({navigation}) => {
   });
 
   useEffect(() => {
-    LocalStorage.getData('UserData').then(
-      res => 0, //console.log('userData--->')
-    );
+    LocalStorage.getData('UserData').then(res => 0);
     handleRegister();
   }, [page]);
 
   const profilePress = () => {
     navigation.navigate('UserProfile');
+  };
+
+  const logoPress = () => {
+    navigation.navigate('About');
   };
 
   const toggleModal = () => {
@@ -95,8 +97,6 @@ const Home = ({navigation}) => {
     } else {
       setPage(prevPage => prevPage + 1);
     }
-
-    // handleRegister();
   };
 
   const handleRegister = isFilter => {
@@ -121,12 +121,12 @@ const Home = ({navigation}) => {
             categoryList?.highPrice
           }`
         : BASE_URL + PRODUCTS_API + query;
-    console.log('BASE_URL::::', BASE_URL, categoryList);
+    // console.log('BASE_URL::::', BASE_URL, categoryList);
     ApiManager.GetAPI('', baseUrl)
       .then(response => {
         setLoading(false);
         const newData = response.data.products;
-        console.log('Response:::::', response.data);
+        // console.log('Response:::::', response.data);
         if (isFilter) {
           setProductList([...newData]);
         } else {
@@ -144,11 +144,10 @@ const Home = ({navigation}) => {
       id: item._id,
     });
   };
-  // console.log('categoryList::::>>>>', categoryList);
 
   return (
     <View style={{flex: 1}}>
-      <Header profilePress={profilePress} />
+      <Header logoPress={logoPress} profilePress={profilePress} />
       <Images />
       <Loader loading={loading} />
       <View style={styles.container}>
