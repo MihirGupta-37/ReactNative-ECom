@@ -79,5 +79,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '80%',
     alignSelf: 'center',
+    marginTop: 10,
   },
 });

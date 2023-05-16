@@ -105,3 +105,10 @@ export const validateAddress = value => {
     return 'Please Enter Your Address';
   }
 };
+
+export const validateComment = value => {
+  // console.log('value::::', value);
+  if (IsEmpty(value)) {
+    return 'This is Required Field!';
+  }
+};

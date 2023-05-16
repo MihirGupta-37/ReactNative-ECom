@@ -17,7 +17,7 @@ import ApiManager from '../../api/ApiManager';
 import {AuthContext} from '../../Navigation/AuthContext';
 
 const UserProfile = props => {
-  const {signOut} = useContext(AuthContext);
+  // const {signOut} = useContext(AuthContext);
 
   const [token, setToken] = useState('');
   const [values, setValues] = useState({
@@ -96,51 +96,59 @@ const UserProfile = props => {
   return (
     <ScrollView>
       <View style={[styles.container]}>
-        <View style={styles.header}>
-          <Text style={styles.headerMain}>User Profile</Text>
-        </View>
-        <View style={styles.profileIcon}>
-          <TouchableOpacity onPress={profileIconPress}>
-            <Icon style={styles.iconProfile} name="account-circle"></Icon>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputMain}>
-          <TextField
-            style={{fontSize: 17}}
-            placeholder="Full Name"
-            value={values.userName}
-            isIcon={true}
-            isIconVisible={true}
-            iconName1={'person-outline'}
-            onChangeText={val => {
-              handleChangeText('userName', val);
-            }}
-          />
-
-          <View style={styles.InputField}>
+        <View
+          style={{
+            borderColor: 'lightgrey',
+            borderWidth: 1,
+            padding: 15,
+            marginTop: 10,
+          }}>
+          <View style={styles.header}>
+            <Text style={styles.headerMain}>User Profile</Text>
+          </View>
+          <View style={styles.profileIcon}>
+            <TouchableOpacity onPress={profileIconPress}>
+              <Icon style={styles.iconProfile} name="account-circle"></Icon>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.inputMain}>
             <TextField
               style={{fontSize: 17}}
-              placeholder="Email"
-              value={values.email}
-              editable={false}
+              placeholder="Full Name"
+              value={values.userName}
               isIcon={true}
               isIconVisible={true}
-              iconName1={'mail-outline'}
+              iconName1={'person-outline'}
               onChangeText={val => {
-                handleChangeText('email', val);
-              }}></TextField>
-          </View>
+                handleChangeText('userName', val);
+              }}
+            />
 
-          <Button
-            submitForm={submitForm}
-            disabled={true}
-            title="Update"
-            style={styles.buttonContainer}
-          />
-        </View>
-        {/* <View style={styles.buttonContainer}>
+            <View style={styles.InputField}>
+              <TextField
+                style={{fontSize: 17}}
+                placeholder="Email"
+                value={values.email}
+                editable={false}
+                isIcon={true}
+                isIconVisible={true}
+                iconName1={'mail-outline'}
+                onChangeText={val => {
+                  handleChangeText('email', val);
+                }}></TextField>
+            </View>
+
+            <Button
+              submitForm={submitForm}
+              disabled={true}
+              title="Update"
+              style={styles.buttonContainer}
+            />
+          </View>
+          {/* <View style={styles.buttonContainer}>
           <Button submitForm={handleLogout} disabled={true} title="Log Out" />
         </View> */}
+        </View>
       </View>
     </ScrollView>
   );

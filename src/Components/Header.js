@@ -28,16 +28,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 0.2,
     borderBottomColor: '#8e8e8e',
-    backgroundColor: '#fff',
+    backgroundColor: '#22689f',
   },
   headerTxt: {
     fontWeight: '600',
     fontSize: 20,
-    color: '#22689f',
+    color: '#fff',
     marginLeft: 15,
   },
   headTouchable: {
-    marginRight: 20,
+    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
     width: 50,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   iconProfile: {
     fontSize: 30,
-    color: '#22689f',
+    color: '#fff',
   },
 });
 export default Header;

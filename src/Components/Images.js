@@ -12,7 +12,7 @@ const image = [
 
 const Images = () => {
   return (
-    <View style={{width, height}}>
+    <View style={{width, height, marginTop: 15}}>
       <ScrollView pagingEnabled horizontal style={{width, height}}>
         {image.map((image, index) => (
           <Image
