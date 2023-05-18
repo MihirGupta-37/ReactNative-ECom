@@ -12,8 +12,20 @@ import Header from '../../Components/Header';
 import LocalStorage from '../../utils/LocalStorage';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {numberWithCommas} from '../../utils/Validations';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  removeFromCart,
+  incrementQuantity,
+  decrementQuantity,
+} from '../../redux/counter/CounterSlice';
 
 const Cart = ({navigation}) => {
+  const dispatch = useDispatch();
+  const productItems = useSelector(state => state.products.products);
+  const productCount = useSelector(state => state.products.productCount);
+  console.log('productItems::::', productItems);
+  console.log('productCount::::', productCount);
+
   const [addedProduct, setAddedProduct] = useState([]);
   useEffect(() => {
     handleCartData();
@@ -30,12 +42,12 @@ const Cart = ({navigation}) => {
     navigation.navigate('UserProfile');
   };
 
-  const handleAddProduct = (item, index) => {
-    const newCart = [...addedProduct];
-    let value = newCart[index].quantity + 1;
-    newCart[index].quantity = value;
-    setAddedProduct(newCart);
-  };
+  // const handleAddProduct = (item, index) => {
+  //   const newCart = [...addedProduct];
+  //   let value = newCart[index].quantity + 1;
+  //   newCart[index].quantity = value;
+  //   setAddedProduct(newCart);
+  // };
 
   const handleRemoveProduct = (item, index) => {
     const newCart = [...addedProduct];
@@ -47,6 +59,20 @@ const Cart = ({navigation}) => {
     }
   };
 
+  const handleRemoveFromCart = delID => {
+    console.log('item:::', delID);
+    dispatch(removeFromCart(delID));
+  };
+
+  const handleIncrement = incID => {
+    dispatch(incrementQuantity(incID));
+  };
+
+  const handleDecrement = decID => {
+    dispatch(decrementQuantity(decID));
+  };
+
+  //Remove from cart on local storage
   const handleRemoveCart = item => {
     const newArray = [...addedProduct];
     const index = addedProduct.indexOf(item);
@@ -88,10 +114,10 @@ const Cart = ({navigation}) => {
                 styles.buynowBtn,
                 {
                   backgroundColor:
-                    addedProduct.length === 0 ? 'grey' : '#22689f',
+                    productItems.length === 0 ? 'grey' : '#22689f',
                 },
               ]}
-              disabled={addedProduct.length === 0}
+              disabled={productItems.length === 0}
               onPress={() => {
                 navigation.navigate('Payment', {payAmount: calculateTotal()});
               }}>
@@ -99,9 +125,10 @@ const Cart = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        {addedProduct?.length > 0 ? (
+        {productItems?.length > 0 ? (
           <FlatList
-            data={addedProduct}
+            data={productItems}
+            // data={addedProduct}
             nestedScrollEnabled={true}
             numColumns={1}
             renderItem={({item, index}) => (
@@ -131,14 +158,15 @@ const Cart = ({navigation}) => {
                     </Text>
                     <View style={styles.btnContainer}>
                       <TouchableOpacity
-                        onPress={() => handleRemoveProduct(item, index)}>
+                        onPress={() => handleDecrement(item._id)}>
                         <Text style={styles.productQuantityBtn}>-</Text>
                       </TouchableOpacity>
                       <Text style={styles.productQuantity}>
-                        {item.quantity}
+                        {productCount}
+                        {/* {item.count} */}
                       </Text>
                       <TouchableOpacity
-                        onPress={() => handleAddProduct(item, index)}>
+                        onPress={() => handleIncrement(item._id)}>
                         <Text style={styles.productQuantityBtn}>+</Text>
                       </TouchableOpacity>
                     </View>
@@ -154,7 +182,7 @@ const Cart = ({navigation}) => {
                     <TouchableOpacity>
                       <Icon
                         name="delete-outline"
-                        onPress={() => handleRemoveCart(item)}
+                        onPress={() => handleRemoveFromCart(item._id)}
                         style={styles.deleteBtn}></Icon>
                     </TouchableOpacity>
                   </View>

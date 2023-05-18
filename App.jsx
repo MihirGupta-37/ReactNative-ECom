@@ -5,6 +5,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {StripeProvider} from '@stripe/stripe-react-native';
 import {PUBLISHABLE_KEY} from './src/utils/Constants';
 import Payment from './src/screen/CartScreen/Payment';
+import {Provider} from 'react-redux';
+import store from './src/redux/store/Store';
 
 function App() {
   const [userDetails, setUserDetails] = useState('');
@@ -17,11 +19,13 @@ function App() {
     });
   };
   return (
-    <StripeProvider publishableKey={PUBLISHABLE_KEY}>
-      <NavigationContainer>
-        <AuthStack userDetails={userDetails} />
-      </NavigationContainer>
-    </StripeProvider>
+    <Provider store={store}>
+      <StripeProvider publishableKey={PUBLISHABLE_KEY}>
+        <NavigationContainer>
+          <AuthStack userDetails={userDetails} />
+        </NavigationContainer>
+      </StripeProvider>
+    </Provider>
   );
 }
 export default App;

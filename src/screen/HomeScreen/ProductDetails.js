@@ -15,8 +15,11 @@ import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import ApiManager from '../../api/ApiManager';
 import {Loader} from '../../Components/Loader';
 import Pinchable from 'react-native-pinchable';
+import {useSelector, useDispatch} from 'react-redux';
+import {addToCart} from '../../redux/counter/CounterSlice';
 
-const ProductDetails = ({navigation, route, item}) => {
+const ProductDetails = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState([]);
   const [product, setProduct] = useState('');
   const [loading, setLoading] = useState(false);
@@ -40,7 +43,7 @@ const ProductDetails = ({navigation, route, item}) => {
     ApiManager.GetAPI('', BASE_URL + PRODUCTS_API + query)
       .then(response => {
         setLoading(false);
-        // console.log('Response-ID:::::', response?.data?.product);
+        console.log('Response-ID:::::', response?.data?.product);
         setProduct(response?.data?.product);
         ProductCheckIsAdded(arrayOfCart, response?.data?.product);
       })
@@ -56,11 +59,13 @@ const ProductDetails = ({navigation, route, item}) => {
   };
 
   const submitForm = () => {
-    let newArray = cartItems;
-    newArray.push(product);
-    setCartItems(newArray);
-    LocalStorage.saveData('AddToCart', newArray);
-    ProductCheckIsAdded(newArray, product);
+    dispatch(addToCart(product));
+    // console.log('route:::', route);
+    // let newArray = cartItems;
+    // newArray.push(product);
+    // setCartItems(newArray);
+    // LocalStorage.saveData('AddToCart', newArray);
+    // ProductCheckIsAdded(newArray, product);
   };
 
   const GoToCart = () => {

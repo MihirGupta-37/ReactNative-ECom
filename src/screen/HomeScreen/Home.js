@@ -21,10 +21,11 @@ import {
 } from 'accordion-collapse-react-native';
 import ApiManager from '../../api/ApiManager';
 import {Loader} from '../../Components/Loader';
+import {addItemtoCart} from '../../redux/actions/Actions';
 
 const Home = ({navigation}) => {
   // const {signOut} = useContext(AuthContext);
-
+ 
   const [productList, setProductList] = useState([]);
   const [page, setPage] = useState(1);
   const [lengthMore, setLengthMore] = useState(false);
@@ -144,6 +145,7 @@ const Home = ({navigation}) => {
       id: item._id,
     });
   };
+
 
   return (
     <View style={{flex: 1}}>
