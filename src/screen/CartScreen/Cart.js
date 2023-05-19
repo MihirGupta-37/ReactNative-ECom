@@ -17,19 +17,21 @@ import {
   removeFromCart,
   incrementQuantity,
   decrementQuantity,
+  calculateTotalPrice,
 } from '../../redux/counter/CounterSlice';
 
 const Cart = ({navigation}) => {
   const dispatch = useDispatch();
   const productItems = useSelector(state => state.products.products);
   const productCount = useSelector(state => state.products.productCount);
-  console.log('productItems::::', productItems);
-  console.log('productCount::::', productCount);
-
+  console.log('productItems:::', productItems);
+  const total = useSelector(state => state.products.total);
+  // console.log('total---->', total);
   const [addedProduct, setAddedProduct] = useState([]);
   useEffect(() => {
     handleCartData();
-  }, []);
+    dispatch(calculateTotalPrice(productItems));
+  }, [dispatch, productItems]);
 
   const handleCartData = () => {
     LocalStorage.getData('AddToCart').then(res => {
@@ -60,17 +62,22 @@ const Cart = ({navigation}) => {
   };
 
   const handleRemoveFromCart = delID => {
-    console.log('item:::', delID);
+    // console.log('item:::', delID);
     dispatch(removeFromCart(delID));
   };
 
   const handleIncrement = incID => {
+    // console.log('item::::', incID);
     dispatch(incrementQuantity(incID));
   };
 
   const handleDecrement = decID => {
     dispatch(decrementQuantity(decID));
   };
+
+  // const handleTotalPrice = totID => {
+  //   dispatch(calculateTotalPrice(totID));
+  // };
 
   //Remove from cart on local storage
   const handleRemoveCart = item => {
@@ -100,9 +107,7 @@ const Cart = ({navigation}) => {
         <View style={styles.buynowContainer}>
           <Text style={styles.totalTxt}>
             Subtotal {'\u20B9'}
-            <Text style={{fontWeight: 'bold'}}>
-              {numberWithCommas(calculateTotal())}
-            </Text>
+            <Text style={{fontWeight: 'bold'}}>{total}</Text>
           </Text>
           <Text style={{color: 'green', marginLeft: 20}}>
             <Icon name="check-circle" style={{fontSize: 15}}></Icon>
@@ -161,10 +166,9 @@ const Cart = ({navigation}) => {
                         onPress={() => handleDecrement(item._id)}>
                         <Text style={styles.productQuantityBtn}>-</Text>
                       </TouchableOpacity>
-                      <Text style={styles.productQuantity}>
-                        {productCount}
-                        {/* {item.count} */}
-                      </Text>
+                      {/* {productItems?.map(x => ( */}
+                      <Text style={styles.productQuantity}>{item?.qty}</Text>
+                      {/* ))} */}
                       <TouchableOpacity
                         onPress={() => handleIncrement(item._id)}>
                         <Text style={styles.productQuantityBtn}>+</Text>

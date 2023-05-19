@@ -20,6 +20,7 @@ import {addToCart} from '../../redux/counter/CounterSlice';
 
 const ProductDetails = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const productItems = useSelector(state => state.products.products);
   const [cartItems, setCartItems] = useState([]);
   const [product, setProduct] = useState('');
   const [loading, setLoading] = useState(false);
@@ -125,7 +126,7 @@ const ProductDetails = ({navigation, route}) => {
               </Text>
             </View>
             <View>
-              {!isAddedItem ? (
+              {productItems ? (
                 <Button
                   title="ADD TO CART"
                   disabled={true}
