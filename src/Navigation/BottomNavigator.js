@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import MainStack from '../Navigation/MainStack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Text, View} from 'react-native';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -12,19 +13,47 @@ function BottomTab() {
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
+          let labelName;
+          let tabColor;
 
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home';
+            labelName = route.name === 'Home' ? 'Home' : 'Home';
+            tabColor = focused ? '#c1d5e6' : '#ffffff';
           } else if (route.name === 'Cart') {
             iconName = focused ? 'shopping-cart' : 'shopping-cart';
+            labelName = route.name === 'Cart' ? 'Cart' : 'Cart';
+            tabColor = focused ? '#c1d5e6' : '#ffffff';
           } else if (route.name === 'More') {
             iconName = focused ? 'more-horiz' : 'more-horiz';
+            labelName = route.name === 'More' ? 'More' : 'More';
+            tabColor = focused ? '#c1d5e6' : '#ffffff';
           }
 
-          return <Icon name={iconName} size={size} color={color} />;
+          return (
+            <View
+              style={{
+                alignItems: 'center',
+                flexDirection: 'row',
+                backgroundColor: tabColor,
+                paddingVertical: 6,
+                paddingHorizontal: 12,
+                borderRadius: 15,
+              }}>
+              <Icon name={iconName} size={size} color={color}></Icon>
+              {focused && (
+                <Text
+                  style={{color: '#22689f', marginLeft: 5, fontWeight: 'bold'}}>
+                  {labelName}
+                </Text>
+              )}
+            </View>
+          );
         },
+        // tabBarActiveBackgroundColor: 'lightgray',
+        tabBarShowLabel: false,
         tabBarStyle: {
-          height: 55,
+          height: 50,
         },
         tabBarActiveTintColor: '#22689f',
         tabBarInactiveTintColor: 'gray',

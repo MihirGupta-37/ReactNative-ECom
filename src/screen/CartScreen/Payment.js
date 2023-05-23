@@ -15,9 +15,10 @@ import {CardField} from '@stripe/stripe-react-native';
 import ApiManager from '../../api/ApiManager';
 import {TextField} from '../../Components/TextField';
 import {validateAddress, validateName} from '../../utils/Validations';
+import {useSelector} from 'react-redux';
 
 const Payment = props => {
-
+  const total = useSelector(state => state.products.total);
   // const {confirmPayment, loading} = useConfirmPayment();
   const [showModal, setShowModal] = useState(false);
   const [cardInfo, setCardInfo] = useState(null);
@@ -45,7 +46,7 @@ const Payment = props => {
     ApiManager.PostAPI(
       '',
       {
-        amount: props.route.params.payAmount,
+        amount: total,
       },
       BASE_URL + PAYMENT_API,
     )
@@ -143,9 +144,7 @@ const Payment = props => {
         <View style={styles.buynowContainer}>
           <Text style={styles.totalTxt}>
             Subtotal {'\u20B9'}
-            <Text style={{fontWeight: 'bold'}}>
-              {props.route.params.payAmount}
-            </Text>
+            <Text style={{fontWeight: 'bold'}}>{total}</Text>
           </Text>
           <Text style={{color: 'lightgreen', marginLeft: 20, marginBottom: 15}}>
             <Icon name="check-circle" style={{fontSize: 15}}></Icon>

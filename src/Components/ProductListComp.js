@@ -91,13 +91,15 @@ const styles = StyleSheet.create({
     borderBottomColor: '#22689f',
     borderBottomWidth: 2,
     borderRadius: 1,
+    fontFamily: 'SourceSansPro-SemiBold',
   },
   textAreaName: {
-    textAlign: 'center',
+    // textAlign: 'center',
     paddingTop: 2,
     fontSize: 15,
     fontWeight: '600',
     color: 'black',
+    fontFamily: 'SourceSansPro-SemiBold',
   },
   textAreaPrice: {
     fontSize: 16,

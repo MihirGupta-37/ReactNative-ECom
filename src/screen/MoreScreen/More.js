@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     color: '#22689f',
     fontWeight: '500',
     marginHorizontal: 15,
+    fontFamily: 'SourceSansPro-SemiBoldItalic',
   },
   optionIcon: {
     fontSize: 20,

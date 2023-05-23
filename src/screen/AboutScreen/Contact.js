@@ -156,13 +156,14 @@ const styles = StyleSheet.create({
   },
   headerMain: {
     fontSize: 27,
-    fontWeight: '800',
+    // fontWeight: '800',
     color: 'black',
     borderBottomColor: 'black',
     borderBottomWidth: 2,
     borderRadius: 1,
     letterSpacing: 1,
     marginBottom: 30,
+    fontFamily: 'Roboto-BlackItalic',
   },
   inputField: {
     backgroundColor: '#FFF',
@@ -182,6 +183,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     color: '#22689f',
     fontWeight: '500',
+    fontFamily: 'Roboto-MediumItalic',
   },
   buttonView: {
     width: '93%',

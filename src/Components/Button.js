@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   },
   txtPressable: {
     color: '#fff',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'Roboto-BlackItalic',
   },
 });

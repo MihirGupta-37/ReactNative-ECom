@@ -24,10 +24,8 @@ const Cart = ({navigation}) => {
   const dispatch = useDispatch();
   const productItems = useSelector(state => state.products.products);
   const productCount = useSelector(state => state.products.productCount);
-  console.log('productItems:::', productItems);
   const total = useSelector(state => state.products.total);
-  // console.log('total---->', total);
-  const [addedProduct, setAddedProduct] = useState([]);
+  // const [addedProduct, setAddedProduct] = useState([]);
   useEffect(() => {
     handleCartData();
     dispatch(calculateTotalPrice(productItems));
@@ -44,6 +42,7 @@ const Cart = ({navigation}) => {
     navigation.navigate('UserProfile');
   };
 
+  // Adding Product through local storage method
   // const handleAddProduct = (item, index) => {
   //   const newCart = [...addedProduct];
   //   let value = newCart[index].quantity + 1;
@@ -51,15 +50,16 @@ const Cart = ({navigation}) => {
   //   setAddedProduct(newCart);
   // };
 
-  const handleRemoveProduct = (item, index) => {
-    const newCart = [...addedProduct];
-    if (newCart[index].quantity === 1) {
-    } else {
-      let value = newCart[index].quantity - 1;
-      newCart[index].quantity = value;
-      setAddedProduct(newCart);
-    }
-  };
+  // Removing cart product Quantity through local storage 
+  // const handleRemoveProduct = (item, index) => {
+  //   const newCart = [...addedProduct];
+  //   if (newCart[index].quantity === 1) {
+  //   } else {
+  //     let value = newCart[index].quantity - 1;
+  //     newCart[index].quantity = value;
+  //     setAddedProduct(newCart);
+  //   }
+  // };
 
   const handleRemoveFromCart = delID => {
     // console.log('item:::', delID);
@@ -80,22 +80,23 @@ const Cart = ({navigation}) => {
   // };
 
   //Remove from cart on local storage
-  const handleRemoveCart = item => {
-    const newArray = [...addedProduct];
-    const index = addedProduct.indexOf(item);
-    if (index !== -1) {
-      newArray.splice(index, 1);
-      setAddedProduct(newArray);
-      LocalStorage.saveData('AddToCart', newArray);
-    }
-  };
+  // const handleRemoveCart = item => {
+  //   const newArray = [...addedProduct];
+  //   const index = addedProduct.indexOf(item);
+  //   if (index !== -1) {
+  //     newArray.splice(index, 1);
+  //     setAddedProduct(newArray);
+  //     LocalStorage.saveData('AddToCart', newArray);
+  //   }
+  // };
 
-  const calculateTotal = () => {
-    return addedProduct.reduce((total, item) => {
-      let amount = total + item.price * item.quantity;
-      return amount;
-    }, 0);
-  };
+  //Calculating Total from Local storage Method
+  // const calculateTotal = () => {
+  //   return addedProduct.reduce((total, item) => {
+  //     let amount = total + item.price * item.quantity;
+  //     return amount;
+  //   }, 0);
+  // };
 
   return (
     <View style={styles.container}>
@@ -124,7 +125,7 @@ const Cart = ({navigation}) => {
               ]}
               disabled={productItems.length === 0}
               onPress={() => {
-                navigation.navigate('Payment', {payAmount: calculateTotal()});
+                navigation.navigate('Payment');
               }}>
               Buy Now
             </Text>

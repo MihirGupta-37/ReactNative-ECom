@@ -54,20 +54,22 @@ const ProductDetails = ({navigation, route}) => {
       });
   };
 
-  const ProductCheckIsAdded = (arrayOfCart, recode) => {
-    const existingItem = arrayOfCart?.find(item => item?._id === recode?._id);
-    setIsAddedItem(existingItem);
-  };
+  //local storage method to find the same existing product in cart
+  // const ProductCheckIsAdded = (arrayOfCart, recode) => {
+  //   const existingItem = arrayOfCart?.find(item => item?._id === recode?._id);
+  //   setIsAddedItem(existingItem);
+  // };
 
   const submitForm = () => {
     dispatch(addToCart(product));
-    // console.log('route:::', route);
-    // let newArray = cartItems;
-    // newArray.push(product);
-    // setCartItems(newArray);
-    // LocalStorage.saveData('AddToCart', newArray);
-    // ProductCheckIsAdded(newArray, product);
   };
+  //local Storage Method to submit on button
+  // console.log('route:::', route);
+  // let newArray = cartItems;
+  // newArray.push(product);
+  // setCartItems(newArray);
+  // LocalStorage.saveData('AddToCart', newArray);
+  // ProductCheckIsAdded(newArray, product);
 
   const GoToCart = () => {
     navigation.navigate('Cart');

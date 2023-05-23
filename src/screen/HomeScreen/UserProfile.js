@@ -167,9 +167,14 @@ const styles = StyleSheet.create({
   },
   headerMain: {
     fontSize: 32,
-    paddingVertical: 25,
+    marginVertical: 25,
     color: 'black',
-    fontWeight: '800',
+    // fontWeight: '800',
+    fontFamily: 'Roboto-BlackItalic',
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    borderRadius: 1,
+    letterSpacing: 1,
   },
   headerTxt: {
     fontWeight: '600',

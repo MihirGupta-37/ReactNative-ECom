@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
 import LocalStorage from './src/utils/LocalStorage';
 import AuthStack from './src/Navigation/AuthStack';

@@ -50,12 +50,13 @@ const styles = StyleSheet.create({
   },
   headerMain: {
     fontSize: 27,
-    fontWeight: '800',
+    // fontWeight: '800',
     color: 'black',
     borderBottomColor: 'black',
     borderBottomWidth: 2,
     borderRadius: 1,
     letterSpacing: 1,
+    fontFamily: 'Roboto-BlackItalic',
   },
   imageView: {
     alignSelf: 'center',
@@ -68,5 +69,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: 1,
     lineHeight: 25,
+    fontFamily: 'Roboto-MediumItalic',
   },
 });

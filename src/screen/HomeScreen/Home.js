@@ -25,7 +25,7 @@ import {addItemtoCart} from '../../redux/actions/Actions';
 
 const Home = ({navigation}) => {
   // const {signOut} = useContext(AuthContext);
- 
+
   const [productList, setProductList] = useState([]);
   const [page, setPage] = useState(1);
   const [lengthMore, setLengthMore] = useState(false);
@@ -145,7 +145,6 @@ const Home = ({navigation}) => {
       id: item._id,
     });
   };
-
 
   return (
     <View style={{flex: 1}}>
@@ -473,12 +472,13 @@ const styles = StyleSheet.create({
   headerMain: {
     fontSize: 27,
     marginVertical: 15,
-    fontWeight: '800',
+    // fontWeight: '800',
     color: 'black',
     borderBottomColor: 'black',
     borderBottomWidth: 2,
     borderRadius: 1,
     letterSpacing: 1,
+    fontFamily: 'SourceSansPro-Bold',
   },
   categoryList: {
     padding: 10,

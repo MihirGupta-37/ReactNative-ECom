@@ -7,7 +7,12 @@ const Header = props => {
     <View style={styles.headerMain}>
       <TouchableOpacity onPress={props.logoPress}>
         <Text style={styles.headerTxt}>
-          <Icon name={'shopping-bag'} style={{fontSize: 20}}></Icon>VSHOP
+          <Icon
+            name={'shopping-bag'}
+            style={{
+              fontSize: 20,
+            }}></Icon>
+          VSHOP
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -35,6 +40,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
     marginLeft: 15,
+    fontFamily: 'SourceSansPro-BlackItalic',
   },
   headTouchable: {
     marginRight: 10,
