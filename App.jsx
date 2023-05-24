@@ -8,6 +8,7 @@ import {PUBLISHABLE_KEY} from './src/utils/Constants';
 import Payment from './src/screen/CartScreen/Payment';
 import {Provider} from 'react-redux';
 import store from './src/redux/store/Store';
+import {MyDrawer} from './src/Navigation/DrawerNavigator';
 
 function App() {
   const [userDetails, setUserDetails] = useState('');
@@ -23,6 +24,7 @@ function App() {
     <Provider store={store}>
       <StripeProvider publishableKey={PUBLISHABLE_KEY}>
         <NavigationContainer>
+          {/* <MyDrawer /> */}
           <AuthStack userDetails={userDetails} />
         </NavigationContainer>
       </StripeProvider>

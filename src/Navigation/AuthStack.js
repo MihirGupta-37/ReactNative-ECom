@@ -4,10 +4,11 @@ import LocalStorage from '../utils/LocalStorage';
 import BottomNavigator from './BottomNavigator';
 import UnAuthStack from './UnAuthStack';
 import {AuthContext} from './AuthContext';
+import {DrawerNavigator, MyDrawer} from './DrawerNavigator';
 
 const AuthStack = props => {
   const [userData, setUserData] = useState(null);
-   const authContext = useMemo(() => {
+  const authContext = useMemo(() => {
     return {
       userDetails: data => {
         LocalStorage.saveData('UserData', data);
@@ -28,7 +29,7 @@ const AuthStack = props => {
 
   return (
     <AuthContext.Provider value={authContext}>
-       <RootStack.Navigator>
+      <RootStack.Navigator>
         {!userData ? (
           <RootStack.Screen
             name="Login Screen"
@@ -39,6 +40,7 @@ const AuthStack = props => {
           <RootStack.Screen
             name="BottomNavigator"
             options={{headerShown: false}}
+            // children={props => <MyDrawer />}
             children={props => <BottomNavigator {...props} />}
           />
         )}
