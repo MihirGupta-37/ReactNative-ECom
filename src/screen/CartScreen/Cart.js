@@ -50,7 +50,7 @@ const Cart = ({navigation}) => {
   //   setAddedProduct(newCart);
   // };
 
-  // Removing cart product Quantity through local storage 
+  // Removing cart product Quantity through local storage
   // const handleRemoveProduct = (item, index) => {
   //   const newCart = [...addedProduct];
   //   if (newCart[index].quantity === 1) {
@@ -100,7 +100,7 @@ const Cart = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Header profilePress={profilePress} />
+      {/* <Header profilePress={profilePress} /> */}
       <View
         style={{
           paddingHorizontal: 10,

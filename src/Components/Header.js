@@ -2,10 +2,13 @@ import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 
-const Header = props => {
+const Header = ({onMenuPress, logoPress, profilePress}) => {
   return (
     <View style={styles.headerMain}>
-      <TouchableOpacity onPress={props.logoPress}>
+      <TouchableOpacity onPress={onMenuPress}>
+        <Icon style={styles.iconMenu} name="menu"></Icon>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={logoPress}>
         <Text style={styles.headerTxt}>
           <Icon
             name={'shopping-bag'}
@@ -15,9 +18,7 @@ const Header = props => {
           VSHOP
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.headTouchable}
-        onPress={props.profilePress}>
+      <TouchableOpacity style={styles.headTouchable} onPress={profilePress}>
         <Icon style={styles.iconProfile} name="account-circle"></Icon>
       </TouchableOpacity>
     </View>
@@ -48,6 +49,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 50,
     height: 30,
+  },
+  iconMenu: {
+    fontSize: 30,
+    color: '#fff',
+    marginLeft: 10,
   },
   iconProfile: {
     fontSize: 30,

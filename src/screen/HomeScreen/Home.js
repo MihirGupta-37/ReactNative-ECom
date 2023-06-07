@@ -148,7 +148,7 @@ const Home = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-      <Header logoPress={logoPress} profilePress={profilePress} />
+      {/* <Header logoPress={logoPress} profilePress={profilePress} /> */}
       <Images />
       <Loader loading={loading} />
       <View style={styles.container}>
